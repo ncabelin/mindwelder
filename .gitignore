@@ -1,0 +1,6 @@
+.DS_Store
+client_secret_mw.json
+/env
+/.git
+/static/images
+keys
