@@ -83,6 +83,12 @@ def showPost():
 def showUser():
 	return render_template('showuser.html')
 
+@app.route('/editpost')
+def editPost():
+	return render_template('editpost.html')
+
+
+
 if __name__ == '__main__':
 	app.debug = True
 	app.run(host='0.0.0.0', port = 15000)
