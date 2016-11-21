@@ -51,11 +51,11 @@ def getUserByID(user_id):
 	user = session.query(User).filter_by(id = user_id).one()
 	return user
 
-
-def createUser(login_session):
+def createUser(login_session, account):
 	# creates a user via session and returns the user id
-	newUser = User(name = login_session['username'],
+	newUser = User(username = login_session['username'],
 		email = login_session['email'],
+		account = account,
 		picture = login_session['picture'])
 	session.add(newUser)
 	session.commit()
@@ -163,6 +163,14 @@ def gconnect():
 	login_session['username'] = data['name']
 	login_session['picture'] = data['picture']
 	login_session['email'] = data['email']
+
+	# see if user exists by email
+	user_id = getUserID(login_session['email'])
+	if not user_id:
+		user_id = createUser(login_session, 'google')
+	login_session['user_id'] = user_id
+
+	return 'You are now logged in as {}, redirecting...'.format(login_session['username'])
 
 @app.route('/showpost')
 def showPost():

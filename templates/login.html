@@ -63,7 +63,7 @@ function signInCallback(authResult) {
 				if (result) {
 					$('#result').html(result);
 					setTimeout(function() {
-						window.location.href = "/showuser/0";
+						window.location.href = "/showuser";
 					}, 3000);
 				} else if (authResult.error) {
 					console.log('There was an error: ' + authResult.error);
