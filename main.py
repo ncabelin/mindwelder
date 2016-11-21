@@ -75,6 +75,13 @@ def showFront():
 def login():
 	return render_template('login.html')
 
+@app.route('/showpost')
+def showPost():
+	return render_template('showpost.html')
+
+@app.route('/showuser')
+def showUser():
+	return render_template('showuser.html')
 
 if __name__ == '__main__':
 	app.debug = True

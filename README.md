@@ -10,8 +10,9 @@ This is a refactoring of the original mindwelder blog written for Google App Eng
 
 ##How to run :
 1. Install dependencies :
-	a. pip install flask
-	b. pip install oauth2client
-	c. pip install requests
-	d. pip install sqlalchemy
-	e. pip install bleach
+	* flask
+	* oauth2client
+	* requests
+	* sqlalchemy
+	* bleach
+	* psycopg2 
