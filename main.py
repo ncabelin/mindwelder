@@ -172,6 +172,35 @@ def gconnect():
 
 	return 'You are now logged in as {}, redirecting...'.format(login_session['username'])
 
+@app.route('/gdisconnect', methods = ['GET', 'POST'])
+def gdisconnect():
+	if login_session['provider'] == 'google':
+		credentials = login_session.get('credentials')
+		if credentials is None:
+			return respond('Current user not connected', 401)
+
+		access_token = json.loads(credentials)['access_token']
+
+		url = ('https://accounts.google.com/o/'
+			'oauth2/revoke?token={}'.format(access_token))
+		h = httplib2.Http()
+		result = h.request(url, 'GET')[0]
+		print(result['status'])
+		print result
+
+		if result['status'] == '200' or result['status'] == '400':
+			session_list = ['credentials',
+				'gplus_id',
+				'username',
+				'email',
+				'picture',
+				'user_id']
+			for s in session_list:
+				del login_session[s]
+			return redirect(url_for('login'))
+		else:
+			return respond('Failed to revoke token for given user.', 404)
+
 @app.route('/showpost')
 def showPost():
 	return render_template('showpost.html')
