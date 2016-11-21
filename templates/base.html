@@ -63,6 +63,12 @@
       max-height: 300px;
     }
 
+    .user_pic {
+      margin: 0;
+      height: 40px;
+      border-radius: 100%;
+    }
+
     .btn {
       border-radius: 10px;
     }
@@ -114,9 +120,10 @@
       margin-bottom: 50px;
     }
 
-    .navbar-brand {padding: 10px 20px 5px 15px; height: 70px;}
+    .navbar-brand {padding: 5px 20px 5px 15px; height: 70px;}
     .navbar-toggle { margin-top: 20px; }
-    .navbar-nav {padding: 20px 15px; }
+    .navbar-nav {padding: 0 15px;}
+    .navbar-nav>li>a {height: 70px; line-height: 35px;}
 
     /* customize border of hamburger menu button */
     .navbar-default .navbar-toggle {
@@ -201,10 +208,10 @@
           <div class="collapse navbar-collapse" id="menu">
             <ul class="nav navbar-nav navbar-right text-center">
               {% if user_logged: %}
-                <li><a href="/"><i class="fa fa-user fa-lg"></i><strong> {{ user_logged }}</strong></a></li>
+                <li><a href="/"><img src="{{ user_logged.picture}}" class="user_pic"><strong> {{ user_logged.username }}</strong></a></li>
                 <li><a href="/">Browse</a></li>
                 <li><a href="/viewuserposts?u={{ user_id_logged }}">Posts</a></li>
-                <li><a href="/login?status=logout">Logout</a></li>
+                <li><a href="/gdisconnect">Logout</a></li>
               {% else: %}
                 <li><a href="/login">Login</a></li>
                 <li><a href="/signup">Signup</a></li>

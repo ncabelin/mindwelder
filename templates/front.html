@@ -5,7 +5,7 @@
     <div class="col-md-12 text-center">
       <h1 class="title">Welcome to Mindwelder Blogs!</h1>
       {% if user_logged %}
-        <a href="/viewuserposts?u={{ user_id_logged }}" class="btn btn-primary btn-lg white">My Posts</a>
+        <a href="/viewuser" class="btn btn-primary btn-lg white">My Posts</a>
         <a href="/newpost" class="btn btn-success btn-lg white">Add Post</a>
       {% else %}
         <a href="/login" class="btn btn-primary btn-lg white">Login</a> or

@@ -62,6 +62,23 @@ def createUser(login_session, account):
 	user = session.query(User).filter_by(email = login_session['email']).one()
 	return user.id
 
+def find_logged_user():
+	# function that checks if a user is logged in first
+	# and returning the user object, only used in dual public/private facing routes
+	if 'username' in login_session:
+		return getUserByEmail(login_session['email'])
+	else:
+		return None
+
+def login_required(f):
+	@wraps(f)
+	def decorated_function(*args, **kwargs):
+		if 'username' in login_session:
+			return f(*args, **kwargs)
+		else:
+			return redirect(url_for('login'))
+	return decorated_function
+
 # jinja2 filters
 # --------------
 def firstline(content):
@@ -91,19 +108,20 @@ google_client_id = json.loads(
 @app.route('/', methods=['GET'])
 def showFront():
 	# public facing page render
-	posts = [
-		{ "subject": "Subject 1",
-			"content": "This is content 1",
-			"date_modified": "None",
-			"user_id": "123"},
-		{ "subject": "Subject 2",
-			"content": "This is content 2",
-			"date_modified": "None",
-			"user_id": "134"}
-	]
+	user = find_logged_user()
+	posts = session.query(Post).all()
+	# posts = [
+	# 	{ "subject": "Subject 1",
+	# 		"content": "This is content 1",
+	# 		"date_modified": "None",
+	# 		"user_id": "123"},
+	# 	{ "subject": "Subject 2",
+	# 		"content": "This is content 2",
+	# 		"date_modified": "None",
+	# 		"user_id": "134"}
+	# ]
 	return render_template('front.html',
-		user_logged = None,
-		user_id_logged = None,
+		user_logged = user,
 		posts = posts,
 		page_number = 1)
 
