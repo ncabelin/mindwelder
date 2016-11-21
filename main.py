@@ -71,9 +71,10 @@ def showFront():
 		posts = posts,
 		page_number = 1)
 
-@app.route('/hello')
-def HelloWorld():
-	return 'Hello World'
+@app.route('/login')
+def login():
+	return render_template('login.html')
+
 
 if __name__ == '__main__':
 	app.debug = True
