@@ -15,7 +15,7 @@ import json
 import requests
 import datetime
 from functools import wraps
-import secretkeys
+from secretkeys import secret
 
 app = Flask(__name__)
 
@@ -189,7 +189,7 @@ def gconnect():
 		user_id = createUser(login_session, 'google')
 	login_session['user_id'] = user_id
 
-	return 'You are now logged in as {}, redirecting...'.format(login_session['username'])
+	return 'Logging in as ' + login_session['username'] + '...'
 
 @app.route('/gdisconnect', methods = ['GET', 'POST'])
 def gdisconnect():
@@ -240,12 +240,12 @@ def showUser(user_id):
 def likePost(post_id):
 	return redirect(url_for('showpost', post_id = post_id))
 
-@app.route('/addcomment/<int:post_id>', methods=['GET','POST'])
+@app.route('/addcomment/<int:post_id>', methods=['POST'])
 def addComment(post_id):
 	return render_template('addcomment')
 
 
 if __name__ == '__main__':
 	app.debug = True
-	app.secret_key = secretkeys.secret
+	app.secret_key = secret()
 	app.run(host='0.0.0.0', port = 15000)

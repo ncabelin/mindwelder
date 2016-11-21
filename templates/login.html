@@ -33,6 +33,21 @@
         </span>
       	</div>
         <br><br>
+        <!-- Button trigger modal -->
+					<button type="button" id="modalBtn" class="btn btn-primary btn-lg hidden" data-toggle="modal" data-target="#myModal">
+					  Launch demo modal
+					</button>
+
+					<!-- Modal -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-body">
+					        <h4 class="text-center"><span id="result"></span></h4>
+					      </div>
+					    </div>
+					  </div>
+					</div>
         <br>
         <div class="container-fluid">
           <div class="row">
@@ -45,9 +60,7 @@
           </div>
         </div>
       </form>
-        <br><br>
-        <div id="result"></div>
-    </div>
+     </div>
   </div>
 </div>
 <script>
@@ -61,9 +74,10 @@ function signInCallback(authResult) {
 			contentType: 'application/octet-stream; charset=utf-8',
 			success: function(result) {
 				if (result) {
+					$('#modalBtn').trigger('click');
 					$('#result').html(result);
 					setTimeout(function() {
-						window.location.href = "/showuser";
+						window.location.href = "/";
 					}, 3000);
 				} else if (authResult.error) {
 					console.log('There was an error: ' + authResult.error);
