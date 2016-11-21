@@ -15,6 +15,7 @@ import json
 import requests
 import datetime
 from functools import wraps
+import secretkeys
 
 app = Flask(__name__)
 
@@ -219,21 +220,32 @@ def gdisconnect():
 		else:
 			return respond('Failed to revoke token for given user.', 404)
 
-@app.route('/showpost')
-def showPost():
+@app.route('/showpost/<int:post_id>', methods=['GET'])
+def showPost(post_id):
 	return render_template('showpost.html')
 
-@app.route('/showuser')
-def showUser():
-	return render_template('showuser.html')
-
-@app.route('/editpost')
-def editPost():
+@app.route('/editpost/<int:post_id>', methods=['GET', 'POST'])
+def editPost(post_id):
 	return render_template('editpost.html')
 
+@app.route('/deletepost/<int:post_id>', methods=['POST'])
+def deletePost(post_id):
+	return redirect(url_for('showUser', user_id = user_id))
+
+@app.route('/showuser/<int:user_id>')
+def showUser(user_id):
+	return render_template('showuser.html')
+
+@app.route('/likepost/<int:post_id>', methods=['POST'])
+def likePost(post_id):
+	return redirect(url_for('showpost', post_id = post_id))
+
+@app.route('/addcomment/<int:post_id>', methods=['GET','POST'])
+def addComment(post_id):
+	return render_template('addcomment')
 
 
 if __name__ == '__main__':
 	app.debug = True
-	app.secret_key = 'jasdfJakSqa'
+	app.secret_key = secretkeys.secret
 	app.run(host='0.0.0.0', port = 15000)
