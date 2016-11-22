@@ -28,7 +28,7 @@
         <div class="col-md-8">
           <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts"><h3>{{ post.title }}</h3></a>
             <h5>{{ post.post_content | firstline }}...</h5>
-            <h5><i>Posted by <a href="/showuser/{{ post.user_id }}"><u>{{ post.user_id | find_username }}</u></a></i></h5>
+            <h5><i>Posted by <a href="{{ url_for('showUser', user_id = post.user_id) }}"><u>{{ post.user_id | find_username }}</u></a></i></h5>
         </div>
         <div class="col-md-4">
           {% if post.pic: %}

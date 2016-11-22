@@ -208,7 +208,7 @@
           <div class="collapse navbar-collapse" id="menu">
             <ul class="nav navbar-nav navbar-right text-center">
               {% if user_logged: %}
-                <li><a href="/"><img src="{{ user_logged.picture}}" class="user_pic"><strong> {{ user_logged.username }}</strong></a></li>
+                <li><a href="/"><img src="{{ user_logged.picture }}" class="user_pic"><strong> {{ user_logged.username }}</strong></a></li>
                 <li><a href="/">Browse</a></li>
                 <li><a href="/viewuserposts?u={{ user_id_logged }}">Posts</a></li>
                 <li><a href="/gdisconnect">Logout</a></li>

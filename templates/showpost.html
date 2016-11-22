@@ -1,1 +1,31 @@
-showpost
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+      <br>
+      <div>
+        <h2>{{ post.title }} <small>by <u><a href="{{ url_for('showUser', user_id = post.user_id) }}">{{ post.user_id | find_username }}</a></u></small></h2>
+        <h6>{{ post.id | find_likes_sum }} likes, last modified - {{ post.date_added | standard_date }}
+
+        {% if user_logged.id == post.user_id %} &nbsp;
+          <!-- If the user is logged in and the owner of the post being viewed then the edit button will be displayed -->
+          <span><a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-primary btn-xs">edit / delete</a></span>
+        {% endif %}
+
+        {% if post.picture: %}</h6>
+          <!-- Determine if post has a picture link -->
+          <a href="http://imgur.com" target="_blank"><img src="{{ post.picture }}" class="img-responsive post_image"></a>
+          <p><i>Image by Imgur.com</i></p>
+        {% endif %}
+
+        <!-- Show filtered content -->
+        <div class="blog_post">{{ post.post_content | markdown | safe }}</div>
+      </div>
+    </div>
+    <div class="col-md-2">
+    </div>
+  </div>
+{% endblock %}

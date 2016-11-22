@@ -16,6 +16,7 @@ import requests
 import datetime
 from functools import wraps
 from secretkeys import secret
+import bleach
 
 app = Flask(__name__)
 
@@ -71,6 +72,30 @@ def find_logged_user():
 	else:
 		return None
 
+def find_post(post_id):
+	try:
+		post = session.query(Post).filter_by(id = post_id).one()
+		return post
+	except Exception as e:
+		print e
+		return None
+
+def find_user_posts(user_id):
+	try:
+		posts = session.query(Post).filter_by(user_id = user_id).all()
+		return posts
+	except Exception as e:
+		print e
+		return None
+
+def find_likes_sum(post_id):
+	try:
+		likes = session.query(Like).filter_by(post_id = post_id).count()
+		return likes or 0
+	except Exception as e:
+		print e
+		return None
+
 def login_required(f):
 	@wraps(f)
 	def decorated_function(*args, **kwargs):
@@ -106,6 +131,7 @@ app.jinja_env.filters['standard_date'] = standard_date
 app.jinja_env.filters['firstline'] = firstline
 app.jinja_env.filters['markdown'] = markdown
 app.jinja_env.filters['find_username'] = find_username
+app.jinja_env.filters['find_likes_sum'] = find_likes_sum
 
 google_client_id = json.loads(
 		open('client_secret_mw.json', 'r').read()
@@ -231,16 +257,26 @@ def addPost():
 				)
 			session.add(post)
 			session.commit()
-			return redirect(url_for('showUser', user_id = user.id))
+			return redirect(url_for('showUser',
+				user_id = user.id))
 
 		# GET method shows add page
-		return render_template('addpost.html', user_logged = user.username)
+		return render_template('addpost.html',
+			user_logged = user)
 	else:
 		return redirect(url_for('login'))
 
 @app.route('/showpost/<int:post_id>', methods=['GET'])
 def showPost(post_id):
-	return render_template('showpost.html')
+	post = find_post(post_id)
+	if post:
+		# check if user is logged in
+		user = find_logged_user()
+		return render_template('showpost.html',
+			post = post,
+			user_logged = user)
+	else:		
+		return render_template('error.html', message = 'Post not found')
 
 @app.route('/editpost/<int:post_id>', methods=['GET', 'POST'])
 def editPost(post_id):
@@ -250,9 +286,13 @@ def editPost(post_id):
 def deletePost(post_id):
 	return redirect(url_for('showUser', user_id = user_id))
 
-@app.route('/showuser/<int:user_id>')
+@app.route('/showuser/<int:user_id>', methods = ['GET'])
 def showUser(user_id):
-	return render_template('showuser.html')
+	posts = find_user_posts()
+	return render_template('showuser.html', 
+		posts = posts,
+		user_logged = find_logged_user(),
+		user = getUserByID(user_id))
 
 @app.route('/likepost/<int:post_id>', methods=['POST'])
 def likePost(post_id):
