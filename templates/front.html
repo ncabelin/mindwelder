@@ -6,7 +6,7 @@
       <h1 class="title">Welcome to Mindwelder Blogs!</h1>
       {% if user_logged %}
         <a href="/viewuser" class="btn btn-primary btn-lg white">My Posts</a>
-        <a href="/newpost" class="btn btn-success btn-lg white">Add Post</a>
+        <a href="/addpost" class="btn btn-success btn-lg white">Add Post</a>
       {% else %}
         <a href="/login" class="btn btn-primary btn-lg white">Login</a> or
         <a href="/signup" class="btn btn-primary btn-lg white">Signup</a>
@@ -26,9 +26,9 @@
       <div class="row">
       <hr>
         <div class="col-md-8">
-          <a href="" class="posts"><h3>{{ post.subject }}</h3></a>
-            <h5>{{ post.content | firstline }}...</h5>
-            <h5><i>Posted by <a href="/"><u>{{ post.user_id }}</u></a></i></h5>
+          <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts"><h3>{{ post.title }}</h3></a>
+            <h5>{{ post.post_content | firstline }}...</h5>
+            <h5><i>Posted by <a href="/showuser/{{ post.user_id }}"><u>{{ post.user_id | find_username }}</u></a></i></h5>
         </div>
         <div class="col-md-4">
           {% if post.pic: %}

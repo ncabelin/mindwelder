@@ -25,7 +25,9 @@ class Post(Base):
 	user_id = Column(Integer, ForeignKey('user.id'))
 	user = relationship(User)
 	title = Column(String(250), nullable=False)
+	picture = Column(String(250))
 	post_content = Column(String(250), nullable=False)
+	keywords = Column(String(250))
 	date_added = Column(DateTime, nullable=False)
 
 	@property

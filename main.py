@@ -98,9 +98,14 @@ def markdown(content):
     content = content.replace('\n', '<br>')
     return content
 
+def find_username(user_id):
+	user = getUserByID(user_id)
+	return user.username
+
 app.jinja_env.filters['standard_date'] = standard_date
 app.jinja_env.filters['firstline'] = firstline
 app.jinja_env.filters['markdown'] = markdown
+app.jinja_env.filters['find_username'] = find_username
 
 google_client_id = json.loads(
 		open('client_secret_mw.json', 'r').read()
@@ -111,16 +116,6 @@ def showFront():
 	# public facing page render
 	user = find_logged_user()
 	posts = session.query(Post).all()
-	# posts = [
-	# 	{ "subject": "Subject 1",
-	# 		"content": "This is content 1",
-	# 		"date_modified": "None",
-	# 		"user_id": "123"},
-	# 	{ "subject": "Subject 2",
-	# 		"content": "This is content 2",
-	# 		"date_modified": "None",
-	# 		"user_id": "134"}
-	# ]
 	return render_template('front.html',
 		user_logged = user,
 		posts = posts,
@@ -216,9 +211,32 @@ def gdisconnect():
 				'user_id']
 			for s in session_list:
 				del login_session[s]
-			return redirect(url_for('login'))
+			return redirect(url_for('showFront'))
 		else:
 			return respond('Failed to revoke token for given user.', 404)
+
+@app.route('/addpost', methods=['GET', 'POST'])
+@login_required
+def addPost():
+	user = getUserByEmail(login_session['email'])
+	if user:
+		# POST method add category
+		if request.method == 'POST':
+			post = Post(title = request.form['title'],
+				user_id = user.id,
+				picture = request.form['picture'],
+				post_content = request.form['content'],
+				keywords = request.form['keywords'],
+				date_added = datetime.datetime.now(),
+				)
+			session.add(post)
+			session.commit()
+			return redirect(url_for('showUser', user_id = user.id))
+
+		# GET method shows add page
+		return render_template('addpost.html', user_logged = user.username)
+	else:
+		return redirect(url_for('login'))
 
 @app.route('/showpost/<int:post_id>', methods=['GET'])
 def showPost(post_id):
