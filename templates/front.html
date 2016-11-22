@@ -5,7 +5,7 @@
     <div class="col-md-12 text-center">
       <h1 class="title">Welcome to Mindwelder Blogs!</h1>
       {% if user_logged %}
-        <a href="/viewuser" class="btn btn-primary btn-lg white">My Posts</a>
+        <a href="{{ url_for('showUser', user_id = user_logged.id) }}" class="btn btn-primary btn-lg white">My Posts</a>
         <a href="/addpost" class="btn btn-success btn-lg white">Add Post</a>
       {% else %}
         <a href="/login" class="btn btn-primary btn-lg white">Login</a> or
@@ -31,8 +31,8 @@
             <h5><i>Posted by <a href="{{ url_for('showUser', user_id = post.user_id) }}"><u>{{ post.user_id | find_username }}</u></a></i></h5>
         </div>
         <div class="col-md-4">
-          {% if post.pic: %}
-            <a href="http://imgur.com" target="_blank"><img src="{{ post.pic }}" class="img-responsive"></a>
+          {% if post.picture: %}
+            <a href="http://imgur.com" target="_blank"><img src="{{ post.picture }}" class="img-responsive"></a>
             <small><i>imgur.com</i></small>
           {% endif %}
         </div>

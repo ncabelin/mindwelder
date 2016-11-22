@@ -270,16 +270,37 @@ def addPost():
 def showPost(post_id):
 	post = find_post(post_id)
 	if post:
-		# check if user is logged in
-		user = find_logged_user()
 		return render_template('showpost.html',
 			post = post,
-			user_logged = user)
+			user_logged = find_logged_user())
 	else:		
 		return render_template('error.html', message = 'Post not found')
 
 @app.route('/editpost/<int:post_id>', methods=['GET', 'POST'])
+@login_required
 def editPost(post_id):
+	user = find_logged_user()
+	post = find_post(post_id)
+	if user.id == post.user_id:
+
+		# POST method edit 
+		if request.method == 'POST':
+			post.title = request.form['title']
+			post.post_content = request.form['post_content']
+			post.date_added = datetime.datetime.now()
+			post.keywords = request.form['keywords']
+			session.add(post)
+			session.commit()
+			return redirect(url_for('showPost', post_id = post_id))
+
+		# GET method
+		return render_template('editpost.html',
+			user_logged = user,
+			post = post)
+
+	else:
+		return render_template('error.html',
+			message = 'Not authorized to edit this post')
 	return render_template('editpost.html')
 
 @app.route('/deletepost/<int:post_id>', methods=['POST'])
@@ -288,15 +309,20 @@ def deletePost(post_id):
 
 @app.route('/showuser/<int:user_id>', methods = ['GET'])
 def showUser(user_id):
-	posts = find_user_posts()
+	posts = find_user_posts(user_id)
 	return render_template('showuser.html', 
 		posts = posts,
 		user_logged = find_logged_user(),
 		user = getUserByID(user_id))
 
 @app.route('/likepost/<int:post_id>', methods=['POST'])
+@login_required
 def likePost(post_id):
-	return redirect(url_for('showpost', post_id = post_id))
+	user = find_logged_user()
+	like = Like(post_id = post_id, user_id = user.id)
+	session.add(like)
+	session.commit()
+	return redirect(url_for('showPost', post_id = post_id))
 
 @app.route('/addcomment/<int:post_id>', methods=['POST'])
 def addComment(post_id):
