@@ -82,7 +82,8 @@ def find_post(post_id):
 
 def find_user_posts(user_id):
 	try:
-		posts = session.query(Post).filter_by(user_id = user_id).all()
+		posts = session.query(Post).filter_by(
+			user_id = user_id).order_by(desc(Post.date_added)).all()
 		return posts
 	except Exception as e:
 		print e
@@ -109,7 +110,7 @@ def find_like(post_id):
 def find_comments(post_id):
 	try:
 		comments = session.query(Comment).filter_by(
-			post_id = post_id).order_by(Comment.date_added).all()
+			post_id = post_id).order_by(desc(Comment.date_added)).all()
 		return comments
 	except Exception as e:
 		print e
