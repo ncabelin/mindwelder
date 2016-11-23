@@ -96,6 +96,23 @@ def find_likes_sum(post_id):
 		print e
 		return None
 
+def find_like(post_id):
+	try:
+		user = find_logged_user()
+		like = session.query(Like).filter_by(post_id = post_id).filter_by(
+			user_id = user.id)
+	except Exception as e:
+		print e
+		return None
+
+def find_comment(comment_id):
+	try:
+		comment = session.query(Comment).filter_by(id = comment_id).one()
+		return comment
+	except Exception as e:
+		print e
+		return None
+
 def login_required(f):
 	@wraps(f)
 	def decorated_function(*args, **kwargs):
@@ -335,10 +352,15 @@ def showUser(user_id):
 @login_required
 def likePost(post_id):
 	user = find_logged_user()
-	like = Like(post_id = post_id, user_id = user.id)
-	session.add(like)
-	session.commit()
-	return redirect(url_for('showPost', post_id = post_id))
+	like = find_like(post_id)
+	if like:
+		flash('Cannot like post more than once')
+		return redirect(url_for('showPost', post_id = post_id))
+	else:
+		like = Like(post_id = post_id, user_id = user.id)
+		session.add(like)
+		session.commit()
+		return redirect(url_for('showPost', post_id = post_id))
 
 @app.route('/addcomment/<int:post_id>', methods=['POST'])
 @login_required
