@@ -156,7 +156,7 @@ def imgurcheck(link):
 	if (link[:19] == 'http://i.imgur.com/') and (len(link) < 35):
 		return link
 	else:
-		return None
+		return ''
 
 def find_username(user_id):
 	user = getUserByID(user_id)

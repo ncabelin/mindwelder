@@ -31,7 +31,7 @@
             <h5><i>Posted by <a href="{{ url_for('showUser', user_id = post.user_id) }}"><u>{{ post.user_id | find_username }}</u></a></i></h5>
         </div>
         <div class="col-md-4">
-          {% if post.picture: %}
+          {% if (post.picture | imgurcheck): %}
             <a href="http://imgur.com" target="_blank"><img src="{{ post.picture }}" class="img-responsive"></a>
             <small><i>imgur.com</i></small>
           {% endif %}
