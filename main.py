@@ -357,7 +357,20 @@ def addComment(post_id):
 @app.route('/editcomment/<int:post_id>/<int:comment_id>', methods=['POST'])
 @login_required
 def editComment(post_id, comment_id):
-	return redirect(url_for('showPost', post_id = post_id))
+	user = find_logged_user()
+	post = find_post(post_id)
+	comment = find_comment(comment_id)
+	# check ownership
+	if comment.user_id == user.id:
+		comment.content = request.form['content']
+		session.add(comment)
+		session.commit()
+		return redirect(url_for('showPost', post_id = post_id))
+	else:
+		return render_template('error.html',
+			message = 'Not authorized to edit comment')
+
+
 
 
 if __name__ == '__main__':
