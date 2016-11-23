@@ -24,6 +24,86 @@
         <!-- Show filtered content -->
         <div class="blog_post">{{ post.post_content | markdown | safe }}</div>
       </div>
+
+      <div class="row" id="likes">
+		    <div class="col-md-8 col-md-offset-2">
+		      <hr>
+		      {% if user_logged: %}
+		        
+		        <form method="POST" action="/like" style="display: inline;">
+		          <input type="hidden" name="post_id" value="{{ post.id }}">
+		          <input type="hidden" name="user_id" value="{{ user_logged.id }}">
+		          <button type="submit" class="btn btn-success">{{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up fa-lg"></i></button>
+		        </form>
+		      {% else: %}
+		        {{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up fa-lg"></i> Likes
+		      {% endif %}
+
+		      {% if message: %}
+		        
+		        <br><br>
+		        <div class="alert alert-danger">{{ message }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+		      {% endif %}
+
+		    </div>
+		  </div>
+
+
+      <div class="row" id="comments">
+	    <div class="col-md-6 col-md-offset-3">
+	      {% if user_logged: %}
+	        {% if comment: %}
+	        <h4 class="center">Edit Comment :</h4>
+	        <form method="POST" action="{{ url_for('editComment', post_id = post.id, comment_id = comment.id) }}">
+	          <input type="hidden" name="comment_id" value="{{ comment.id }}">
+	          <input type="hidden" name="post_id" value="{{ post.id }}">
+	          <div class="form-group">
+	            <textarea rows="3" type="text" class="form-control" name="edited_content" placeholder="content">{{ comment.content }}</textarea>
+	          </div>
+	          <div class="btn-group">
+	            <button type="submit" class="btn btn-success">Submit</button>
+	            <label for="delete" class="btn btn-danger">Delete</label>
+	          </div>
+	        </form>
+	        <form method="POST" action="/deletecomment">
+	          <input type="hidden" name="comment_id" value="{{ comment.id }}">
+	          <input type="hidden" name="post_id" value="{{ post.id }}">
+	          <input class="hidden" type="submit" id="delete">
+	        </form>
+	        {% else: %}
+	        <h4 class="center">Comments :</h4>
+	        <form method="POST" action="{{ url_for('addComment', post_id = post.id) }}">
+	          <div class="form-group">
+	            <textarea rows="3" name="content" class="form-control"></textarea>
+	          </div>
+	          <input type="hidden" name="post_id" value="{{ post.id }}">
+	          <button type="submit" class="btn btn-primary">Submit</button><br>
+	          <br>
+	        </form>
+	        {% endif %}
+	      {% else: %}
+	        <p>( <a href="/login"><u>Login</u></a> to post a comment or like )</p>
+	      {% endif %}
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-md-6 col-md-offset-3">
+	      <br>
+	      {% if not comments: %}
+	        <p>( No Comments )</p>
+	      {% endif %}
+
+	      {% for c in comments: %}{% for line in c.content.splitlines() %}{{ line }}<br>{% endfor %}{% if c.user_id == user_logged.id: %}
+	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i><br><br>
+	              ( <a href=""><u>Edit/Delete</u></a> )
+	            </h5><br>
+	          {% else: %}
+	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i></h5><br><hr>
+	          {% endif %}
+	      {% endfor %}
+	    </div>
+	  </div>
+	</div>
     </div>
     <div class="col-md-2">
     </div>

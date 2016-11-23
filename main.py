@@ -100,7 +100,16 @@ def find_like(post_id):
 	try:
 		user = find_logged_user()
 		like = session.query(Like).filter_by(post_id = post_id).filter_by(
-			user_id = user.id)
+			user_id = user.id).one()
+		return like
+	except Exception as e:
+		print e
+		return None
+
+def find_comments(post_id):
+	try:
+		comments = session.query(Comment).filter_by(post_id = post_id).all()
+		return comments
 	except Exception as e:
 		print e
 		return None
@@ -286,9 +295,11 @@ def addPost():
 @app.route('/showpost/<int:post_id>', methods=['GET'])
 def showPost(post_id):
 	post = find_post(post_id)
+	comments = find_comments(post_id)
 	if post:
 		return render_template('showpost.html',
 			post = post,
+			comments = comments,
 			user_logged = find_logged_user())
 	else:		
 		return render_template('error.html', message = 'Post not found')
