@@ -20,7 +20,7 @@ import bleach
 
 app = Flask(__name__)
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database import Base, User, Post, Like, Comment
 
@@ -108,15 +108,17 @@ def find_like(post_id):
 
 def find_comments(post_id):
 	try:
-		comments = session.query(Comment).filter_by(post_id = post_id).all()
+		comments = session.query(Comment).filter_by(
+			post_id = post_id).order_by(Comment.date_added).all()
 		return comments
 	except Exception as e:
 		print e
 		return None
 
-def find_comment(comment_id):
+def find_comment(comment_id, post_id):
 	try:
-		comment = session.query(Comment).filter_by(id = comment_id).one()
+		comment = session.query(Comment).filter_by(
+			id = comment_id).filter_by(post_id = post_id).one()
 		return comment
 	except Exception as e:
 		print e
@@ -304,23 +306,25 @@ def showPost(post_id):
 	else:		
 		return render_template('error.html', message = 'Post not found')
 
-@app.route('/showpost/<int:post_id>/<int:comment_id>', methods=['GET'])
+@app.route('/showpostcomment/<int:post_id>/<int:comment_id>', methods=['GET'])
 @login_required
 def showPostComment(post_id, comment_id):
 	post = find_post(post_id)
 	comments = find_comments(post_id)
-	comment = find_comment(comment_id)
+	comment = find_comment(comment_id, post_id)
 	user = find_logged_user()
 	if post and comment:
-		if comment.id == user.id:
+		if comment.user_id == user.id:
 			return render_template('showpost.html',
 				post = post,
 				comments = comments,
 				comment = comment,
 				user_logged = find_logged_user())
 		else:
+			print 'what the fuck man 1'
 			return render_template('error.html', message = 'Not authorized')
 	else:		
+		print 'what the fuck man 2'
 		return render_template('error.html', message = 'Post not found')	
 
 @app.route('/editpost/<int:post_id>', methods=['GET', 'POST'])
@@ -348,7 +352,6 @@ def editPost(post_id):
 	else:
 		return render_template('error.html',
 			message = 'Not authorized to edit this post')
-	return render_template('editpost.html')
 
 @app.route('/deletepost/<int:post_id>', methods=['POST'])
 @login_required
@@ -384,13 +387,13 @@ def likePost(post_id):
 	user = find_logged_user()
 	like = find_like(post_id)
 	if like:
-		flash('Cannot like post more than once')
-		return redirect(url_for('showPost', post_id = post_id))
+		flash('Cannot like a post more than once')
+		return redirect('/showpost/%s#likes' % post_id)
 	else:
 		like = Like(post_id = post_id, user_id = user.id)
 		session.add(like)
 		session.commit()
-		return redirect(url_for('showPost', post_id = post_id))
+		return redirect('/showpost/%s#likes' % post_id)
 
 @app.route('/addcomment/<int:post_id>', methods=['POST'])
 @login_required
@@ -404,21 +407,21 @@ def addComment(post_id):
 		)
 	session.add(comment)
 	session.commit()
-	return redirect(url_for('showPost', post_id = post.id))
+	return redirect('/showpost/%s#comments' % post_id)
 
 @app.route('/editcomment/<int:post_id>/<int:comment_id>', methods=['POST'])
 @login_required
 def editComment(post_id, comment_id):
 	user = find_logged_user()
 	post = find_post(post_id)
-	comment = find_comment(comment_id)
+	comment = find_comment(comment_id, post_id)
 	if post and comment:
 		# check ownership
 		if comment.user_id == user.id:
 			comment.content = request.form['content']
 			session.add(comment)
 			session.commit()
-			return redirect(url_for('showPost', post_id = post_id))
+			return redirect('/showpost/%s#comments' % post_id)
 		else:
 			return render_template('error.html',
 				message = 'Not authorized to edit comment')
@@ -431,13 +434,13 @@ def editComment(post_id, comment_id):
 def deleteComment(post_id, comment_id):
 	user = find_logged_user()
 	post = find_post(post_id)
-	comment = find_comment(comment_id)
+	comment = find_comment(comment_id, post_id)
 	if post and comment:
 		# check ownership
 		if comment.user_id == user.id:
 			session.delete(comment)
 			session.commit()
-			return redirect(url_for('showPost', post_id = post.id))
+			return redirect('/showpost/%s#comments' % post_id)
 		else:
 			return render_template('error.html',
 				message = 'Not authorized to delete comment')

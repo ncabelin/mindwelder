@@ -30,14 +30,20 @@
 		      <hr>
 		      {% if user_logged: %}
 		        
-		        <form method="POST" action="/like" style="display: inline;">
-		          <input type="hidden" name="post_id" value="{{ post.id }}">
-		          <input type="hidden" name="user_id" value="{{ user_logged.id }}">
+		        <form method="POST" action="{{ url_for('likePost', post_id = post.id) }}" style="display: inline;">
 		          <button type="submit" class="btn btn-success">{{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up fa-lg"></i></button>
 		        </form>
 		      {% else: %}
 		        {{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up fa-lg"></i> Likes
 		      {% endif %}
+
+		      {% with messages = get_flashed_messages() %}
+		      	{% if messages %}
+		      		{% for m in messages %}
+		      			<br><br><div class="alert alert-danger">{{ m }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+		      		{% endfor %}
+		      	{% endif %}
+		      {% endwith %}
 
 		      {% if message: %}
 		        
@@ -63,9 +69,7 @@
 	            <label for="delete" class="btn btn-danger">Delete</label>
 	          </div>
 	        </form>
-	        <form method="POST" action="/deletecomment">
-	          <input type="hidden" name="comment_id" value="{{ comment.id }}">
-	          <input type="hidden" name="post_id" value="{{ post.id }}">
+	        <form method="POST" action="{{ url_for('deleteComment', post_id = post.id, comment_id = comment.id) }}">
 	          <input class="hidden" type="submit" id="delete">
 	        </form>
 	        {% else: %}
@@ -93,7 +97,7 @@
 
 	      {% for c in comments: %}{% for line in c.content.splitlines() %}{{ line }}<br>{% endfor %}{% if c.user_id == user_logged.id: %}
 	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i><br><br>
-	              ( <a href="{{ url_for('showPostComment', post_id = post.id, comment_id = c.id) }}"><u>Edit/Delete</u></a> )
+	              ( <a href="/showpostcomment/{{ post.id }}/{{ c.id }}#comments"><u>Edit/Delete</u></a> )
 	            </h5><br>
 	          {% else: %}
 	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i></h5><br><hr>
