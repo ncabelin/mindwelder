@@ -55,10 +55,8 @@
 	        {% if comment: %}
 	        <h4 class="center">Edit Comment :</h4>
 	        <form method="POST" action="{{ url_for('editComment', post_id = post.id, comment_id = comment.id) }}">
-	          <input type="hidden" name="comment_id" value="{{ comment.id }}">
-	          <input type="hidden" name="post_id" value="{{ post.id }}">
 	          <div class="form-group">
-	            <textarea rows="3" type="text" class="form-control" name="edited_content" placeholder="content">{{ comment.content }}</textarea>
+	            <textarea rows="3" type="text" class="form-control" name="content" placeholder="content">{{ comment.content }}</textarea>
 	          </div>
 	          <div class="btn-group">
 	            <button type="submit" class="btn btn-success">Submit</button>
@@ -95,7 +93,7 @@
 
 	      {% for c in comments: %}{% for line in c.content.splitlines() %}{{ line }}<br>{% endfor %}{% if c.user_id == user_logged.id: %}
 	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i><br><br>
-	              ( <a href=""><u>Edit/Delete</u></a> )
+	              ( <a href="{{ url_for('showPostComment', post_id = post.id, comment_id = c.id) }}"><u>Edit/Delete</u></a> )
 	            </h5><br>
 	          {% else: %}
 	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i></h5><br><hr>

@@ -304,6 +304,25 @@ def showPost(post_id):
 	else:		
 		return render_template('error.html', message = 'Post not found')
 
+@app.route('/showpost/<int:post_id>/<int:comment_id>', methods=['GET'])
+@login_required
+def showPostComment(post_id, comment_id):
+	post = find_post(post_id)
+	comments = find_comments(post_id)
+	comment = find_comment(comment_id)
+	user = find_logged_user()
+	if post and comment:
+		if comment.id == user.id:
+			return render_template('showpost.html',
+				post = post,
+				comments = comments,
+				comment = comment,
+				user_logged = find_logged_user())
+		else:
+			return render_template('error.html', message = 'Not authorized')
+	else:		
+		return render_template('error.html', message = 'Post not found')	
+
 @app.route('/editpost/<int:post_id>', methods=['GET', 'POST'])
 @login_required
 def editPost(post_id):
