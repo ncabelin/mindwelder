@@ -360,17 +360,38 @@ def editComment(post_id, comment_id):
 	user = find_logged_user()
 	post = find_post(post_id)
 	comment = find_comment(comment_id)
-	# check ownership
-	if comment.user_id == user.id:
-		comment.content = request.form['content']
-		session.add(comment)
-		session.commit()
-		return redirect(url_for('showPost', post_id = post_id))
+	if post and comment:
+		# check ownership
+		if comment.user_id == user.id:
+			comment.content = request.form['content']
+			session.add(comment)
+			session.commit()
+			return redirect(url_for('showPost', post_id = post_id))
+		else:
+			return render_template('error.html',
+				message = 'Not authorized to edit comment')
 	else:
 		return render_template('error.html',
-			message = 'Not authorized to edit comment')
+			message = 'Post / Comment not found')
 
-
+@app.route('/deletecomment/<int:post_id>/<int:comment_id>', methods=['POST'])
+@login_required
+def deleteComment(post_id, comment_id):
+	user = find_logged_user()
+	post = find_post(post_id)
+	comment = find_comment(comment_id)
+	if post and comment:
+		# check ownership
+		if comment.user_id == user.id:
+			session.delete(comment)
+			session.commit()
+			return redirect(url_for('showPost', post_id = post.id))
+		else:
+			return render_template('error.html',
+				message = 'Not authorized to delete comment')
+	else:
+		return render_template('error.html',
+			message = 'Post / Comment not found')
 
 
 if __name__ == '__main__':
