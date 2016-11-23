@@ -210,7 +210,7 @@
               {% if user_logged: %}
                 <li><a href="/"><img src="{{ user_logged.picture }}" class="user_pic"><strong> {{ user_logged.username }}</strong></a></li>
                 <li><a href="/">Browse</a></li>
-                <li><a href="/viewuserposts?u={{ user_id_logged }}">Posts</a></li>
+                <li><a href="{{ url_for('showUser', user_id = user_logged.id) }}">Posts</a></li>
                 <li><a href="/gdisconnect">Logout</a></li>
               {% else: %}
                 <li><a href="/login">Login</a></li>

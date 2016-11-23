@@ -304,8 +304,24 @@ def editPost(post_id):
 	return render_template('editpost.html')
 
 @app.route('/deletepost/<int:post_id>', methods=['POST'])
+@login_required
 def deletePost(post_id):
-	return redirect(url_for('showUser', user_id = user_id))
+	user = getUserByEmail(login_session['email'])
+	post = find_post(post_id)
+	if user and post:
+		# check ownership
+		if user.id == post.user_id:
+			# POST method to delete
+			if request.method == 'POST':
+				session.delete(post)
+				session.commit()
+				return redirect(url_for('showUser', user_id = user_id))
+		else:
+			return render_template('error.html',
+				message = 'Not authorized to delete this post')
+	else:
+		return render_template('error.html',
+			message = 'Post not found')
 
 @app.route('/showuser/<int:user_id>', methods = ['GET'])
 def showUser(user_id):
@@ -325,8 +341,23 @@ def likePost(post_id):
 	return redirect(url_for('showPost', post_id = post_id))
 
 @app.route('/addcomment/<int:post_id>', methods=['POST'])
+@login_required
 def addComment(post_id):
-	return render_template('addcomment')
+	user = find_logged_user()
+	post = find_post(post_id)
+	comment = Comment(user_id = user.id,
+		post_id = post.id,
+		content = request.form['content'],
+		date_added = datetime.datetime.now()
+		)
+	session.add(comment)
+	session.commit()
+	return redirect(url_for('showPost', post_id = post.id))
+
+@app.route('/editcomment/<int:post_id>/<int:comment_id>', methods=['POST'])
+@login_required
+def editComment(post_id, comment_id):
+	return redirect(url_for('showPost', post_id = post_id))
 
 
 if __name__ == '__main__':
