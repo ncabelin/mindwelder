@@ -152,6 +152,12 @@ def markdown(content):
     content = content.replace('\n', '<br>')
     return content
 
+def imgurcheck(link):
+	if (link[:19] == 'http://i.imgur.com/') and (len(link) < 35):
+		return link
+	else:
+		return None
+
 def find_username(user_id):
 	user = getUserByID(user_id)
 	return user.username
@@ -161,6 +167,7 @@ app.jinja_env.filters['firstline'] = firstline
 app.jinja_env.filters['markdown'] = markdown
 app.jinja_env.filters['find_username'] = find_username
 app.jinja_env.filters['find_likes_sum'] = find_likes_sum
+app.jinja_env.filters['imgurcheck'] = imgurcheck
 
 google_client_id = json.loads(
 		open('client_secret_mw.json', 'r').read()
