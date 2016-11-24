@@ -176,12 +176,20 @@ google_client_id = json.loads(
 @app.route('/', methods=['GET'])
 def showFront():
 	# public facing page render
+	page = request.args.get('page')
+	if not page:
+		page = 0
+	else:
+		page = int(page)
+
+	offset_num = page * 10
 	user = find_logged_user()
-	posts = session.query(Post).order_by(desc(Post.date_added)).limit(10).all()
+	posts = session.query(Post).order_by(desc(
+		Post.date_added)).offset(offset_num).limit(10).all()
 	return render_template('front.html',
 		user_logged = user,
 		posts = posts,
-		page_number = 1)
+		page_number = page)
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():

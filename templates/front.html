@@ -40,15 +40,15 @@
     </div>
   {% endfor %}
   </div>
-<!--   <div class="row">
+  <div class="row">
     <div class="col-md-12">
       <br><br>
       {% if posts | length == 0 or posts | length < 10 %}
         <a href="/" class="pull-right">End of posts. Click here to go to page 1</a>
       {% else %}
-        <a href="/page/{{ page_number }}#posts" class="pull-right">More posts...</a>
+        <a href="/?page={{ page_number + 1 }}" class="pull-right">More posts...</a>
       {% endif %}
     </div>
-  </div> -->
+  </div>
 </div>
 {% endblock %}
