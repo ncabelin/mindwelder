@@ -333,6 +333,7 @@ def gdisconnect():
 				'user_id']
 			for s in session_list:
 				del login_session[s]
+			flash('Logged out using Google+')
 			return redirect(url_for('showFront'))
 		else:
 			return respond('Failed to revoke token for given user.', 404)
