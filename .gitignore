@@ -1,5 +1,6 @@
 .DS_Store
 client_secret_mw.json
+fbclient_secret.json
 /env
 /.git
 /static/images

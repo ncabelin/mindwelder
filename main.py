@@ -248,6 +248,58 @@ def gconnect():
 
 	return 'Logging in as ' + login_session['username'] + '...'
 
+@app.route('/fbconnect', methods = ['GET', 'POST'])
+def fbconnect():
+	# Facebook Oauth2 connection
+	if request.args.get('state') != login_session['state']:
+		return respond('Error', 401)
+
+	access_token = request.data
+
+	app_id = json.loads(open('fbclient_secret.json',
+		'r').read())['web']['app_id']
+	app_secret = json.loads(open('fbclient_secret.json',
+		'r').read())['web']['app_secret']
+
+	url = ('https://graph.facebook.com/oauth/access_token?grant_type='
+		'fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' 
+				% (app_id, app_secret, access_token))
+
+	h = httplib2.Http()
+	result = h.request(url, 'GET')[1]
+
+	# strip expire tag from access token
+	token = result.split("&")[0]
+	
+	url = ('https://graph.facebook.com/v2.4/me?%s'
+		'&fields=name,id,email' % token)
+	h = httplib2.Http()
+	result = h.request(url, 'GET')[1]
+
+	data = json.loads(result)
+
+	login_session['provider'] = 'facebook'
+	login_session['username'] = data['name']
+	login_session['email'] = data['email']
+	login_session['facebook_id'] = data['id']
+	login_session['access_token'] = token
+
+	# get user picture in a separate call
+	url = ('https://graph.facebook.com/v2.4/me/picture?%s'
+		'&redirect=0&height=200&width=200' % token)
+	h = httplib2.Http()
+	result = h.request(url, 'GET')[1]
+	data = json.loads(result)
+	login_session['picture'] = data['data']['url']
+
+	# see if user exists by email
+	user_id = getUserID(login_session['email'])
+	if not user_id:
+		user_id = createUser(login_session, 'facebook')
+	login_session['user_id'] = user_id
+
+	return ('You are now logged in as %s' % login_session['username'])
+
 @app.route('/gdisconnect', methods = ['GET', 'POST'])
 def gdisconnect():
 	if login_session['provider'] == 'google':
@@ -276,6 +328,28 @@ def gdisconnect():
 			return redirect(url_for('showFront'))
 		else:
 			return respond('Failed to revoke token for given user.', 404)
+
+	elif login_session['provider'] == 'facebook':
+		facebook_id = login_session['facebook_id']
+		access_token = login_session['access_token']
+		url = ('https://graph.facebook.com'
+			'/%s/permissions?access_token=%s' % (facebook_id,access_token))
+		h = httplib2.Http()
+		result = h.request(url, 'DELETE')[1]
+		session_list = ['facebook_id',
+			'username',
+			'email',
+			'picture',
+			'user_id',
+			'access_token']
+		for s in session_list:
+			del login_session[s]
+		flash('Logged out using Facebook')
+		return redirect('/')
+
+	else:
+		return redirect(url_for('login'))
+
 
 @app.route('/addpost', methods=['GET', 'POST'])
 @login_required
