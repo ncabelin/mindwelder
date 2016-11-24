@@ -177,7 +177,7 @@ google_client_id = json.loads(
 def showFront():
 	# public facing page render
 	user = find_logged_user()
-	posts = session.query(Post).all()
+	posts = session.query(Post).order_by(desc(Post.date_added)).limit(10).all()
 	return render_template('front.html',
 		user_logged = user,
 		posts = posts,
