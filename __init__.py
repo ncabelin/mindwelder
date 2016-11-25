@@ -17,6 +17,8 @@ import datetime
 from functools import wraps
 from secretkeys import secret
 import bleach
+from bcrypt import hashpw, checkpw, gensalt
+from validators import valid_username, valid_email, valid_password
 
 app = Flask(__name__)
 
@@ -197,6 +199,14 @@ def login():
 		string.digits) for x in xrange(32))
 	login_session['state'] = state
 	return render_template('login.html', state = state)
+
+@app.route('/register', methods = ['GET', 'POST'])
+def register():
+	if request.method == 'POST':
+		return
+	else:
+		# GET 
+		return render_template('register.html')
 
 @app.route('/gconnect', methods = ['POST'])
 def gconnect():
