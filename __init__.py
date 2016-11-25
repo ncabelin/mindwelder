@@ -18,7 +18,10 @@ from functools import wraps
 from secretkeys import secret
 import bleach
 from bcrypt import hashpw, checkpw, gensalt
+
+# python module files
 from validators import valid_username, valid_email, valid_password
+from parser import markdown
 
 app = Flask(__name__)
 
@@ -144,16 +147,6 @@ def firstline(content):
 def standard_date(date):
 	return date.strftime('%b %d, %Y')
 
-def markdown(content):
-    bleached_content = bleach.clean(content,
-        tags = ['strong','b','i','em','h1','h2','pre','code', 'br', 'u', 'li', 'ul', 'ol'])
-    c = bleached_content.split('\n')
-    # first line (description) will be a bigger font size
-    c[0] = '<h3>%s</h3>' % c[0]
-    content = '\n'.join(c)
-    content = content.replace('\n', '<br>')
-    return content
-
 def imgurcheck(link):
 	if (link[:19] == 'http://i.imgur.com/') and (len(link) < 35):
 		return link
@@ -203,52 +196,46 @@ def login():
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
 	if request.method == 'POST':
-		username = request.form['username']
-		email = request.form['email']
-		password = request.form['password']
+		username = valid_username(request.form['username'])
+		email = valid_email(request.form['email'])
+		password = valid_password(request.form['password'])
 		verify = request.form['verify']
-
-		all_validate = True
 
 		if password != verify:
 			flash('Passwords do not match')
-			all_validate = False
+			return redirect('/')
 
-		if not valid_username(username):
+		if not username:
 			flash('Username is not valid')
-			all_validate = False
-		if not valid_password(password):
+		if not password:
 			flash('Password is not valid')
-			all_validate = False
-		if not valid_email(email):
+		if not email:
 			flash('Email is not valid')
-			all_validate = False
-
-		# if username and email and password:
-		# 	all_validate = True
 
 		if getUserByEmail(email):
 			flash('Another user has registered with that email, please use another one')
-			all_validate = False
 			return redirect('/register')
 
-		if all_validate:
-			newUser = User(
-				username = username,
-				email = email,
-				password = hashpw(password.encode('utf-8'), gensalt()),
-				picture = '',
-				account = 'mindwelder'
-				)
+		if username and email and password:
+			if all_validate:
+				newUser = User(
+					username = username,
+					email = email,
+					password = hashpw(password.encode('utf-8'), gensalt()),
+					picture = '',
+					account = 'mindwelder'
+					)
 
-			try:
-				session.add(newUser)
-				session.commit()
-				return redirect('/login')
-			except Exception as e:
-				print e
-				return render_template('error.html',
-					message = 'Error connecting to database')
+				try:
+					session.add(newUser)
+					session.commit()
+					return redirect('/login')
+				except Exception as e:
+					print e
+					return render_template('error.html',
+						message = 'Error connecting to database')
+		else:
+			return redirect('/register')
 
 	else:
 		# GET 
@@ -262,8 +249,9 @@ def register():
 def mconnect():
 	email = request.form['email']
 	password = request.form['password']
-	user = session.query(User).filter_by(email = email).one()
-	if not user:
+	try:
+		user = session.query(User).filter_by(email = email).one()
+	except:
 		flash('Username / Password not valid')
 		return redirect(url_for('login'))
 
@@ -433,6 +421,17 @@ def gdisconnect():
 		for s in session_list:
 			del login_session[s]
 		flash('Logged out using Facebook')
+		return redirect('/')
+
+	elif login_session['provider'] == 'mindwelder':
+		session_list = [
+			'provider',
+			'username',
+			'email',
+			'picture']
+		for s in session_list:
+			del login_session[s]
+		flash('Logged out')
 		return redirect('/')
 
 	else:
