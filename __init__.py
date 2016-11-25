@@ -197,14 +197,16 @@ def login():
 def register():
 	if request.method == 'POST':
 		username = valid_username(request.form['username'])
-		email = valid_email(request.form['email'])
+		email = request.form['email']
 		password = request.form['password']
 		verify = request.form['verify']
 
+		# check if 2 passwords match
 		if password != verify:
 			flash('Passwords do not match')
 			return redirect('/register')
 
+		# check if password is not blank or below 8 characters
 		password = valid_password(password)
 
 		if not username:
@@ -218,7 +220,7 @@ def register():
 			flash('Another user has registered with that email, please use another one')
 			return redirect('/register')
 
-		if username and email and password:
+		if username and valid_email(email) and password:
 			newUser = User(
 				username = username,
 				email = email,

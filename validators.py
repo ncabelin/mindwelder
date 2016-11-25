@@ -3,12 +3,17 @@ import re
 # -------------------------
 
 def valid_username(username):
-    return username and (len(username) < 30)
+	if username and (len(username) < 30):
+		return username
+	else:
+		return None
 
-PASS_RE = re.compile(r"^.{3,20}$")
 def valid_password(password):
-    return password and PASS_RE.match(password)
+	if password and (len(password) > 8):
+		return password
+	else:
+		return None
 
 EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 def valid_email(email):
-    return email and EMAIL_RE.match(email)
+	return email and EMAIL_RE.match(email)
