@@ -203,41 +203,48 @@ def login():
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
 	if request.method == 'POST':
-		username = valid_username(request.form['username'])
-		email = valid_email(request.form['email'])
-		password = valid_password(request.form['password'])
+		username = request.form['username']
+		email = request.form['email']
+		password = request.form['password']
 		verify = request.form['verify']
+
 		all_validate = True
 
 		if password != verify:
 			flash('Passwords do not match')
 			all_validate = False
 
-		if not username:
+		if not valid_username(username):
 			flash('Username is not valid')
-		if not password:
-			flash('Password is not valid')
-		if not email:
-			flash('Email is not valid')
-
-		if not(username and email and password):
 			all_validate = False
+		if not valid_password(password):
+			flash('Password is not valid')
+			all_validate = False
+		if not valid_email(email):
+			flash('Email is not valid')
+			all_validate = False
+
+		# if username and email and password:
+		# 	all_validate = True
 
 		if getUserByEmail(email):
 			flash('Another user has registered with that email, please use another one')
 			all_validate = False
+			return redirect('/register')
 
 		if all_validate:
-			user = User(
+			newUser = User(
 				username = username,
 				email = email,
-				password = hashpwd(password, gensalt()),
+				password = hashpw(password.encode('utf-8'), gensalt()),
 				picture = '',
 				account = 'mindwelder'
 				)
+
 			try:
-				session.add(user)
+				session.add(newUser)
 				session.commit()
+				return redirect('/login')
 			except Exception as e:
 				print e
 				return render_template('error.html',
@@ -251,6 +258,23 @@ def register():
 			username = username,
 			email = email)
 
+@app.route('/mconnect', methods = ['POST'])
+def mconnect():
+	email = request.form['email']
+	password = request.form['password']
+	user = session.query(User).filter_by(email = email).one()
+	if not user:
+		flash('Username / Password not valid')
+		return redirect(url_for('login'))
+
+	hashed = user.password.encode('utf-8')
+	if hashpw(password.encode('utf-8'), hashed) == hashed:
+		login_session['provider'] = user.account
+		login_session['username'] = user.username
+		login_session['picture'] = user.picture
+		login_session['email'] = user.email
+		flash('User logged in as {}'.format(user.username))
+		return redirect('/')
 
 
 @app.route('/gconnect', methods = ['POST'])
