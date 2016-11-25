@@ -203,14 +203,55 @@ def login():
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
 	if request.method == 'POST':
-		return
+		username = valid_username(request.form['username'])
+		email = valid_email(request.form['email'])
+		password = valid_password(request.form['password'])
+		verify = request.form['verify']
+		all_validate = True
+
+		if password != verify:
+			flash('Passwords do not match')
+			all_validate = False
+
+		if not username:
+			flash('Username is not valid')
+		if not password:
+			flash('Password is not valid')
+		if not email:
+			flash('Email is not valid')
+
+		if not(username and email and password):
+			all_validate = False
+
+		if getUserByEmail(email):
+			flash('Another user has registered with that email, please use another one')
+			all_validate = False
+
+		if all_validate:
+			user = User(
+				username = username,
+				email = email,
+				password = hashpwd(password, gensalt()),
+				picture = '',
+				account = 'mindwelder'
+				)
+			try:
+				session.add(user)
+				session.commit()
+			except Exception as e:
+				print e
+				return render_template('error.html',
+					message = 'Error connecting to database')
+
 	else:
 		# GET 
-		username = request.args.get('u')
-		email = request.args.get('e')
+		username = request.args.get('u') or ''
+		email = request.args.get('e') or ''
 		return render_template('register.html',
 			username = username,
 			email = email)
+
+
 
 @app.route('/gconnect', methods = ['POST'])
 def gconnect():
