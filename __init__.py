@@ -198,12 +198,14 @@ def register():
 	if request.method == 'POST':
 		username = valid_username(request.form['username'])
 		email = valid_email(request.form['email'])
-		password = valid_password(request.form['password'])
+		password = request.form['password']
 		verify = request.form['verify']
 
 		if password != verify:
 			flash('Passwords do not match')
-			return redirect('/')
+			return redirect('/register')
+
+		password = valid_password(password)
 
 		if not username:
 			flash('Username is not valid')
@@ -217,23 +219,22 @@ def register():
 			return redirect('/register')
 
 		if username and email and password:
-			if all_validate:
-				newUser = User(
-					username = username,
-					email = email,
-					password = hashpw(password.encode('utf-8'), gensalt()),
-					picture = '',
-					account = 'mindwelder'
-					)
+			newUser = User(
+				username = username,
+				email = email,
+				password = hashpw(password.encode('utf-8'), gensalt()),
+				picture = '',
+				account = 'mindwelder'
+				)
 
-				try:
-					session.add(newUser)
-					session.commit()
-					return redirect('/login')
-				except Exception as e:
-					print e
-					return render_template('error.html',
-						message = 'Error connecting to database')
+			try:
+				session.add(newUser)
+				session.commit()
+				return redirect('/login')
+			except Exception as e:
+				print e
+				return render_template('error.html',
+					message = 'Error connecting to database')
 		else:
 			return redirect('/register')
 
@@ -251,18 +252,21 @@ def mconnect():
 	password = request.form['password']
 	try:
 		user = session.query(User).filter_by(email = email).one()
+		hashed = user.password.encode('utf-8')
+		if hashpw(password.encode('utf-8'), hashed) == hashed:
+			login_session['provider'] = user.account
+			login_session['username'] = user.username
+			login_session['picture'] = user.picture
+			login_session['email'] = user.email
+			flash('User logged in as {}'.format(user.username))
+			return redirect('/')
+		else:
+			flash('Username / Password not valid')
+			return redirect(url_for('login'))
 	except:
 		flash('Username / Password not valid')
 		return redirect(url_for('login'))
 
-	hashed = user.password.encode('utf-8')
-	if hashpw(password.encode('utf-8'), hashed) == hashed:
-		login_session['provider'] = user.account
-		login_session['username'] = user.username
-		login_session['picture'] = user.picture
-		login_session['email'] = user.email
-		flash('User logged in as {}'.format(user.username))
-		return redirect('/')
 
 
 @app.route('/gconnect', methods = ['POST'])
@@ -401,7 +405,7 @@ def gdisconnect():
 			for s in session_list:
 				del login_session[s]
 			flash('Logged out using Google+')
-			return redirect(url_for('showFront'))
+			return redirect(url_for('login'))
 		else:
 			return respond('Failed to revoke token for given user.', 404)
 
@@ -421,7 +425,7 @@ def gdisconnect():
 		for s in session_list:
 			del login_session[s]
 		flash('Logged out using Facebook')
-		return redirect('/')
+		return redirect(url_for('login'))
 
 	elif login_session['provider'] == 'mindwelder':
 		session_list = [
@@ -432,7 +436,7 @@ def gdisconnect():
 		for s in session_list:
 			del login_session[s]
 		flash('Logged out')
-		return redirect('/')
+		return redirect(url_for('login'))
 
 	else:
 		return redirect(url_for('login'))

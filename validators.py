@@ -1,9 +1,9 @@
 import re
 # form validation functions
 # -------------------------
-USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+
 def valid_username(username):
-    return username and USER_RE.match(username)
+    return username and (len(username) < 30)
 
 PASS_RE = re.compile(r"^.{3,20}$")
 def valid_password(password):
