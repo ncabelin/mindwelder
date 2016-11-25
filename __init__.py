@@ -206,7 +206,11 @@ def register():
 		return
 	else:
 		# GET 
-		return render_template('register.html')
+		username = request.args.get('u')
+		email = request.args.get('e')
+		return render_template('register.html',
+			username = username,
+			email = email)
 
 @app.route('/gconnect', methods = ['POST'])
 def gconnect():
