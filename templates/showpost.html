@@ -6,7 +6,7 @@
     </div>
     <div class="col-md-8">
       <br>
-      <div>
+      <div class="post_content">
         <h2>{{ post.title }} <small>by <u><a href="{{ url_for('showUser', user_id = post.user_id) }}">{{ post.user_id | find_username }}</a></u></small></h2>
         <h6>{{ post.id | find_likes_sum }} likes, last modified - {{ post.date_added | standard_date }}
 
@@ -23,7 +23,6 @@
 
         <!-- Show filtered content -->
         <div class="blog_post">{{ post.post_content | markdown | safe }}</div>
-      </div>
 
       <div class="row" id="likes">
 		    <div class="col-md-8 col-md-offset-2">
@@ -103,6 +102,7 @@
 	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i></h5><br><hr>
 	          {% endif %}
 	      {% endfor %}
+	      </div>
 	    </div>
 	  </div>
 	</div>

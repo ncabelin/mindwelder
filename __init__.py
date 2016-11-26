@@ -1,3 +1,6 @@
+import random, string, datetime
+
+# 3rd party modules
 from flask import (Flask,
 	render_template,
 	request,
@@ -7,21 +10,14 @@ from flask import (Flask,
 	jsonify)
 from flask import session as login_session
 from flask import make_response
-import random, string
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
 import json
 import requests
-import datetime
 from functools import wraps
-from secretkeys import secret
 import bleach
 from bcrypt import hashpw, checkpw, gensalt
-
-# python module files
-from validators import valid_username, valid_email, valid_password
-from parser import markdown
 
 app = Flask(__name__)
 
@@ -32,6 +28,11 @@ from database import Base, User, Post, Like, Comment
 engine = create_engine('sqlite:///mindwelder.db')
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
+
+# internal modules
+from validators import valid_username, valid_email, valid_password
+from parser import markdown
+from secretkeys import secret
 
 def respond(msg, err):
 	res = make_response(json.dumps(msg), err)

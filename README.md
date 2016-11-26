@@ -15,4 +15,4 @@ This is a refactoring of the original mindwelder blog written for Google App Eng
 	* requests
 	* sqlalchemy
 	* bleach
-	* psycopg2 
+	* bcrypt 
