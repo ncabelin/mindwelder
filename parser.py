@@ -7,17 +7,14 @@ def markdown(content):
     # first line (description) will be a bigger font size
     c[0] = '<h3>%s</h3>' % c[0]
     content = '\n'.join(c)
-    content = content.replace('\n', '<br>')
-    content = content.replace('<q>', '<span class="question">')
-    content = content.replace('</q>', '</span>')
-    content = content.replace('<a>', '<span class="answer">')
-    content = content.replace('</a>', '</span>')
 
-    params = [{ '\n': '<br>'}
+    params = { '\n': '<br>',
     		'<q>': '<span class="question">',
     		'</q>': '</span>',
     		'<a>': '<span class="answer">',
-    		'</a>': '</span>'
-    	]
+    		'</a>': '</span>' }
+    for p in params:
+    	content = content.replace(p, params[p])
+
     print content
     return content
