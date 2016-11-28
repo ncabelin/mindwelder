@@ -23,10 +23,15 @@
           <label for="editor">Content :</label>
           <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
             <div class="btn-group">
+              <a class="btn btn-format" data-format="h1">Heading</a>
+              <a class="btn btn-format" data-format="h2">Sub-heading</a>
               <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
               <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
               <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
-              <a class="btn" id="answerBtn">Ans</a>
+              <a class="btn btn-format" data-format="code">Code</a>
+              <a class="btn btn-format" data-format="pre">Pre</a>
+              <a class="btn btn-format" data-format="q">Question</a>
+              <a class="btn btn-format" data-format="a">Answer</a>
             </div>
           </div>
           <div id="editor" style="font-size: 16px; font-family: 'Lato', sans-serif;" contenteditable="true">{{ post.post_content | safe }}</div>
@@ -38,14 +43,6 @@
         <div id="submit" class="btn btn-primary">Save</div>
         <a class="btn btn-danger" href="">Cancel</a>
       </form>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <p>
-        <br>
-        <strong>Tip :</strong> You can use strong, b, i, em, h1, h2, pre, code to format your post.  The first line will always be designated as the description.
-      </p>
     </div>
   </div>
 </div>

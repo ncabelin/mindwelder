@@ -3,7 +3,6 @@ $(document).ready(function() {
 			answers = $('.answer');
 
 	$('span').click(function() {
-		console.log(this)
 		$(this).toggleClass('answerShow')
 	});
 
@@ -14,10 +13,10 @@ $(document).ready(function() {
 		console.log(content);
 	});
 
-	$('#answerBtn').click(function() {
-		console.log('Fuck you');
+	$('.btn-format').click(function() {
+		var format = $(this).data('format');
 		var highlight = window.getSelection();
-		var wrap = '<a>' + highlight + '</a>';
+		var wrap = '<' + format + '>' + highlight + '</' + format + '>';
 		var text = $('#editor').html()
 		$('#editor').html(text.replace(highlight, wrap));
 	});
