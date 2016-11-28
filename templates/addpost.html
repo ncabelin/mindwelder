@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "alt_base.html" %}
 {% block content %}
 <div class="container">
   <div class="row">
@@ -9,7 +9,7 @@
           <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         </div>
       {% endif %}
-      <form method="POST" class="form-box">
+      <form method="POST" class="form-box" id="editForm">
         <h1 class="text-center">Add New Post :</h1>
         <div class="form-group">
           <label for="title">Title :</label>
@@ -20,14 +20,22 @@
           <input type="text" name="picture" id="picture" class="form-control" maxlength="30">
         </div>
         <div class="form-group">
-          <label for="content">Content :</label>
-          <textarea rows="10" name="content" id="content" class="form-control" style="font-size: 16px; font-family: 'Lato', sans-serif;"></textarea>
+          <label for="editor">Content :</label>
+          <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+            <div class="btn-group">
+              <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
+              <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
+              <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
+              <a class="btn" id="answerBtn">Ans</a>
+            </div>
+          </div>
+          <div id="editor" style="font-size: 16px; font-family: 'Lato', sans-serif;" contenteditable="true"></div>
         </div>
         <div class="form-group">
           <label for="keywords">Keywords : (for easy searching)</label>
-          <input type="text" name="keywords" id="keywords" class="form-control" value="" maxlength="120">
+          <input type="text" name="keywords" id="keywords" class="form-control" maxlength="120">
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <div id="submit" class="btn btn-primary">Save</div>
         <a class="btn btn-danger" href="">Cancel</a>
       </form>
     </div>

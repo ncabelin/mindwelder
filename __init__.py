@@ -455,7 +455,7 @@ def addPost():
 			post = Post(title = request.form['title'],
 				user_id = user.id,
 				picture = request.form['picture'],
-				post_content = request.form['content'],
+				post_content = request.form['post_content'],
 				keywords = request.form['keywords'],
 				date_added = datetime.datetime.now(),
 				)
