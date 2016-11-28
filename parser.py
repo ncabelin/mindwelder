@@ -1,10 +1,15 @@
 import bleach
 
 def markdown(content):
+    attrs = {
+        '*': ['class'],
+        'a': ['href', 'rel'],
+        'font': ['size']
+        }
     bleached_content = bleach.clean(content,
         tags = ['strong','b','i','em','h1',
         'h2','pre','code', 'br', 'u', 'li',
-        'ul', 'ol', 'q', 'a', 'div'])
+        'ul', 'ol', 'q', 'a', 'div', 'font'], attributes=attrs)
     c = bleached_content.split('\n')
 
     # first line (description) will be a bigger font size
