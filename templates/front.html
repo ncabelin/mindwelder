@@ -33,24 +33,19 @@
     </div>
   </div>
   <div class="row" id="posts">
-    {% for post in posts %}
-    <div class="col-md-6 item">
-      <div class="row">
-      <hr>
-        <div class="col-md-8">
-          <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts"><h3>{{ post.title }}</h3></a>
-            <h5>{{ post.post_content | markdown | firstline | safe }}...</h5>
-            <h5><i>Posted by <a href="{{ url_for('showUser', user_id = post.user_id) }}"><u>{{ post.user_id | find_username }}</u></a></i></h5>
-        </div>
-        <div class="col-md-4">
-          {% if (post.picture | imgurcheck): %}
-            <a href="http://imgur.com" target="_blank"><img src="{{ post.picture }}" class="img-responsive"></a>
-            <small><i>imgur.com</i></small>
-          {% endif %}
-        </div>
+    <div class="col-md-6">
+      {% for post in posts %}
+      <div class="item">
+        <img src="{{ post.user_id | get_user_pic }}" class="thumbnail_pic">&nbsp;<span><a href="{{ url_for('showUser', user_id = post.user_id) }}"><u>{{ post.user_id | find_username }}</u></a></span>
+        <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts"><h3>{{ post.title }}</h3></a>
+        {% if (post.picture | imgurcheck): %}
+          <a href="http://imgur.com" target="_blank"><img src="{{ post.picture }}" class="img-responsive"></a>
+          <small><i>imgur.com</i></small>
+        {% endif %}
+        <h5>{{ post.post_content | markdown | firstline | safe }}...</h5>
       </div>
+      {% endfor %}
     </div>
-  {% endfor %}
   </div>
   <div class="row">
     <div class="col-md-12">

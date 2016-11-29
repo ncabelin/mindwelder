@@ -55,6 +55,10 @@ def getUserID(email):
 	except:
 		return None
 
+def get_user_pic(user_id):
+	user = session.query(User).filter_by(id = user_id).one()
+	return user.picture
+
 def getUserByID(user_id):
 	user = session.query(User).filter_by(id = user_id).one()
 	return user
@@ -94,6 +98,13 @@ def find_user_posts(user_id):
 	except Exception as e:
 		print e
 		return None
+
+# def find_keywords():
+# 	try:
+# 		posts = session.query(Post).filter_by(
+# 			keywords != '').all()
+
+
 
 def find_likes_sum(post_id):
 	try:
@@ -164,6 +175,7 @@ app.jinja_env.filters['markdown'] = markdown
 app.jinja_env.filters['find_username'] = find_username
 app.jinja_env.filters['find_likes_sum'] = find_likes_sum
 app.jinja_env.filters['imgurcheck'] = imgurcheck
+app.jinja_env.filters['get_user_pic'] = get_user_pic
 
 google_client_id = json.loads(
 		open('client_secret_mw.json', 'r').read()
