@@ -24,24 +24,18 @@ $(document).ready(function() {
 		// 	var text = $('#editor').html()
 		// 	$('#editor').html(text + 'asfasdfasdf');
 		// }
+		var format = $(this).data('format');
     var sel, range;
     if (window.getSelection && (sel = window.getSelection()).rangeCount) {
     		console.log(sel)
         range = sel.getRangeAt(0);
         range.collapse(true);
-        var span = document.createElement("span");
+        var span = document.createElement(format);
         span.id = "myId";
-        span.appendChild( document.createTextNode(window.getSelection().toString()+"..") );
+        span.appendChild( document.createTextNode(window.getSelection().toString()) );
+        document.execCommand('delete');
         range.insertNode(span);
-        if (window.getSelection) {
-				  if (window.getSelection().empty) {  // Chrome
-				    window.getSelection().empty();
-				  } else if (window.getSelection().removeAllRanges) {  // Firefox
-				    window.getSelection().removeAllRanges();
-				  }
-				} else if (document.selection) {  // IE?
-				  document.selection.empty();
-				}
+        console.log('bozo2')
 
         // Move the caret immediately after the inserted span
         range.setStartAfter(span);
