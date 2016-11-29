@@ -17,7 +17,7 @@
             <br><br>
             <div class="row">
               <div class="col-md-6 col-md-offset-3">
-                <div class="alert alert-danger">{{ m }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+                <div class="alert alert-success">{{ m }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
               </div>
             </div>
           {% endfor %}
@@ -39,7 +39,7 @@
       <hr>
         <div class="col-md-8">
           <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts"><h3>{{ post.title }}</h3></a>
-            <h5>{{ post.post_content | firstline }}...</h5>
+            <h5>{{ post.post_content | markdown | firstline | safe }}...</h5>
             <h5><i>Posted by <a href="{{ url_for('showUser', user_id = post.user_id) }}"><u>{{ post.user_id | find_username }}</u></a></i></h5>
         </div>
         <div class="col-md-4">
