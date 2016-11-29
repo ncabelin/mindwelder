@@ -529,7 +529,7 @@ def editPost(post_id):
 			url = 'editpost_html.html'
 		else:
 			url = 'editpost.html'
-		return render_template('editpost.html',
+		return render_template(url,
 			user_logged = user,
 			edit = True,
 			post = post)

@@ -42,7 +42,6 @@
               <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
               <a class="btn btn-format" data-format="pre">pre</a>
               <a class="btn btn-format" data-format="code">code</a>
-              <a class="btn" onclick="document.execCommand('insertText', true, '\n')">Enter</a>
             </div>
             <div class="btn-group">
               <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
@@ -71,7 +70,7 @@
         </div>
         <div id="submit" class="btn btn-primary">Submit</div>
         <a class="btn btn-danger" href="">Cancel</a>
-        <a class="btn btn-success" href="{% if edit %}/editpost/post.id?mode=html{% else %}/addpost?mode=html{% endif %}">Edit HTML</a>
+        <a class="btn btn-success" href="{% if edit %}/editpost/{{ post.id }}?mode=html{% else %}/addpost?mode=html{% endif %}">Edit HTML</a>
       </form>
     </div>
   </div>
