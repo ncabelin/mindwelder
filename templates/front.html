@@ -3,7 +3,8 @@
 <div class="container-fluid">
   <div class="row foreground">
     <div class="col-md-12 text-center">
-      <h1 class="title">Welcome to Mindwelder Blogs!</h1>
+      <h1 class="title">Mindwelder</h1>
+      <p>A Blog, Quiz &amp; Checklist Platform</p><br><br>
       {% if user_logged %}
         <a href="{{ url_for('showUser', user_id = user_logged.id) }}" class="btn btn-primary btn-lg white">My Posts</a>
         <a href="/addpost" class="btn btn-success btn-lg white">Add Post</a>
@@ -27,16 +28,11 @@
   </div>
 </div>
 <div class="container" id="posts">
-  <div class="row">
-    <div class="col-md-12">
-      <h2><i><u>Recent Posts</u> :</i></h2>
-    </div>
-  </div>
   <div class="row" id="posts">
-    <div class="col-md-6">
+    <div class="col-md-8">
       {% for post in posts %}
       <div class="item">
-        <img src="{{ post.user_id | get_user_pic }}" class="thumbnail_pic">&nbsp;<span><a href="{{ url_for('showUser', user_id = post.user_id) }}"><u>{{ post.user_id | find_username }}</u></a></span>
+        <img src="{{ post.user_id | get_user_pic }}" class="thumbnail_pic">&nbsp;<span><a href="{{ url_for('showUser', user_id = post.user_id) }}" class="author">{{ post.user_id | find_username }}</a></span>
         <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts"><h3>{{ post.title }}</h3></a>
         {% if (post.picture | imgurcheck): %}
           <a href="http://imgur.com" target="_blank"><img src="{{ post.picture }}" class="img-responsive"></a>

@@ -21,6 +21,11 @@
         </div>
         <div class="form-group">
           <label for="editor">Content :</label>
+          <div class="btn-toolbar" data-role="editor-toolbar">
+            <div class="btn-group">
+              <a class="btn" href="{% if edit %}/editpost/{{ post.id }}{% else %}/addpost{% endif %}">Rich Text Editor</a>
+            </div>
+          </div>
           <textarea id="editor" rows="10" class="form-control" name="post_content" style="font-size: 16px; font-family: 'Lato', sans-serif;">{{ post.post_content }}</textarea>
         </div>
         <div class="form-group">
@@ -28,8 +33,13 @@
           <input type="text" name="keywords" id="keywords" class="form-control" maxlength="120" value="{{ post.keywords }}">
         </div>
         <div id="submit" class="btn btn-primary">Submit</div>
-        <a class="btn btn-danger" href="">Cancel</a>
-        <a class="btn btn-success" href="{% if edit %}/editpost/{{ post.id }}{% else %}/addpost{% endif %}">Rich Text Editor</a>
+        {% if edit %}
+          <form method="POST" action="deletepost/{{ post.id }}" style="display: inline;">
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
+        {% else %}
+          <a class="btn btn-danger" href="">Cancel</a>
+        {% endif %}
       </form>
     </div>
   </div>

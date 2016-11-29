@@ -7,7 +7,7 @@
     <div class="col-md-8">
       <br>
       <div class="post_content">
-        <h2>{{ post.title }} <small>by <u><a href="{{ url_for('showUser', user_id = post.user_id) }}">{{ post.user_id | find_username }}</a></u></small></h2>
+        <h2>{{ post.title }} <small>by <a href="{{ url_for('showUser', user_id = post.user_id) }}" class="author">{{ post.user_id | find_username }}</a></small></h2>
         <h6>{{ post.id | find_likes_sum }} likes, last modified - {{ post.date_added | standard_date }}
 
         {% if user_logged.id == post.user_id %} &nbsp;

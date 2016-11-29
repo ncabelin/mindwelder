@@ -3,8 +3,12 @@ body {
   font-size: 16px;
 }
 
-h1,h2 {
+h1,h2, h3 {
   font-family: 'Raleway', sans-serif;
+}
+
+p {
+  font-weight: 300;
 }
 
 a {
@@ -30,13 +34,11 @@ a {
 }
 
 .navbar-default .navbar-nav>li>a {
-  color: black;
+  color: #2e6da4;
 }
 
 .navbar-default .navbar-nav>li>a:hover {
-  color: white;
-  background-color: #37449b;
-  border-radius: 0;
+  color: black;
 }
 
 .post_image {
@@ -49,8 +51,35 @@ a {
   border-radius: 100%;
 }
 
+.author {
+  color: #ff5300;
+  font-size: 12px;
+}
+
+.author:hover {
+  color: #bb4f1a;
+  text-decoration: underline;
+}
+
 .btn {
   border-radius: 10px;
+}
+
+.btn-group .btn {
+  border: 1px solid gray;
+  margin-bottom: 10px;
+}
+
+div.dropdown-menu.input-append {
+  padding: 5px;
+}
+
+input.span2 {
+  margin: 5px;
+}
+
+.dropdown-menu li a {
+  cursor: pointer;
 }
 
 .btn-primary {
@@ -97,7 +126,7 @@ a {
 
 .foreground h1 {
   letter-spacing: 2px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 
 .navbar-brand {padding: 5px 20px 5px 15px; height: 70px;}
@@ -180,6 +209,16 @@ hr {
   background-color: white;
   padding: 10px;
   border-radius: 10px;
+}
+
+#editor {
+  background-color: white;
+  border: 1px solid #ccc;
+  height: 250px;
+  padding: 10px;
+  overflow: scroll;
+  overflow-y: scroll;
+  resize: none;
 }
 
 #content {

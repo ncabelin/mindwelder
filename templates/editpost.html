@@ -23,6 +23,9 @@
           <label for="editor">Content :</label>
           <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
             <div class="btn-group">
+              <a class="btn" href="{% if edit %}/editpost/{{ post.id }}?mode=html{% else %}/addpost?mode=html{% endif %}">Edit HTML</a>
+            </div>
+            <div class="btn-group">
               <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size">Size&nbsp;<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                 <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
@@ -53,7 +56,7 @@
               <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="icon-link"></i></a>
               <div class="dropdown-menu input-append">
                 <input class="span2" placeholder="URL" type="text" data-edit="createLink"/>
-                <button class="btn" type="button">Add</button>
+                <button class="btn btn-xs" type="button">Add</button>
               </div>
               <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="icon-cut"></i></a>
             </div>          
@@ -69,8 +72,13 @@
           <input type="text" name="keywords" id="keywords" class="form-control" value="{{ post.keywords }}" maxlength="120">
         </div>
         <div id="submit" class="btn btn-primary">Submit</div>
-        <a class="btn btn-danger" href="">Cancel</a>
-        <a class="btn btn-success" href="{% if edit %}/editpost/{{ post.id }}?mode=html{% else %}/addpost?mode=html{% endif %}">Edit HTML</a>
+        {% if edit %}
+          <form method="POST" action="deletepost/{{ post.id }}" style="display: inline;">
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
+        {% else %}
+          <a class="btn btn-danger" href="">Cancel</a>
+        {% endif %}
       </form>
     </div>
   </div>
