@@ -461,11 +461,17 @@ def addPost():
 				)
 			session.add(post)
 			session.commit()
-			return redirect(url_for('showUser',
-				user_id = user.id))
+			return redirect(url_for('showPost',
+				post_id = post.id))
 
 		# GET method shows add page
-		return render_template('addpost.html',
+		if request.args.get('mode'):
+			url = 'editpost_html.html'
+		else:
+			url = 'editpost.html'
+		return render_template(url,
+			post= None,
+			edit = False,
 			user_logged = user)
 	else:
 		return redirect(url_for('login'))
@@ -497,10 +503,8 @@ def showPostComment(post_id, comment_id):
 				comment = comment,
 				user_logged = find_logged_user())
 		else:
-			print 'what the fuck man 1'
 			return render_template('error.html', message = 'Not authorized')
 	else:		
-		print 'what the fuck man 2'
 		return render_template('error.html', message = 'Post not found')	
 
 @app.route('/editpost/<int:post_id>', methods=['GET', 'POST'])
@@ -521,8 +525,13 @@ def editPost(post_id):
 			return redirect(url_for('showPost', post_id = post_id))
 
 		# GET method
+		if request.args.get('mode'):
+			url = 'editpost_html.html'
+		else:
+			url = 'editpost.html'
 		return render_template('editpost.html',
 			user_logged = user,
+			edit = True,
 			post = post)
 
 	else:

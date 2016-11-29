@@ -1,4 +1,4 @@
-{% extends "alt_base.html" %}
+{% extends "base.html" %}
 {% block content %}
 <div class="container">
   <div class="row">
@@ -21,7 +21,7 @@
         </div>
         <div class="form-group">
           <label for="editor">Content :</label>
-          <textarea id="editor" class="form-control" name="post_content" style="font-size: 16px; font-family: 'Lato', sans-serif;">{{ post.post_content }}</textarea>
+          <textarea id="editor" rows="10" class="form-control" name="post_content" style="font-size: 16px; font-family: 'Lato', sans-serif;">{{ post.post_content }}</textarea>
         </div>
         <div class="form-group">
           <label for="keywords">Keywords : (for easy searching)</label>
@@ -29,6 +29,7 @@
         </div>
         <div id="submit" class="btn btn-primary">Submit</div>
         <a class="btn btn-danger" href="">Cancel</a>
+        <a class="btn btn-success" href="{% if edit %}/editpost/post.id{% else %}/addpost{% endif %}">Rich Text Editor</a>
       </form>
     </div>
   </div>

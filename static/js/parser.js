@@ -14,16 +14,6 @@ $(document).ready(function() {
 	});
 
 	$('.btn-format').click(function() {
-		// var format = $(this).data('format');
-		// var highlight = window.getSelection();
-		// if (highlight.toString()) {
-		// 	var wrap = '<' + format + '>' + highlight + '</' + format + '>&nbsp;';
-		// 	var text = $('#editor').html()
-		// 	$('#editor').html(text.concat(wrap));
-		// } else {
-		// 	var text = $('#editor').html()
-		// 	$('#editor').html(text + 'asfasdfasdf');
-		// }
 		var format = $(this).data('format');
     var sel, range;
     if (window.getSelection && (sel = window.getSelection()).rangeCount) {
@@ -32,7 +22,7 @@ $(document).ready(function() {
         range.collapse(true);
         var span = document.createElement(format);
         span.id = "myId";
-        span.appendChild( document.createTextNode(window.getSelection().toString()) );
+        span.appendChild( document.createTextNode(window.getSelection().toString() + '\n') );
         document.execCommand('delete');
         range.insertNode(span);
         console.log('bozo2')

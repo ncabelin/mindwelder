@@ -9,8 +9,8 @@
           <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         </div>
       {% endif %}
-      <form method="POST" class="form-box" id="editForm">
-        <h1 class="text-center">Add New Post :</h1>
+      <form method="POST" class="form-box" id="editForm" action="{% if edit %}{{ url_for('editPost', post_id = post.id) }}{% else %}/addpost{% endif %}">
+        <h1 class="text-center">{% if edit %}Edit Post :{% else %}Add New Post :{% endif %}</h1>
         <div class="form-group">
           <label for="title">Title :</label>
           <input type="text" name="title" id="title" class="form-control" maxlength="120" value="{{ post.title }}">
@@ -42,6 +42,7 @@
               <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
               <a class="btn btn-format" data-format="pre">pre</a>
               <a class="btn btn-format" data-format="code">code</a>
+              <a class="btn" onclick="document.execCommand('insertText', true, '\n')">Enter</a>
             </div>
             <div class="btn-group">
               <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
@@ -68,8 +69,9 @@
           <label for="keywords">Keywords : (for easy searching)</label>
           <input type="text" name="keywords" id="keywords" class="form-control" value="{{ post.keywords }}" maxlength="120">
         </div>
-        <div id="submit" class="btn btn-primary">Save</div>
+        <div id="submit" class="btn btn-primary">Submit</div>
         <a class="btn btn-danger" href="">Cancel</a>
+        <a class="btn btn-success" href="{% if edit %}/editpost/post.id?mode=html{% else %}/addpost?mode=html{% endif %}">Edit HTML</a>
       </form>
     </div>
   </div>
