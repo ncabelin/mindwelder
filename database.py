@@ -18,14 +18,6 @@ class User(Base):
 	picture = Column(String(250))
 	password = Column(String(250))
 
-class Keyword(Base):
-	__tablename__ = 'keyword'
-	id = Column(Integer, primary_key=True)
-	post_id = Column(Integer, ForeignKey('post.id'))
-	post = relationship(Post)
-	word = Column(String(100), nullable=False)
-
-
 class Post(Base):
 	__tablename__ = 'post'
 	id = Column(Integer, primary_key=True)
@@ -45,6 +37,14 @@ class Post(Base):
 			'post_content': self.post_content,
 			'date_added': self.date_added
 		}
+
+class Keyword(Base):
+	__tablename__ = 'keyword'
+	id = Column(Integer, primary_key=True)
+	post_id = Column(Integer, ForeignKey('post.id'))
+	post = relationship(Post)
+	word = Column(String(100), nullable=False)
+
 
 class Like(Base):
 	__tablename__ = 'like'

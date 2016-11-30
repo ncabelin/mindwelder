@@ -12,15 +12,12 @@
       <form method="POST" class="form-box" id="editForm" action="{% if edit %}{{ url_for('editPost', post_id = post.id) }}{% else %}/addpost{% endif %}">
         <h1 class="text-center">{% if edit %}Edit Post :{% else %}Add New Post :{% endif %}</h1>
         <div class="form-group">
-          <label for="title">Title :</label>
-          <input type="text" name="title" id="title" class="form-control" maxlength="120" value="{{ post.title }}">
+          <input type="text" name="title" id="title" class="form-control" maxlength="120" value="{{ post.title }}" style="font-size: 1.2em;" placeholder="Title :">
         </div>
         <div class="form-group">
-          <label for="picture">Picture URL : (optional) (only Imgur links accepted)</label>
-          <input type="text" name="picture" id="picture" class="form-control" maxlength="30" value="{{ post.picture }}">
+          <input type="text" name="picture" id="picture" class="form-control" maxlength="30" value="{{ post.picture }}" placeholder="Picture URL : (optional) (only Imgur links accepted)">
         </div>
         <div class="form-group">
-          <label for="editor">Content :</label>
           <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
             <div class="btn-group">
               <a class="btn" href="{% if edit %}/editpost/{{ post.id }}?mode=html{% else %}/addpost?mode=html{% endif %}">Edit HTML</a>
@@ -68,19 +65,15 @@
           <div id="editor" style="font-size: 16px; font-family: 'Lato', sans-serif;" contenteditable="true">{{ post.post_content | safe }}</div>
         </div>
         <div class="form-group">
-          <label for="keywords">Keywords : (for easy searching)</label>
-          <input type="text" name="keywords" id="keywords" class="form-control" value="{{ post.keywords }}" maxlength="120">
+          <input type="text" name="keywords" id="keywords" class="form-control" value="{{ post.keywords }}" maxlength="120" placeholder="Keywords / Tags : ( separate by commas )">
         </div>
-        <div id="submit" class="btn btn-primary">Submit</div>
+        <input type="hidden" name="origin" value="rte" class="hidden">
+        <button type="submit" class="btn btn-primary">Submit</button>
         {% if edit %}
-          <label class="btn btn-danger" type="submit" for="delete">Delete</label>
+          <a class="btn btn-danger" href="/askdelete/{{ post.id }}?mode=html">Delete</a>
         {% else %}
-          <a class="btn btn-danger" href="">Cancel</a>
+          <a class="btn btn-danger" href="/">Cancel</a>
         {% endif %}
-      </form>
-      {% if edit %}
-      <form method="POST" action="deletepost/{{ post.id }}" id="delete">
-      {% endif %}
       </form>
     </div>
   </div>

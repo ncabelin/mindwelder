@@ -471,27 +471,37 @@ def help():
 @app.route('/addpost', methods=['GET', 'POST'])
 @login_required
 def addPost():
+	url = 'editpost.html'
 	user = getUserByEmail(login_session['email'])
 	if user:
 		# POST method add category
 		if request.method == 'POST':
-			post = Post(title = request.form['title'],
-				user_id = user.id,
-				picture = request.form['picture'],
-				post_content = request.form['post_content'],
-				keywords = request.form['keywords'],
-				date_added = datetime.datetime.now(),
-				)
-			session.add(post)
-			session.commit()
-			return redirect(url_for('showPost',
-				post_id = post.id))
+			# check if title and content exists
+			title = request.form['title']
+			content = request.form['post_content']
+			picture = request.form['picture']
+			if title and content:
+				post = Post(title = title,
+					user_id = user.id,
+					picture = picture,
+					post_content = content,
+					date_added = datetime.datetime.now(),
+					)
+				keywords = request.form['keywords'].split(',')
+				session.add(post)
+				session.commit()
+				return redirect(url_for('showPost',
+					post_id = post.id))
+			else:
+				if request.form['origin'] == 'html':
+					url = 'editpost_html.html'
+				return render_template(url,
+
+					)
 
 		# GET method shows add page
 		if request.args.get('mode'):
 			url = 'editpost_html.html'
-		else:
-			url = 'editpost.html'
 		return render_template(url,
 			post= None,
 			edit = False,
@@ -561,6 +571,14 @@ def editPost(post_id):
 		return render_template('error.html',
 			message = 'Not authorized to edit this post')
 
+@app.route('/askdelete/<int:post_id>', methods=['GET'])
+def askDelete(post_id):
+	mode = request.args.get('mode')
+	return render_template('askdelete.html',
+		user_logged = find_logged_user(),
+		mode = mode or None,
+		post_id = post_id)
+
 @app.route('/deletepost/<int:post_id>', methods=['POST'])
 @login_required
 def deletePost(post_id):
@@ -573,7 +591,7 @@ def deletePost(post_id):
 			if request.method == 'POST':
 				session.delete(post)
 				session.commit()
-				return redirect(url_for('showUser', user_id = user_id))
+				return redirect(url_for('showUser', user_id = user.id))
 		else:
 			return render_template('error.html',
 				message = 'Not authorized to delete this post')

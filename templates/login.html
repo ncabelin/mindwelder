@@ -55,9 +55,8 @@ function sendTokenToServer() {
 
 <div class="container">
   <div class="row">
-    <div class="col-md-6 col-md-offset-3 bordered">
+    <div class="col-md-6 col-md-offset-3">
       <form method="POST" class="form-box" action="{{ url_for('mconnect') }}">
-      <h1 class="text-center">Login</h1>
         <div class="form-group">
           <label for="email">E-mail</label>
           <input type="text" name="email" id="email" class="form-control" value="{{ email }}">
@@ -66,7 +65,7 @@ function sendTokenToServer() {
           <label for="password">Password</label>
           <input type="password" name="password" id="password" class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button><br>
+        <button type="submit" class="btn btn-primary">Sign in</button><br>
         <p class="text-center">or</p>
         <div id="signInButton" class="text-center">
         <span class="g-signin"
@@ -82,7 +81,8 @@ function sendTokenToServer() {
       	<div class="text-center">
 	    	<fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();" data-size="large">
 	    	<a href="javascript:sendTokenToServer()" class="text-center"> Sign in</a>
-	    	</fb:login-button>
+	    	</fb:login-button><br><br>
+        <small>We take your privacy seriously</small><br><small>We would never post anything without your consent.</small>
     	</div>
         <br><br>
         <!-- Button trigger modal -->
