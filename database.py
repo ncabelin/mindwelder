@@ -13,6 +13,7 @@ class User(Base):
 	__tablename__ = 'user'
 	id = Column(Integer, primary_key=True)
 	username = Column(String(250), nullable=False)
+	description = Column(String(100))
 	email = Column(String(250), nullable=False)
 	account = Column(String(250), nullable=False)
 	picture = Column(String(250))

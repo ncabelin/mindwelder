@@ -68,7 +68,7 @@
           <input type="text" name="keywords" id="keywords" class="form-control" value="{{ post.keywords }}" maxlength="120" placeholder="Keywords / Tags : ( separate by commas )">
         </div>
         <input type="hidden" name="origin" value="rte" class="hidden">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div id="submit" class="btn btn-primary">Submit</div>
         {% if edit %}
           <a class="btn btn-danger" href="/askdelete/{{ post.id }}?mode=html">Delete</a>
         {% else %}

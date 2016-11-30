@@ -10,6 +10,10 @@
           <input type="text" name="username" id="name" class="form-control" value="{{ username }}" placeholder="Username - first and last name">
         </div>
         <div class="form-group">
+          <label for="description" class="sr-only">Description :</label>
+          <input type="text" name="description" id="description" class="form-control" value="{{ description }}" placeholder="Describe yourself ( max. 100 characters )" maxlength="100">
+        </div>
+        <div class="form-group">
           <label for="email" class="sr-only">E-mail : </label>
           <input type="text" name="email" id="email" class="form-control" value="{{ email }}" placeholder="E-mail">
         </div>
@@ -21,20 +25,6 @@
           <label for="verify" class="sr-only">Verify Password :</label>
           <input type="password" name="verify" id="verify" class="form-control" placeholder="Verify Password">
         </div>
-        <!-- <div class="form-group">
-          <label for="sec_question">Security Question : <small>(Select one)</small></label><br>
-          <select name="security_q" form="signupform">
-            <option value="pet" selected="selected">What was your first pet's name?</option>
-            <option value="car">What was your favorite car's nickname?</option>
-            <option value="singer">Who is your second most favorite singer?</option>
-            <option value="food">What is your favorite food?</option>
-            <option value="color">What is your least favorite color?</option>
-          </select>
-        </div> -->
-        <!-- <div class="form-group">
-          <label for="security_a" class="sr-only">Security Answer :</label>
-          <input type="text" name="security_a" id="security_a" class="form-control" placeholder="Security Answer">
-        </div> -->
         <button type="submit" class="btn btn-success">Submit</button>
         <a href="/" class="btn btn-primary">Cancel</a>
       </form>

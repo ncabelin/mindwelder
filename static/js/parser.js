@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 	$('#submit').click(function() {
 		content = $('#editor').html()
-		$('#editForm').append('<textarea name="post_content">' + content + '</textarea>');
+		$('#editForm').append('<textarea name="post_content" class="hidden">' + content + '</textarea>');
 		$('#editForm').submit();
 		console.log(content);
 	});

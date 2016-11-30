@@ -242,6 +242,7 @@ def register():
 		if username and valid_email(email) and password:
 			newUser = User(
 				username = username,
+				description = request.form['description'],
 				email = email,
 				password = hashpw(password.encode('utf-8'), gensalt()),
 				picture = '',
