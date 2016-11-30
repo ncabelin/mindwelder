@@ -73,12 +73,14 @@
         </div>
         <div id="submit" class="btn btn-primary">Submit</div>
         {% if edit %}
-          <form method="POST" action="deletepost/{{ post.id }}" style="display: inline;">
-            <button class="btn btn-danger" type="submit">Delete</button>
-          </form>
+          <label class="btn btn-danger" type="submit" for="delete">Delete</label>
         {% else %}
           <a class="btn btn-danger" href="">Cancel</a>
         {% endif %}
+      </form>
+      {% if edit %}
+      <form method="POST" action="deletepost/{{ post.id }}" id="delete">
+      {% endif %}
       </form>
     </div>
   </div>

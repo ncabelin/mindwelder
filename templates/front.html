@@ -4,12 +4,12 @@
   <div class="row foreground">
     <div class="col-md-12 text-center">
       <h1 class="title">Mindwelder</h1>
-      <p>A Blog, Quiz &amp; Checklist Platform</p><br><br>
+      <p>A Learning &amp Blogging Platform</p><br><br>
       {% if user_logged %}
         <a href="{{ url_for('showUser', user_id = user_logged.id) }}" class="btn btn-primary btn-lg white">My Posts</a>
         <a href="/addpost" class="btn btn-success btn-lg white">Add Post</a>
       {% else %}
-        <a href="/login" class="btn btn-primary btn-lg white">Login</a> or
+        <a href="/help" class="btn btn-primary btn-lg white">How it Works</a>
         <a href="/register" class="btn btn-primary btn-lg white">Signup</a>
       {% endif %}
       {% with messages = get_flashed_messages() %}

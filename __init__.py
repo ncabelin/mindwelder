@@ -456,6 +456,14 @@ def gdisconnect():
 	else:
 		return redirect(url_for('login'))
 
+@app.route('/help', methods=['GET'])
+def help():
+	try:
+		user = find_logged_user()
+	except Exception as e:
+		print(e)
+	return render_template('help.html',
+		user_logged = user)
 
 @app.route('/addpost', methods=['GET', 'POST'])
 @login_required
