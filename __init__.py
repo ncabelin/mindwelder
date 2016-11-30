@@ -23,7 +23,7 @@ app = Flask(__name__)
 
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
-from database import Base, User, Post, Like, Comment
+from database import Base, User, Post, Like, Comment, Keyword
 
 engine = create_engine('sqlite:///mindwelder.db')
 DBSession = sessionmaker(bind = engine)
@@ -99,11 +99,14 @@ def find_user_posts(user_id):
 		print e
 		return None
 
-# def find_keywords():
-# 	try:
-# 		posts = session.query(Post).filter_by(
-# 			keywords != '').all()
-
+def find_keywords(post_id):
+	try:
+		keywords = session.query(Keyword).filter_by(
+			post_id = post_id).all()
+		return keywords
+	except Exception as e:
+		print e
+		return None
 
 
 def find_likes_sum(post_id):

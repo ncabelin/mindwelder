@@ -18,6 +18,13 @@ class User(Base):
 	picture = Column(String(250))
 	password = Column(String(250))
 
+class Keyword(Base):
+	__tablename__ = 'keyword'
+	id = Column(Integer, primary_key=True)
+	post_id = Column(Integer, ForeignKey('post.id'))
+	post = relationship(Post)
+	word = Column(String(100), nullable=False)
+
 
 class Post(Base):
 	__tablename__ = 'post'
@@ -27,7 +34,6 @@ class Post(Base):
 	title = Column(String(250), nullable=False)
 	picture = Column(String(250))
 	post_content = Column(String(250), nullable=False)
-	keywords = Column(String(250))
 	date_added = Column(DateTime, nullable=False)
 
 	@property
