@@ -204,6 +204,7 @@ def showFront():
 	return render_template('front.html',
 		user_logged = user,
 		posts = posts,
+		keywords = session.query(Keyword).group_by(Keyword.word).all(),
 		page_number = page)
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -503,6 +504,7 @@ def addPost():
 						session.commit()
 				except Exception as e:
 					print e
+					flash('Error in saving keywords')
 				return redirect(url_for('showPost',
 					post_id = post.id))
 			else:
@@ -558,6 +560,7 @@ def showPostComment(post_id, comment_id):
 def editPost(post_id):
 	user = find_logged_user()
 	post = find_post(post_id)
+	# check if logged in user is the author
 	if user.id == post.user_id:
 
 		# POST method edit 
@@ -565,9 +568,34 @@ def editPost(post_id):
 			post.title = request.form['title']
 			post.post_content = request.form['post_content']
 			post.date_added = datetime.datetime.now()
-			post.keywords = request.form['keywords']
 			session.add(post)
 			session.commit()
+
+			# get all previous keywords, get new keywords, if keywords 
+
+			new_keywords = request.form['keywords'].split(',')
+			try:
+				old_keywords = find_keywords(post.id)
+				old_remaining_words = []
+				for old_key in old_keywords:
+					if not old_key.word in new_keywords:
+						# delete words
+						session.delete(old_key)
+						session.commit()
+					else:
+						old_remaining_words.append(old_key.word)
+
+				for k in new_keywords:
+					# check if keyword is not an empty string
+					# and does not exist already
+					if k and (not k in old_remaining_words):
+						keyword = Keyword(post_id = post.id,
+									word = k)
+						session.add(keyword)
+						session.commit()
+			except Exception as e:
+				print e
+				flash('Error saving keywords')
 			return redirect(url_for('showPost', post_id = post_id))
 
 		# GET method
@@ -578,6 +606,7 @@ def editPost(post_id):
 		return render_template(url,
 			user_logged = user,
 			edit = True,
+			keywords = find_keywords(post.id) or None,
 			post = post)
 
 	else:

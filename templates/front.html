@@ -47,7 +47,7 @@
       <div class="item">
         <h3 class="text-center post_item">Tags / Keywords</h3>
         {% for k in keywords %}
-          <button class="btn btn-primary btn-xs">{{ k }}</button>
+          <a href="/showpostsbykey/{{ k.word }}" class="btn btn-primary btn-xs">{{ k.word }}</a>
         {% endfor %}
       </div>
     </div>
