@@ -18,6 +18,7 @@ class User(Base):
 	account = Column(String(250), nullable=False)
 	picture = Column(String(250))
 	password = Column(String(250))
+	# registered = Column(Boolean())
 
 class Post(Base):
 	__tablename__ = 'post'

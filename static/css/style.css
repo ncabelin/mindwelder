@@ -87,9 +87,7 @@ input.span2 {
   color: #2e6da4;
   border: 2px solid #2e6da4;
 }
-.btn-primary:hover {
 
-}
 .btn-primary:active {
 }
 
@@ -103,6 +101,11 @@ input.span2 {
   background-color: rgba(0,0,0,0);
   color: #94221f;
   border: 2px solid #94221f;
+}
+
+.btn-primary:hover, .btn-success:hover, .btn-danger:hover {
+  background-color: rgba(0,0,0,0);
+  color: black;
 }
 
 .alert-danger {
@@ -153,6 +156,10 @@ input.span2 {
 
 .footer_img {
   height: 80px;
+}
+
+.post_title {
+  color: #265a86;
 }
 
 .content {
