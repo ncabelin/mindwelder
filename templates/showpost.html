@@ -8,7 +8,7 @@
       <br>
       <div class="post_content">
         <h2>{{ post.title }} <small>by <a href="{{ url_for('showUser', user_id = post.user_id) }}" class="author">{{ post.user_id | find_username }}</a></small></h2>
-        <h6>{{ post.id | find_likes_sum }} likes, last modified - {{ post.date_added | standard_date }}
+        <h6>{{ post.id | find_likes_sum }} likes, <i class="fa fa-calendar" aria-hidden="true"></i> - {{ post.date_added | standard_date }}
 
         {% if user_logged.id == post.user_id %} &nbsp;
           <!-- If the user is logged in and the owner of the post being viewed then the edit button will be displayed -->
@@ -22,15 +22,14 @@
         {% endif %}
 
         <!-- Show filtered content -->
-        <div class="blog_post">{{ post.post_content | markdown | safe }}</div>
+        <div class="blog_post">{{ post.post_content | markdown | safe }}<hr></div>
 
       <div class="row" id="likes">
 		    <div class="col-md-8 col-md-offset-2">
-		      <hr>
 		      {% if user_logged: %}
 		        
 		        <form method="POST" action="{{ url_for('likePost', post_id = post.id) }}" style="display: inline;">
-		          <button type="submit" class="btn btn-success">{{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up fa-lg"></i></button>
+		          <button type="submit" class="btn btn-success circle">{{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up"></i></button>
 		        </form>
 		      {% else: %}
 		        {{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up fa-lg"></i> Likes
@@ -94,7 +93,9 @@
 	        <p>( No Comments )</p>
 	      {% endif %}
 
-	      {% for c in comments: %}{% for line in c.content.splitlines() %}{{ line }}<br>{% endfor %}{% if c.user_id == user_logged.id: %}
+	      {% for c in comments: %}
+	      	<p class="comment">{% for line in c.content.splitlines() %}{{ line }}<br>{% endfor %}</p>
+	      	{% if c.user_id == user_logged.id: %}
 	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i><br><br>
 	              ( <a href="/showpostcomment/{{ post.id }}/{{ c.id }}#comments"><u>Edit/Delete</u></a> )
 	            </h5><br>

@@ -45,6 +45,7 @@
                 <li><a href="/">Browse</a></li>
                 <li><a href="{{ url_for('showUser', user_id = user_logged.id) }}">Posts</a></li>
                 <li><a href="/gdisconnect">Logout</a></li>
+                <li><a href="/help"><i class="fa fa-question-circle"></i></a></li>
               {% else: %}
                 <li><a href="/login">Login</a></li>
                 <li><a href="/register">Signup</a></li>

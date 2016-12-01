@@ -1,5 +1,6 @@
 # TO DO:
-# 1. fix forgot password
+# 1. fix forgot password, use email to re
+# 2. fix 
 
 import random, string, datetime
 

@@ -6,11 +6,11 @@
       <h1 class="title">Mindwelder</h1>
       <p>A Learning &amp Blogging Platform</p><br><br>
       {% if user_logged %}
-        <a href="{{ url_for('showUser', user_id = user_logged.id) }}" class="btn btn-primary btn-lg white">My Posts</a>
-        <a href="/addpost" class="btn btn-success btn-lg white">Add Post</a>
+        <a href="{{ url_for('showUser', user_id = user_logged.id) }}" class="btn btn-primary btn-lg btn-front white">My Posts</a>
+        <a href="/addpost" class="btn btn-success btn-lg btn-front white">Add Post</a>
       {% else %}
-        <a href="/help" class="btn btn-primary btn-lg white">How it Works</a>
-        <a href="/register" class="btn btn-primary btn-lg white">Signup</a>
+        <a href="/help" class="btn btn-primary btn-lg white btn-front">How it Works</a>
+        <a href="/register" class="btn btn-primary btn-lg white btn-front">Signup</a>
       {% endif %}
       {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -32,8 +32,8 @@
     <div class="col-md-8">
       {% for post in posts %}
       <div class="item">
-        <img src="{{ post.user_id | get_user_pic }}" class="thumbnail_pic">&nbsp;<span><a href="{{ url_for('showUser', user_id = post.user_id) }}" class="author">{{ post.user_id | find_username }}</a> <small>- {{ post.date_added | standard_date }}</small></span>
-        <h3 class="post_title">{{ post.title }}</h3></a>
+        <img src="{{ post.user_id | get_user_pic }}" class="thumbnail_pic">&nbsp;<span><a href="{{ url_for('showUser', user_id = post.user_id) }}" class="author">{{ post.user_id | find_username }}</a> <small>- <i class="fa fa-calendar" aria-hidden="true"></i> {{ post.date_added | standard_date }}</small></span>
+        <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts"><h3 class="post_title">{{ post.title }}</h3></a>
         {% if (post.picture | imgurcheck): %}
           <a href="http://imgur.com" target="_blank"><img src="{{ post.picture }}" class="img-responsive"></a>
           <small><i>imgur.com</i></small>
@@ -42,6 +42,14 @@
         <div>( <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts">read...</a> )</div>
       </div>
       {% endfor %}
+    </div>
+    <div class="col-md-4">
+      <div class="item">
+        <h3 class="text-center post_item">Tags / Keywords</h3>
+        {% for k in keywords %}
+          <button class="btn btn-primary btn-xs">{{ k }}</button>
+        {% endfor %}
+      </div>
     </div>
   </div>
   <div class="row">
