@@ -492,9 +492,17 @@ def addPost():
 					post_content = content,
 					date_added = datetime.datetime.now(),
 					)
-				keywords = request.form['keywords'].split(',')
 				session.add(post)
 				session.commit()
+				keywords = request.form['keywords'].split(',')
+				try:
+					for k in keywords:
+						k = Keyword(post_id = post.id,
+							word = k)
+						session.add(k)
+						session.commit()
+				except Exception as e:
+					print e
 				return redirect(url_for('showPost',
 					post_id = post.id))
 			else:

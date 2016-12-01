@@ -18,6 +18,7 @@ class User(Base):
 	account = Column(String(250), nullable=False)
 	picture = Column(String(250))
 	password = Column(String(250))
+	posts = relationship('Post', cascade="delete")
 	# registered = Column(Boolean())
 
 class Post(Base):
@@ -29,6 +30,9 @@ class Post(Base):
 	picture = Column(String(250))
 	post_content = Column(String(250), nullable=False)
 	date_added = Column(DateTime, nullable=False)
+	comments = relationship('Comment', cascade="delete")
+	keywords = relationship('Keyword', cascade="delete")
+	likes = relationship('Like', cascade="delete")
 
 	@property
 	def serialize(self):
