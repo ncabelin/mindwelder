@@ -251,7 +251,9 @@ def register():
 				email = email,
 				password = hashpw(password.encode('utf-8'), gensalt()),
 				picture = '',
-				account = 'mindwelder'
+				account = 'mindwelder',
+				sq_one = request.form['sq_one'],
+				sa_one = hashpw(request.form['sa_one'].encode('utf-8'), gensalt())
 				)
 
 			try:
@@ -479,10 +481,29 @@ def userSettings():
 		return render_template('error.html',
 			message = 'Error: {}'.format(e))
 	if request.method == 'POST':
-		user =
+		user.username = request.form['username']
+		user.description = request.form['description']
+		session.add(user)
+		session.commit()
 
 	# GET method
 	return render_template('usersettings.html',
+		user_logged = user)
+
+@app.route('/deleteuser', methods=['GET','POST'])
+@login_required
+def deleteUser():
+	try:
+		user = find_logged_user()
+	except Exception as e:
+		print(e)
+		return render_template('error.html',
+			message = 'Error: {}'.format(e))
+	if request.method == 'POST':
+		session.delete(user)
+		session.commit()
+
+	return render_template('askdeleteuser.html',
 		user_logged = user)
 
 @app.route('/help', methods=['GET'])

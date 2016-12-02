@@ -20,10 +20,6 @@ class User(Base):
 	password = Column(String(250))
 	sq_one = Column(String(250))
 	sa_one = Column(String(250))
-	sq_two = Column(String(250))
-	sa_two = Column(String(250))
-	sq_three = Column(String(250))
-	sa_three = Column(String(250))
 	posts = relationship('Post', cascade="delete")
 
 class Post(Base):

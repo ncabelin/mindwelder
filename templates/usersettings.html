@@ -21,6 +21,7 @@
           <input type="text" name="account" class="form-control" placeholder="Account" value="{{ user_logged.account }}" readonly>
         </div>
         <button type="submit" class="btn btn-success">Submit</button>
+        <a href="/deleteuser">Delete</a>
         <a href="/" class="btn btn-primary">Cancel</a>
       </form>
       {% with messages = get_flashed_messages() %}
