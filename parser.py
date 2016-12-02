@@ -17,13 +17,13 @@ def markdown(content):
     # # first line (description) will be a bigger font size
     # c[0] = '<h3>%s</h3>' % c[0]
     # content = '\n'.join(c)
-
+    print 'WTF'
     params = { '\n': '<br>',
     		'<q>': '<span class="question">',
     		'</q>': '</span>',
-    		'<a>': '<span class="answer">',
-    		'</a>': '</span>' }
+    		'<u>': '<span class="answer">',
+    		'</u>': '</span>' }
     for p in params:
     	bleached_content = bleached_content.replace(p, params[p])
 
-    return content
+    return bleached_content

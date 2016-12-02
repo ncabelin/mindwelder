@@ -152,6 +152,17 @@ def find_comment(comment_id, post_id):
 		print e
 		return None
 
+def find_description(user_id):
+	try:
+		user = session.query(User).filter_by(id = user_id).one()
+		if user.description:
+			return user.description
+		else:
+			return ''
+	except Exception as e:
+		print e
+		return ''
+
 def login_required(f):
 	@wraps(f)
 	def decorated_function(*args, **kwargs):
@@ -186,6 +197,7 @@ app.jinja_env.filters['find_username'] = find_username
 app.jinja_env.filters['find_likes_sum'] = find_likes_sum
 app.jinja_env.filters['imgurcheck'] = imgurcheck
 app.jinja_env.filters['get_user_pic'] = get_user_pic
+app.jinja_env.filters['find_description'] = find_description
 
 google_client_id = json.loads(
 		open('client_secret_mw.json', 'r').read()
@@ -259,6 +271,7 @@ def register():
 			try:
 				session.add(newUser)
 				session.commit()
+				flash('Succesfully registered, please log in')
 				return redirect('/login')
 			except Exception as e:
 				print e
@@ -485,6 +498,8 @@ def userSettings():
 		user.description = request.form['description']
 		session.add(user)
 		session.commit()
+		flash('Successfully edited user settings')
+		return redirect(url_for('showFront'))
 
 	# GET method
 	return render_template('usersettings.html',

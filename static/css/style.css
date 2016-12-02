@@ -52,6 +52,10 @@ a {
   border-radius: 100%;
 }
 
+.description {
+  color: #bdbdbd;
+}
+
 .author {
   color: #ff5300;
 }
@@ -124,6 +128,12 @@ input.span2 {
 .alert-danger {
   border: 1px solid #a94442;
   background-color: rgba(0,0,0,0);
+}
+
+.alert-success {
+  border: 1px solid #277b27;
+  background-color: rgba(0,0,0,0);
+  color: #277b27;
 }
 
 .comment {
@@ -218,8 +228,9 @@ hr {
 }
 
 .answer {
-  color: #d0c3c3;
-  background-color: #d0c3c3;
+  color: white;
+  background-color: white;
+  border-bottom: 1px solid black;
 }
 
 .answer:hover {
@@ -252,7 +263,7 @@ hr {
 
 #posts {
   background-color: #fafafa;
-  padding: 20px;
+  padding: 10px;
   margin-bottom: 10px;
 }
 
