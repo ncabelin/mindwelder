@@ -18,8 +18,13 @@ class User(Base):
 	account = Column(String(250), nullable=False)
 	picture = Column(String(250))
 	password = Column(String(250))
+	sq_one = Column(String(250))
+	sa_one = Column(String(250))
+	sq_two = Column(String(250))
+	sa_two = Column(String(250))
+	sq_three = Column(String(250))
+	sa_three = Column(String(250))
 	posts = relationship('Post', cascade="delete")
-	# registered = Column(Boolean())
 
 class Post(Base):
 	__tablename__ = 'post'

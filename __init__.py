@@ -1,6 +1,9 @@
 # TO DO:
-# 1. fix forgot password, use email to re
-# 2. fix 
+# 1. fix forgot password, use gmail to send activate
+# 2. fix / add user settings
+# 3. add keywords to bottom of showpost
+# 4. add showposts by keywords route
+# 4. add flask recaptcha
 
 import random, string, datetime
 
@@ -464,6 +467,23 @@ def gdisconnect():
 
 	else:
 		return redirect(url_for('login'))
+
+@app.route('/usersettings', methods=['GET','POST'])
+@login_required
+def userSettings():
+	# POST method
+	try:
+		user = find_logged_user()
+	except Exception as e:
+		print(e)
+		return render_template('error.html',
+			message = 'Error: {}'.format(e))
+	if request.method == 'POST':
+		user =
+
+	# GET method
+	return render_template('usersettings.html',
+		user_logged = user)
 
 @app.route('/help', methods=['GET'])
 def help():

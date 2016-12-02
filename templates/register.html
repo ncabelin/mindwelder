@@ -25,6 +25,21 @@
           <label for="verify" class="sr-only">Verify Password :</label>
           <input type="password" name="verify" id="verify" class="form-control" placeholder="Verify Password">
         </div>
+        <hr>
+        <div class="form-group">
+          <label for="s">Security Question : <small>(Select one)</small></label><br>
+          <select name="sq_one" form="signupform">
+            <option value="kiss" selected="selected">What is the first name of the person you first kissed?</option>
+            <option value="teacher">What is the last name of the teacher who gave you your first failing grade?</option>
+            <option value="elementary">What was the name of your elementary school?</option>
+            <option value="pet">What was the name of your first pet?</option>
+            <option value="place">What was your favorite place to visit as a child?</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="security_a" class="sr-only">Security Answer :</label>
+          <input type="text" name="sq_one" id="security_a" class="form-control" placeholder="Security Answer">
+        </div>
         <button type="submit" class="btn btn-success">Submit</button>
         <a href="/" class="btn btn-primary">Cancel</a>
       </form>
