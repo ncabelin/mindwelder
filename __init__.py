@@ -517,6 +517,7 @@ def deleteUser():
 	if request.method == 'POST':
 		session.delete(user)
 		session.commit()
+		return redirect('/gdisconnect')
 
 	return render_template('askdeleteuser.html',
 		user_logged = user)
