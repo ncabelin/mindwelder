@@ -25,7 +25,9 @@
         <div class="blog_post">{{ post.post_content | markdown | safe }}<hr></div>
         <div class="keywords">Tags / Keywords :
         	{% for k in keywords %}
-        		<a href="/showpostsbykey/{{ k.word }}" class="btn btn-primary btn-xs">{{ k.word }}</a>
+        		{% if k %}
+        			<a href="/showpostsbykey/{{ k.word }}" class="btn btn-primary btn-xs">{{ k.word }}</a>
+        		{% endif %}
         	{% endfor %}
         </div><br>
 

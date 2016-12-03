@@ -1,9 +1,8 @@
 # TO DO:
 # fix forgot password, use gmail to send activate
-# add keywords to bottom of showpost
+# DONE - add keywords to bottom of showpost
 # add flask recaptcha during registration
-# add keywords on bottom of showpost.html
-# add showposts by keywords route, e.g. /showpostskeyword
+# DONE - add showposts by keywords route, e.g. /showpostskeyword
 # add test mode, review mode to showpost.html,front.html,showuser.html, make 2 markdowns
 # add search tags field on top of tags / keywords in front.html
 # (OPTIONAL: make aside bar static or fixed)
@@ -565,8 +564,8 @@ def addPost():
 		# POST method add category
 		if request.method == 'POST':
 			# check if title and content exists
-			title = request.form['title']
-			content = request.form['post_content']
+			title = request.form.get('title', None)
+			content = request.form.get('post_content', None)
 			picture = request.form['picture']
 			if title and content:
 				post = Post(title = title,
@@ -580,27 +579,35 @@ def addPost():
 				keywords = request.form['keywords'].split(',')
 				try:
 					for k in keywords:
-						k = Keyword(post_id = post.id,
-							word = k)
-						session.add(k)
-						session.commit()
+						if k:
+							k = Keyword(post_id = post.id,
+								word = k)
+							session.add(k)
+							session.commit()
 				except Exception as e:
 					print e
 					flash('Error in saving keywords')
 				return redirect(url_for('showPost',
 					post_id = post.id))
 			else:
+				# title or content is empty
 				if request.form['origin'] == 'html':
+					# html edit status
 					url = 'editpost_html.html'
+				flash('Title and Content must not be empty')
 				return render_template(url,
-
+					user_logged = user,
+					post = None
 					)
 
 		# GET method shows add page
 		if request.args.get('mode'):
 			url = 'editpost_html.html'
+		post = Post(title = '',
+			post_content = '',
+			picture = '')
 		return render_template(url,
-			post= None,
+			post = post,
 			edit = False,
 			user_logged = user)
 	else:
@@ -642,6 +649,7 @@ def showPostComment(post_id, comment_id):
 @app.route('/editpost/<int:post_id>', methods=['GET', 'POST'])
 @login_required
 def editPost(post_id):
+	url = 'editpost.html'
 	user = find_logged_user()
 	post = find_post(post_id)
 	# check if logged in user is the author
@@ -649,11 +657,18 @@ def editPost(post_id):
 
 		# POST method edit 
 		if request.method == 'POST':
-			post.title = request.form['title']
-			post.post_content = request.form['post_content']
-			post.date_added = datetime.datetime.now()
-			session.add(post)
-			session.commit()
+			try:
+				post.title = request.form['title']
+				post.post_content = request.form['post_content']
+
+				if post.title and post.post_content:
+					post.date_added = datetime.datetime.now()
+					session.add(post)
+					session.commit()
+			except Exception as e:
+				print e
+				flash('Title and Content cannot be empty')
+				return redirect(url_for('editPost', post_id = post.id))
 
 			# get all previous keywords, get new keywords, if keywords 
 
@@ -685,8 +700,6 @@ def editPost(post_id):
 		# GET method
 		if request.args.get('mode'):
 			url = 'editpost_html.html'
-		else:
-			url = 'editpost.html'
 		return render_template(url,
 			user_logged = user,
 			edit = True,
