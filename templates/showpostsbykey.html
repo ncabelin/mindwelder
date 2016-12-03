@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>Posts by Keyword '{{ word }}'</h1>
+		</div>
+	</div>
+	<div class="row">
+    <div class="col-md-12">
+    {% if posts %}
+      {% for post in posts %}
+        <div class="item">
+          <h2><a href="{{ url_for('showPost', post_id = post.id) }}">{{ post.title }}</a></h2>
+          <h6>{{ post.id | find_likes_sum }} likes, added - {{ post.date_added | standard_date }}</h6>
+          {% if post.picture %}
+            <div class="row">
+              <div class="col-md-6">
+                <a href="{{ url_for('showPost', post_id = post.id) }}"><img src="{{ post.picture }}" class="img-responsive"></a>
+                <small>Images by Imgur.com</small>
+              </div>
+            </div>
+          {% endif %}
+          <p>{{ post.post_content | markdown | firstline | safe }}... </p><a href="{{ url_for('showPost', post_id = post.id) }}" class="btn btn-primary btn-xs">read</a>
+            {% if post.user_id == user_logged.id %}
+              <!-- Check if viewed user is the same as logged in user -->
+              <a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-success btn-xs">edit</a>
+            {% endif %}
+        </div>
+      {% endfor %}
+    {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock%}

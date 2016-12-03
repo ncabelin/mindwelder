@@ -122,6 +122,25 @@ def find_keywords(post_id):
 		print e
 		return None
 
+def find_posts_by_key(word):
+	try:
+		# TO DO :
+		# refactor to use SQL in a join
+		post_ids = session.query(Keyword).filter_by(
+			word = word).group_by(Keyword.post_id).all()
+		for post in post_ids:
+			print post.post_id
+		posts = []
+		for p in post_ids:
+			post = session.query(Post).filter_by(
+				id = p.post_id).one()
+			posts.append(post)
+		for p in posts:
+			print post.user_id
+		return posts
+	except Exception as e:
+		print e
+		return None
 
 def find_likes_sum(post_id):
 	try:
@@ -324,7 +343,6 @@ def gconnect():
 		return respond('Invalid state parameter', 401)
 
 	code = request.data
-	print(code)
 
 	try:
 		oauth_flow = flow_from_clientsecrets('client_secret_mw.json', scope='')
@@ -678,6 +696,13 @@ def editPost(post_id):
 	else:
 		return render_template('error.html',
 			message = 'Not authorized to edit this post')
+
+@app.route('/showpostsbykey/<word>', methods=['GET'])
+def showPostsByKey(word):
+	return render_template('showpostsbykey.html',
+		word = word,
+		posts = find_posts_by_key(word),
+		user_logged = find_logged_user())
 
 @app.route('/askdelete/<int:post_id>', methods=['GET'])
 def askDelete(post_id):

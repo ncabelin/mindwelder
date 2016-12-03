@@ -12,12 +12,7 @@ def markdown(content):
         'h2','pre','code', 'br', 'u', 'li',
         'ul', 'ol', 'q', 'a', 'div', 'font',
         'blockquote'], attributes=attrs)
-    # c = bleached_content.split('\n')
 
-    # # first line (description) will be a bigger font size
-    # c[0] = '<h3>%s</h3>' % c[0]
-    # content = '\n'.join(c)
-    print 'WTF'
     params = { '\n': '<br>',
     		'<q>': '<span class="question">',
     		'</q>': '</span>',
