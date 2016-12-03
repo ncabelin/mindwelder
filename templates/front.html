@@ -49,12 +49,14 @@
       {% endfor %}
     </div>
     <div class="col-md-4">
+    <form method="POST" action="{{ url_for('query') }}" id="keyword_query">
       <div class="input-group item">
-        <input type="text" class="form-control" placeholder="Search...">
+        <input type="text" class="form-control" placeholder="Search..." name="word" id="word">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+          <button class="btn btn-default" type="submit" id="query"><i class="fa fa-search" aria-hidden="true"></i></button>
         </span>
       </div>
+    </form>
       <div class="item">
         <h3 class="text-center post_item">Tags / Keywords</h3>
         {% for k in keywords %}

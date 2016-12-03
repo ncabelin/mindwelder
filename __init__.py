@@ -34,7 +34,7 @@ from bcrypt import hashpw, checkpw, gensalt
 
 app = Flask(__name__)
 
-from sqlalchemy import create_engine, desc
+from sqlalchemy import create_engine, desc, or_
 from sqlalchemy.orm import sessionmaker
 from database import Base, User, Post, Like, Comment, Keyword
 
@@ -725,6 +725,27 @@ def showPostsByKey(word):
 		word = word,
 		posts = find_posts_by_key(word),
 		user_logged = find_logged_user())
+
+@app.route('/query', methods=['GET', 'POST'])
+def query():
+	# query all titles and keywords
+	word = request.form['word']
+	print word
+	if word:
+		try:
+			keyword_posts = find_posts_by_key(word)
+			title_posts = session.query(Post).filter(or_(Post.title.like('%{}%'.format(word)),
+																							Post.post_content.like('%{}%'.format(word)))).all()
+			return render_template('showpostsquery.html',
+				word = word,
+				title_posts = title_posts,
+				keyword_posts = keyword_posts,
+				user_logged = find_logged_user())
+		except Exception as e:
+			print e
+			flash('No posts found')
+			return render_template('error.html',
+				user_logged = find_logged_user())
 
 @app.route('/askdelete/<int:post_id>', methods=['GET'])
 def askDelete(post_id):
