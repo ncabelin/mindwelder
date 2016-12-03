@@ -40,7 +40,7 @@
                 {% if user_logged.picture %}
                 <li><a href="/usersettings"><img src="{{ user_logged.picture }}" class="user_pic"><strong> {{ user_logged.username }}</strong></a></li>
                 {% else %}
-                <li><a href="/"><i class="fa fa-user fa-lg"></i><strong> {{ user_logged.username }}</strong></a></li>
+                <li><a href="/usersettings"><i class="fa fa-user fa-lg"></i><strong> {{ user_logged.username }}</strong></a></li>
                 {% endif %}
                 <li><a href="/">Browse</a></li>
                 <li><a href="{{ url_for('showUser', user_id = user_logged.id) }}">Posts</a></li>

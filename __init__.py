@@ -293,7 +293,7 @@ def register():
 				description = request.form['description'],
 				email = email,
 				password = hashpw(password.encode('utf-8'), gensalt()),
-				picture = '',
+				picture = '/static/images/generic.png',
 				account = 'mindwelder',
 				sq_one = request.form['sq_one'],
 				sa_one = hashpw(request.form['sa_one'].encode('utf-8'), gensalt())
@@ -327,6 +327,7 @@ def mconnect():
 		user = session.query(User).filter_by(email = email).one()
 		hashed = user.password.encode('utf-8')
 		if hashpw(password.encode('utf-8'), hashed) == hashed:
+			login_session['user_id'] = user.id
 			login_session['description'] = user.description or None
 			login_session['provider'] = user.account
 			login_session['username'] = user.username
@@ -527,6 +528,7 @@ def userSettings():
 	if request.method == 'POST':
 		user.username = request.form['username']
 		user.description = request.form['description']
+		user.picture = request.form['picture'] or '/static/images/generic.png'
 		session.add(user)
 		session.commit()
 		flash('Successfully edited user settings')

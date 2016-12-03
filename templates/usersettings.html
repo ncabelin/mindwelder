@@ -10,6 +10,10 @@
           <input type="text" name="username" id="name" class="form-control" value="{{ user_logged.username }}" placeholder="Username - first and last name">
         </div>
         <div class="form-group">
+          <label for="picture" class="sr-only">Username :</label>
+          <input type="text" name="picture" id="picture" class="form-control" value="{{ user_logged.picture }}" placeholder="Picture URL">
+        </div>
+        <div class="form-group">
           <label for="description" class="sr-only">Description :</label>
           <input type="text" name="description" id="description" class="form-control" value="{{ user_logged.description or '' }}" placeholder="Describe yourself ( max. 100 characters )" maxlength="100">
         </div>
@@ -20,7 +24,7 @@
         <div class="form-group">
           <input type="text" name="account" class="form-control" placeholder="Account" value="{{ user_logged.account }}" readonly>
         </div>
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="submit" class="btn btn-success">Save</button>
         <a href="/deleteuser" class="btn btn-danger">Delete</a>
         <a href="/" class="btn btn-primary">Cancel</a>
       </form>
