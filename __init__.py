@@ -1,14 +1,13 @@
 # TO DO:
 # fix forgot password, use gmail to send activate
-# DONE - add keywords to bottom of showpost
 # add flask recaptcha during registration
-# DONE - add showposts by keywords route, e.g. /showpostskeyword
 # add test mode, review mode to showpost.html,front.html,showuser.html, make 2 markdowns
-# add search tags field on top of tags / keywords in front.html
+
 # (OPTIONAL: make aside bar static or fixed)
 # add javascript functionality to count number of answers marked as right
 # create table to save user_id, post_id, answers, Answers table
 # add title icon
+
 # configure server, let's encrypt in digital ocean 5$
 
 import random, string, datetime
@@ -733,13 +732,11 @@ def query():
 	print word
 	if word:
 		try:
-			keyword_posts = find_posts_by_key(word)
 			title_posts = session.query(Post).filter(or_(Post.title.like('%{}%'.format(word)),
 																							Post.post_content.like('%{}%'.format(word)))).all()
 			return render_template('showpostsquery.html',
 				word = word,
 				title_posts = title_posts,
-				keyword_posts = keyword_posts,
 				user_logged = find_logged_user())
 		except Exception as e:
 			print e
