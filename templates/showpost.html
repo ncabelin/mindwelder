@@ -23,6 +23,11 @@
 
         <!-- Show filtered content -->
         <div class="blog_post">{{ post.post_content | markdown | safe }}<hr></div>
+        <div class="keywords">Tags / Keywords :
+        	{% for k in keywords %}
+        		<a href="/showpostsbykey/{{ k.word }}" class="btn btn-primary btn-xs">{{ k.word }}</a>
+        	{% endfor %}
+        </div><br>
 
       <div class="row" id="likes">
 		    <div class="col-md-8 col-md-offset-2">

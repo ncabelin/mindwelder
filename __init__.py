@@ -1,9 +1,16 @@
 # TO DO:
-# 1. fix forgot password, use gmail to send activate
-# 2. fix / add user settings
-# 3. add keywords to bottom of showpost
-# 4. add showposts by keywords route
-# 4. add flask recaptcha
+# fix forgot password, use gmail to send activate
+# add keywords to bottom of showpost
+# add flask recaptcha during registration
+# add keywords on bottom of showpost.html
+# add showposts by keywords route, e.g. /showpostskeyword
+# add test mode, review mode to showpost.html,front.html,showuser.html, make 2 markdowns
+# add search tags field on top of tags / keywords in front.html
+# (OPTIONAL: make aside bar static or fixed)
+# add javascript functionality to count number of answers marked as right
+# create table to save user_id, post_id, answers, Answers table
+# add title icon
+# configure server, let's encrypt in digital ocean 5$
 
 import random, string, datetime
 
@@ -585,10 +592,12 @@ def addPost():
 def showPost(post_id):
 	post = find_post(post_id)
 	comments = find_comments(post_id)
+	keywords = find_keywords(post_id)
 	if post:
 		return render_template('showpost.html',
 			post = post,
 			comments = comments,
+			keywords = keywords,
 			user_logged = find_logged_user())
 	else:		
 		return render_template('error.html', message = 'Post not found')
