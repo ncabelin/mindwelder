@@ -519,7 +519,7 @@ def gdisconnect():
 def userSettings():
 	# POST method
 	try:
-		user = find_logged_user()
+		user = getUserByEmail(login_session['email'])
 	except Exception as e:
 		print(e)
 		return render_template('error.html',
@@ -540,7 +540,7 @@ def userSettings():
 @login_required
 def deleteUser():
 	try:
-		user = find_logged_user()
+		user = getUserByEmail(login_session['email'])
 	except Exception as e:
 		print(e)
 		return render_template('error.html',
