@@ -89,9 +89,15 @@ def createUser(login_session, account):
 
 def find_logged_user():
 	# function that checks if a user is logged in first
-	# and returning the user object, only used in dual public/private facing routes
+	# and returning the user object with session values
 	if 'username' in login_session:
-		return getUserByEmail(login_session['email'])
+		user = User(id = login_session['user_id'],
+			username = login_session['username'],
+			picture = login_session['picture'],
+			email = login_session['email'],
+			account = login_session['provider']
+			)
+		return user
 	else:
 		return None
 
@@ -321,6 +327,7 @@ def mconnect():
 		user = session.query(User).filter_by(email = email).one()
 		hashed = user.password.encode('utf-8')
 		if hashpw(password.encode('utf-8'), hashed) == hashed:
+			login_session['description'] = user.description or None
 			login_session['provider'] = user.account
 			login_session['username'] = user.username
 			login_session['picture'] = user.picture
