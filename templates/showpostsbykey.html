@@ -21,7 +21,8 @@
               </div>
             </div>
           {% endif %}
-          <p>{{ post.post_content | markdown | firstline | safe }}... </p><a href="{{ url_for('showPost', post_id = post.id) }}" class="btn btn-primary btn-xs">read</a>
+          <p>{{ post.post_content | markdown('readonly') | firstline | safe }}... </p><a href="{{ url_for('showPost', post_id = post.id) }}" class="btn btn-primary btn-xs">read</a>
+          <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-xs">test</a>
             {% if post.user_id == user_logged.id %}
               <!-- Check if viewed user is the same as logged in user -->
               <a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-success btn-xs">edit</a>

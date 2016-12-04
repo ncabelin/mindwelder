@@ -12,8 +12,9 @@
 
         {% if user_logged.id == post.user_id %} &nbsp;
           <!-- If the user is logged in and the owner of the post being viewed then the edit button will be displayed -->
-          <span><a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-primary btn-xs">edit / delete</a> <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-xs">test</a></span>
+          <span><a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-primary btn-xs">edit / delete</a></span>
         {% endif %}
+        <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-xs">test</a>
 
         {% if post.picture: %}</h6>
           <!-- Determine if post has a picture link -->
