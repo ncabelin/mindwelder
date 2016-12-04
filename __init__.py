@@ -1,11 +1,9 @@
 # TO DO:
 # fix forgot password, use gmail to send activate
 # add flask recaptcha during registration
-# add test mode, review mode to showpost.html,front.html,showuser.html, make 2 markdowns
-
-# (OPTIONAL: make aside bar static or fixed)
-# add javascript functionality to count number of answers marked as right
 # create table to save user_id, post_id, answers, Answers table
+# add post setting to private, public
+# add capability to copy, make setting private instantly
 # add title icon
 
 # configure server, let's encrypt in digital ocean 5$
