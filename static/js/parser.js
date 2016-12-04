@@ -1,12 +1,6 @@
 $(document).ready(function() {
-	var questions = $('.question'),
-			answers = $('.answer');
-
-	$('span').click(function() {
-		$(this).toggleClass('answerShow')
-	});
-
 	$('#submit').click(function() {
+        // converts content to a form field to be submitted along with the rest of form and submits POST
 		content = $('#editor').html()
 		$('#editForm').append('<textarea name="post_content" class="hidden">' + content + '</textarea>');
 		$('#editForm').submit();

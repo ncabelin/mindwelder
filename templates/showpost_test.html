@@ -28,7 +28,7 @@
 		  margin-bottom: 100px;
 		}
 		.footer {
-		  position: absolute;
+		  position: fixed;
 		  bottom: 0;
 		  width: 100%;
 		  /* Set the fixed height of the footer here */
@@ -96,7 +96,7 @@
         {% endif %}
 
         <!-- Show filtered content -->
-        <div class="blog_post">{{ post.post_content | markdown | safe }}<hr></div>
+        <div class="blog_post">{{ post.post_content | markdown('test') | safe }}<hr></div>
         <div class="keywords">Tags / Keywords :
         	{% for k in keywords %}
         		{% if k %}
@@ -132,76 +132,13 @@
 
 		    </div>
 		  </div>
-
-
-      <div class="row" id="comments">
-	    <div class="col-md-6 col-md-offset-3">
-	      {% if user_logged: %}
-	        {% if comment: %}
-	        <h4 class="center">Edit Comment :</h4>
-	        <form method="POST" action="{{ url_for('editComment', post_id = post.id, comment_id = comment.id) }}">
-	          <div class="form-group">
-	            <textarea rows="3" type="text" class="form-control" name="content" placeholder="content">{{ comment.content }}</textarea>
-	          </div>
-	          <div class="btn-group">
-	            <button type="submit" class="btn btn-success">Submit</button>
-	            <label for="delete" class="btn btn-danger">Delete</label>
-	          </div>
-	        </form>
-	        <form method="POST" action="{{ url_for('deleteComment', post_id = post.id, comment_id = comment.id) }}">
-	          <input class="hidden" type="submit" id="delete">
-	        </form>
-	        {% else: %}
-	        <h4 class="center">Comments :</h4>
-	        <form method="POST" action="{{ url_for('addComment', post_id = post.id) }}">
-	          <div class="form-group">
-	            <textarea rows="3" name="content" class="form-control"></textarea>
-	          </div>
-	          <input type="hidden" name="post_id" value="{{ post.id }}">
-	          <button type="submit" class="btn btn-primary">Submit</button><br>
-	          <br>
-	        </form>
-	        {% endif %}
-	      {% else: %}
-	        <p>( <a href="/login"><u>Login</u></a> to post a comment or like )</p>
-	      {% endif %}
-	    </div>
-	  </div>
-	  <div class="row">
-	    <div class="col-md-6 col-md-offset-3">
-	      <br>
-	      {% if not comments: %}
-	        <p>( No Comments )</p>
-	      {% endif %}
-
-	      {% for c in comments: %}
-	      	<p class="comment">{% for line in c.content.splitlines() %}{{ line }}<br>{% endfor %}</p>
-	      	{% if c.user_id == user_logged.id: %}
-	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i><br><br>
-	              ( <a href="/showpostcomment/{{ post.id }}/{{ c.id }}#comments"><u>Edit/Delete</u></a> )
-	            </h5><br>
-	          {% else: %}
-	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i></h5><br><hr>
-	          {% endif %}
-	      {% endfor %}
-	      </div>
-	    </div>
-	  </div>
-	</div>
-    </div>
-    <div class="col-md-2">
-    </div>
+		</div>
   </div>
+ </div>
 <footer class="footer">
-	<div class="container-fluid">
-	  <div class="row">
-	    <div class="col-md-12 text-center">
-	      <img src="/static/images/mindwelder2.png" class="img-responsive center-block footer_img">
-	      <p>&copy; 2016 Potentum Studios</p>
-	      <br>
-	    </div>
-	  </div>
-	 </div>
+	<div class="container">
+		<h3>Score : <span id="score"></span> / <span id="total"></span></h3>
+	</div>
 </footer>
 </body>
 <!-- jQuery -->
@@ -211,7 +148,7 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="{{ url_for('static', filename = 'js/parser.js') }}"></script>
+
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -222,7 +159,42 @@ ga('create', 'UA-85108445-1', 'auto');
 ga('send', 'pageview');
 
 $(function() {
-    $('.item').matchHeight();
+	var answers = [],
+			correct = [],
+			answer = $('span.answer'),
+			total = $('#total'),
+			score = $('#score');
+
+	// change scoreboard
+	total.text(answer.length);
+	score.text(correct.length);
+
+	// create array of answers
+	// add unique id's for each answer class item
+	answer.each(function(index) {
+		var obj = {};
+		var unique_id = 'id_' + index;
+		obj[unique_id] = $(this).text();
+		answers.push(obj)
+		$(this).attr('id', unique_id);
+	});
+
+	answer.click(function() {
+		// toggle showing answer or not
+		$(this).toggleClass('answerShow');
+		var unique_id = $(this).attr('id');
+		console.log(unique_id);
+		if (correct.indexOf(unique_id) == -1) {
+			// add answer ID to array
+			correct.push(unique_id)
+			score.text(correct.length);
+		} else {
+			// remove answer ID from array
+			var index = correct.indexOf(unique_id);
+			correct.splice(index, 1);
+			score.text(correct.length);
+		}
+	});
 });
 </script>
 </html>

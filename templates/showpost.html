@@ -12,7 +12,7 @@
 
         {% if user_logged.id == post.user_id %} &nbsp;
           <!-- If the user is logged in and the owner of the post being viewed then the edit button will be displayed -->
-          <span><a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-primary btn-xs">edit / delete</a></span>
+          <span><a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-primary btn-xs">edit / delete</a> <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-xs">test</a></span>
         {% endif %}
 
         {% if post.picture: %}</h6>
@@ -22,7 +22,7 @@
         {% endif %}
 
         <!-- Show filtered content -->
-        <div class="blog_post">{{ post.post_content | markdown | safe }}<hr></div>
+        <div class="blog_post">{{ post.post_content | markdown('readonly') | safe }}<hr></div>
         <div class="keywords">Tags / Keywords :
         	{% for k in keywords %}
         		{% if k %}

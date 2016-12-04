@@ -56,6 +56,10 @@ a {
   color: #bdbdbd;
 }
 
+.description {
+  text-decoration: none;
+}
+
 .author {
   color: #ff5300;
 }
@@ -279,6 +283,11 @@ div .item {
 
 footer {
   background-color: white;
+}
+
+u {
+  text-decoration: none;
+  border-bottom: 1px solid #e6e4e4;
 }
 
 @media screen and (max-width:750px) {

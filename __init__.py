@@ -638,7 +638,7 @@ def showPost(post_id):
 
 @app.route('/showpost_test/<int:post_id>', methods=['GET'])
 @login_required
-def showPostTest(post_id)
+def showPostTest(post_id):
 	# this post page render doesn't display comments
 	# but displays a counter for answers marked as correct
 	post = find_post(post_id)

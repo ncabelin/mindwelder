@@ -1,6 +1,6 @@
 import bleach
 
-def markdown(content):
+def markdown(content, status):
     attrs = {
         '*': ['class'],
         'a': ['href', 'rel'],
@@ -13,12 +13,13 @@ def markdown(content):
         'ul', 'ol', 'q', 'a', 'div', 'font',
         'blockquote'], attributes=attrs)
 
-    params = { '\n': '<br>',
-    		'<q>': '<span class="question">',
-    		'</q>': '</span>',
-    		'<u>': '<span class="answer">',
-    		'</u>': '</span>' }
-    for p in params:
-    	bleached_content = bleached_content.replace(p, params[p])
+    if status == 'test':
+        params = { '\n': '<br>',
+        		'<q>': '<span class="question">',
+        		'</q>': '</span>',
+        		'<u>': '<span class="answer">',
+        		'</u>': '</span>' }
+        for p in params:
+        	bleached_content = bleached_content.replace(p, params[p])
 
     return bleached_content
