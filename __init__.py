@@ -305,8 +305,8 @@ def register():
 				return redirect('/login')
 			except Exception as e:
 				print e
-				return render_template('error.html',
-					message = 'Error connecting to database')
+				flash('Error connecting to database')
+				return render_template('error.html')
 		else:
 			return redirect('/register')
 
@@ -522,8 +522,8 @@ def userSettings():
 		user = getUserByEmail(login_session['email'])
 	except Exception as e:
 		print(e)
-		return render_template('error.html',
-			message = 'Error: {}'.format(e))
+		flash('Error: {}'.format(e))
+		return render_template('error.html')
 	if request.method == 'POST':
 		user.username = request.form['username']
 		user.description = request.form['description']
@@ -544,8 +544,8 @@ def deleteUser():
 		user = getUserByEmail(login_session['email'])
 	except Exception as e:
 		print(e)
-		return render_template('error.html',
-			message = 'Error: {}'.format(e))
+		flash('Error: {}'.format(e))
+		return render_template('error.html')
 	if request.method == 'POST':
 		session.delete(user)
 		session.commit()
@@ -632,8 +632,9 @@ def showPost(post_id):
 			comments = comments,
 			keywords = keywords,
 			user_logged = find_logged_user())
-	else:		
-		return render_template('error.html', message = 'Post not found')
+	else:
+		flash('Post not found')
+		return render_template('error.html')
 
 @app.route('/showpost_test/<int:post_id>', methods=['GET'])
 @login_required
@@ -668,9 +669,11 @@ def showPostComment(post_id, comment_id):
 				comment = comment,
 				user_logged = user)
 		else:
-			return render_template('error.html', message = 'Not authorized')
+			flash('Not authorized')
+			return render_template('error.html')
 	else:		
-		return render_template('error.html', message = 'Post not found')	
+		flash('Post not found')
+		return render_template('error.html')	
 
 @app.route('/editpost/<int:post_id>', methods=['GET', 'POST'])
 @login_required
@@ -733,8 +736,8 @@ def editPost(post_id):
 			post = post)
 
 	else:
-		return render_template('error.html',
-			message = 'Not authorized to edit this post')
+		flash('Not authorized to edit this post')
+		return render_template('error.html')
 
 @app.route('/showpostsbykey/<word>', methods=['GET'])
 def showPostsByKey(word):
@@ -784,11 +787,11 @@ def deletePost(post_id):
 				session.commit()
 				return redirect(url_for('showUser', user_id = user.id))
 		else:
-			return render_template('error.html',
-				message = 'Not authorized to delete this post')
+			flash('Not authorized to delete this post')
+			return render_template('error.html')
 	else:
-		return render_template('error.html',
-			message = 'Post not found')
+		flash('Post not found')
+		return render_template('error.html')
 
 @app.route('/showuser/<int:user_id>', methods = ['GET'])
 def showUser(user_id):
@@ -840,11 +843,11 @@ def editComment(post_id, comment_id):
 			session.commit()
 			return redirect('/showpost/%s#comments' % post_id)
 		else:
-			return render_template('error.html',
-				message = 'Not authorized to edit comment')
+			flash('Not authorized to edit comment')
+			return render_template('error.html')
 	else:
-		return render_template('error.html',
-			message = 'Post / Comment not found')
+		flash('Post / Comment not found')
+		return render_template('error.html')
 
 @app.route('/deletecomment/<int:post_id>/<int:comment_id>', methods=['POST'])
 @login_required
@@ -859,11 +862,11 @@ def deleteComment(post_id, comment_id):
 			session.commit()
 			return redirect('/showpost/%s#comments' % post_id)
 		else:
-			return render_template('error.html',
-				message = 'Not authorized to delete comment')
+			flash('Not authorized to delete comment')
+			return render_template('error.html')
 	else:
-		return render_template('error.html',
-			message = 'Post / Comment not found')
+		flash('Post / Comment not found')
+		return render_template('error.html')
 
 
 if __name__ == '__main__':
