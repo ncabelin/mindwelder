@@ -638,6 +638,8 @@ def showPost(post_id):
 @app.route('/showpostcomment/<int:post_id>/<int:comment_id>', methods=['GET'])
 @login_required
 def showPostComment(post_id, comment_id):
+	# this route renders a post page with comment editing in the
+	# same field as the add comment form populated
 	post = find_post(post_id)
 	comments = find_comments(post_id)
 	comment = find_comment(comment_id, post_id)
@@ -648,7 +650,7 @@ def showPostComment(post_id, comment_id):
 				post = post,
 				comments = comments,
 				comment = comment,
-				user_logged = find_logged_user())
+				user_logged = user)
 		else:
 			return render_template('error.html', message = 'Not authorized')
 	else:		

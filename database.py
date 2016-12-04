@@ -21,6 +21,7 @@ class User(Base):
 	sq_one = Column(String(250))
 	sa_one = Column(String(250))
 	posts = relationship('Post', cascade="delete")
+	tests = relationship('Test', cascade="delete")
 
 class Post(Base):
 	__tablename__ = 'post'
@@ -34,6 +35,7 @@ class Post(Base):
 	comments = relationship('Comment', cascade="delete")
 	keywords = relationship('Keyword', cascade="delete")
 	likes = relationship('Like', cascade="delete")
+	tests = relationship('Test', cascade="delete")
 
 	@property
 	def serialize(self):
@@ -89,6 +91,15 @@ class Comment(Base):
 			'content': self.content,
 			'date_added': self.date_added
 		}
+
+class Test(Base):
+	__tablename__ = 'test'
+	id = Column(Integer, primary_key=True)
+	user_id = Column(Integer, ForeignKey('user.id'))
+	user = relationship(User)
+	post_id = Column(Integer, ForeignKey('post.id'))
+	post = relationship(Post)
+	answer = Column(String(500), nullable=False)
 
 engine = create_engine('sqlite:///mindwelder.db')
 

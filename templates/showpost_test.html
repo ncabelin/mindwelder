@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Mindwelder Blogs</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- fontAwesome and Google fonts -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700|Raleway:700" rel="stylesheet">
+
+
+  <!-- bootStrap css -->
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+		html {
+		  position: relative;
+		  min-height: 100%;
+		}
+		body {
+		  /* Margin bottom by footer height */
+		  margin-bottom: 100px;
+		}
+		.footer {
+		  position: absolute;
+		  bottom: 0;
+		  width: 100%;
+		  /* Set the fixed height of the footer here */
+		  height: 100px;
+		  background-color: #f5f5f5;
+		}
+	</style>
+</head>
+<body>
+  <nav class="nav navbar-default" id="nav">
+    <div class="container-fluid">
+      <div class="row navigation">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a href="/"><img src="/static/images/logo.png" class="img-responsive navbar-brand"></a>
+          </div>
+
+          <div class="collapse navbar-collapse" id="menu">
+            <ul class="nav navbar-nav navbar-right text-center">
+              {% if user_logged: %}
+                {% if user_logged.picture %}
+                <li><a href="/usersettings"><img src="{{ user_logged.picture }}" class="user_pic"><strong> {{ user_logged.username }}</strong></a></li>
+                {% else %}
+                <li><a href="/usersettings"><i class="fa fa-user fa-lg"></i><strong> {{ user_logged.username }}</strong></a></li>
+                {% endif %}
+                <li><a href="/">Browse</a></li>
+                <li><a href="{{ url_for('showUser', user_id = user_logged.id) }}">Posts</a></li>
+                <li><a href="/gdisconnect">Logout</a></li>
+                <li><a href="/help"><i class="fa fa-question-circle"></i></a></li>
+              {% else: %}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Signup</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+      <br>
+      <div class="post_content">
+        <h2>{{ post.title }} <small>by <a href="{{ url_for('showUser', user_id = post.user_id) }}" class="author">{{ post.user_id | find_username }}</a></small></h2>
+        <h6>{{ post.id | find_likes_sum }} likes, <i class="fa fa-calendar" aria-hidden="true"></i> - {{ post.date_added | standard_date }}
+
+        {% if user_logged.id == post.user_id %} &nbsp;
+          <!-- If the user is logged in and the owner of the post being viewed then the edit button will be displayed -->
+          <span><a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-primary btn-xs">edit / delete</a></span>
+        {% endif %}
+
+        {% if post.picture: %}</h6>
+          <!-- Determine if post has a picture link -->
+          <a href="http://imgur.com" target="_blank"><img src="{{ post.picture | imgurcheck }}" class="img-responsive post_image"></a>
+          <p><i>Image by Imgur.com</i></p>
+        {% endif %}
+
+        <!-- Show filtered content -->
+        <div class="blog_post">{{ post.post_content | markdown | safe }}<hr></div>
+        <div class="keywords">Tags / Keywords :
+        	{% for k in keywords %}
+        		{% if k %}
+        			<a href="/showpostsbykey/{{ k.word }}" class="btn btn-primary btn-xs">{{ k.word }}</a>
+        		{% endif %}
+        	{% endfor %}
+        </div><br>
+
+      <div class="row" id="likes">
+		    <div class="col-md-8 col-md-offset-2">
+		      {% if user_logged: %}
+		        
+		        <form method="POST" action="{{ url_for('likePost', post_id = post.id) }}" style="display: inline;">
+		          <button type="submit" class="btn btn-success circle">{{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up"></i></button>
+		        </form>
+		      {% else: %}
+		        {{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up fa-lg"></i> Likes
+		      {% endif %}
+
+		      {% with messages = get_flashed_messages() %}
+		      	{% if messages %}
+		      		{% for m in messages %}
+		      			<br><br><div class="alert alert-danger">{{ m }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+		      		{% endfor %}
+		      	{% endif %}
+		      {% endwith %}
+
+		      {% if message: %}
+		        
+		        <br><br>
+		        <div class="alert alert-danger">{{ message }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+		      {% endif %}
+
+		    </div>
+		  </div>
+
+
+      <div class="row" id="comments">
+	    <div class="col-md-6 col-md-offset-3">
+	      {% if user_logged: %}
+	        {% if comment: %}
+	        <h4 class="center">Edit Comment :</h4>
+	        <form method="POST" action="{{ url_for('editComment', post_id = post.id, comment_id = comment.id) }}">
+	          <div class="form-group">
+	            <textarea rows="3" type="text" class="form-control" name="content" placeholder="content">{{ comment.content }}</textarea>
+	          </div>
+	          <div class="btn-group">
+	            <button type="submit" class="btn btn-success">Submit</button>
+	            <label for="delete" class="btn btn-danger">Delete</label>
+	          </div>
+	        </form>
+	        <form method="POST" action="{{ url_for('deleteComment', post_id = post.id, comment_id = comment.id) }}">
+	          <input class="hidden" type="submit" id="delete">
+	        </form>
+	        {% else: %}
+	        <h4 class="center">Comments :</h4>
+	        <form method="POST" action="{{ url_for('addComment', post_id = post.id) }}">
+	          <div class="form-group">
+	            <textarea rows="3" name="content" class="form-control"></textarea>
+	          </div>
+	          <input type="hidden" name="post_id" value="{{ post.id }}">
+	          <button type="submit" class="btn btn-primary">Submit</button><br>
+	          <br>
+	        </form>
+	        {% endif %}
+	      {% else: %}
+	        <p>( <a href="/login"><u>Login</u></a> to post a comment or like )</p>
+	      {% endif %}
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-md-6 col-md-offset-3">
+	      <br>
+	      {% if not comments: %}
+	        <p>( No Comments )</p>
+	      {% endif %}
+
+	      {% for c in comments: %}
+	      	<p class="comment">{% for line in c.content.splitlines() %}{{ line }}<br>{% endfor %}</p>
+	      	{% if c.user_id == user_logged.id: %}
+	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i><br><br>
+	              ( <a href="/showpostcomment/{{ post.id }}/{{ c.id }}#comments"><u>Edit/Delete</u></a> )
+	            </h5><br>
+	          {% else: %}
+	            <h5><i>posted by <strong>{{ c.user_id | find_username }} - {{ c.date_added | standard_date }}</strong></i></h5><br><hr>
+	          {% endif %}
+	      {% endfor %}
+	      </div>
+	    </div>
+	  </div>
+	</div>
+    </div>
+    <div class="col-md-2">
+    </div>
+  </div>
+<footer class="footer">
+	<div class="container-fluid">
+	  <div class="row">
+	    <div class="col-md-12 text-center">
+	      <img src="/static/images/mindwelder2.png" class="img-responsive center-block footer_img">
+	      <p>&copy; 2016 Potentum Studios</p>
+	      <br>
+	    </div>
+	  </div>
+	 </div>
+</footer>
+</body>
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- jQuery Match height -->
+<script src="/static/js/jquery.matchHeight.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename = 'js/parser.js') }}"></script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-85108445-1', 'auto');
+ga('send', 'pageview');
+
+$(function() {
+    $('.item').matchHeight();
+});
+</script>
+</html>
