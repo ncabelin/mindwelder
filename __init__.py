@@ -5,7 +5,7 @@
 # add post setting to private, public
 # add capability to copy, make setting private instantly
 # add title icon
-
+# sftp?
 # configure server, let's encrypt in digital ocean 5$
 
 import random, string, datetime
@@ -33,7 +33,7 @@ app = Flask(__name__)
 
 from sqlalchemy import create_engine, desc, or_
 from sqlalchemy.orm import sessionmaker
-from database import Base, User, Post, Like, Comment, Keyword
+from database import Base, User, Post, Like, Comment, Keyword, Test
 
 engine = create_engine('sqlite:///mindwelder.db')
 DBSession = sessionmaker(bind = engine)
@@ -190,6 +190,16 @@ def find_description(user_id):
 	except Exception as e:
 		print e
 		return ''
+
+def find_test(post_id, user_id):
+	try:
+		tests = session.query(Test).filter_by(
+			user_id = user_id).filter_by(post_id = post_id).all()
+		if test:
+			return tests
+	except Exception as e:
+		print e
+		return None
 
 def login_required(f):
 	@wraps(f)
@@ -641,14 +651,31 @@ def showPostTest(post_id):
 	# but displays a counter for answers marked as correct
 	post = find_post(post_id)
 	keywords = find_keywords(post_id)
+	test_taken = find_test(post_id, user_id)
 	if post:
 		return render_template('showpost_test.html',
 			post = post,
 			keywords = keywords,
+			tests = test_taken,
 			user_logged = find_logged_user())
 	else:
 		flash('Post not found')
 		return render_template('error.html')
+
+@app.route('/savetest/<int:post_id>/<int:user_id>', methods=['POST'])
+@login_required
+def saveTest(post_id, user_id):
+	answers = request.form.getlist('test_results')
+	if answers:
+		for a in answers:
+			test = Test(user_id = user_id,
+				post_id = post_id,
+				answer = a)
+			session.add(test)
+		session.commit()
+
+		flash('Saved Test Results')
+		return redirect(url_for('showPost', post_id = post_id))
 
 @app.route('/showpostcomment/<int:post_id>/<int:comment_id>', methods=['GET'])
 @login_required
