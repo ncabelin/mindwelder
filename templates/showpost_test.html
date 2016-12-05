@@ -138,7 +138,11 @@
 <footer class="footer">
 	<div class="container">
 		<h3>Score : <span id="score"></span> / <span id="total"></span></h3>
+		<a class="btn btn-success" id="save">Save Test</a>
 	</div>
+	<form method="POST" action="{{ url_for('saveTest', post_id = post.id, user_id = user_logged.id) }}" id="test">
+		<button type="submit" class="hidden" id="submitBtn">Submit</button>
+	</form>
 </footer>
 </body>
 <!-- jQuery -->
@@ -159,9 +163,10 @@ ga('create', 'UA-85108445-1', 'auto');
 ga('send', 'pageview');
 
 $(function() {
-	var answers = [],
-			correct = [],
-			answer = $('span.answer'),
+	var answers = [], // array of all answers
+			correct = [], // array of unique_id's listed as correct
+			answer = $('span.answer'), // nodeList of answers
+			save = $('#save'), // save button
 			total = $('#total'),
 			score = $('#score');
 
@@ -169,31 +174,54 @@ $(function() {
 	total.text(answer.length);
 	score.text(correct.length);
 
-	// create array of answers
-	// add unique id's for each answer class item
 	answer.each(function(index) {
-		var obj = {};
+		// add unique id's for each answer class item
 		var unique_id = 'id_' + index;
-		obj[unique_id] = $(this).text();
-		answers.push(obj)
+		var text = $(this).text()
 		$(this).attr('id', unique_id);
+
+		// store array of answers in 
+		var obj = {};
+		obj[unique_id] = text
+		answers.push(obj);
 	});
 
 	answer.click(function() {
-		// toggle showing answer or not
+		// toggle CSS visibility
 		$(this).toggleClass('answerShow');
+
+		// look for id in array 'correct'
 		var unique_id = $(this).attr('id');
-		console.log(unique_id);
-		if (correct.indexOf(unique_id) == -1) {
-			// add answer ID to array
-			correct.push(unique_id)
-			score.text(correct.length);
+		// var id = unique_id.split('_')[1];
+		var text = $(this).text();
+		var index = correct.indexOf(unique_id);
+		if (index == -1) {
+			correct.push(unique_id);
 		} else {
-			// remove answer ID from array
-			var index = correct.indexOf(unique_id);
 			correct.splice(index, 1);
-			score.text(correct.length);
 		}
+		score.text(correct.length);
+	});
+
+	save.click(function() {
+		// create form inputs
+		answers.forEach(function(data, index) {
+			var unique_id = 'id_' + index.toString(),
+					val = '1',
+					value;
+			var check = correct.indexOf(unique_id);
+			if (check == -1) {
+				val = '0';
+			}
+			value = unique_id + ',' + val + ',' + data[unique_id];
+			console.log(value);
+			$('<input>', {
+				type: 'hidden',
+				name: 'test_results',
+				value: value
+			}).appendTo('form');
+			$('form').submit();
+		});
 	});
 });
 </script>
