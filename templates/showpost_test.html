@@ -165,6 +165,7 @@ ga('send', 'pageview');
 $(function() {
 	var answers = [], // array of all answers
 			correct = [], // array of unique_id's listed as correct
+			answer_db_ids = [], // array of database id's
 			answer = $('span.answer'), // nodeList of answers
 			save = $('#save'), // save button
 			total = $('#total'),
@@ -197,9 +198,6 @@ $(function() {
 	    }       
 	    return true;
 	}
-	// Hide method from for-in loops
-	Object.defineProperty(Array.prototype, "equals", {enumerable: false});
-
 	
 	answer.each(function(index) {
 		// add an id to each answer
@@ -215,39 +213,50 @@ $(function() {
 
 	$.ajax(
 		{
-			url: '/showpost_test/{{ post.id }}/json'
+			url: '/showpost_test/{{ post.id }}/json',
 		}).done(function(data) {
 			$.each(data, function(key, results) {
 				if (results) {
 					var answers_db = [];
+					var comparison = [];
 					results.forEach(function(x) {
-						answers_db.push(x['answer']);
+						var id = x['id'];
+						var a = x['answer'];
+						var b = a.split(',');
+						b[1] = '0';
+						var c = b.join(',');
+						answers_db.push(a);
+						comparison.push(c);
+						answer_db_ids.push(id);
 					});
 
-					// check if array is the same
+					// check if the default array would equal a default array
+					// ( 0 status ) saved from the database
 
-					// collect correct answers 
-					answers_db.forEach(function(data) {
-						var data_split = data.split(',');
-						var unique_id = data_split[0];
-						var status = data_split[1];
-						if (status == '1') {
-							correct.push(unique_id);
-							$('#' + unique_id).toggleClass('answerShow');
-							score.text(correct.length);
-						}
-					});
-
-					console.log('Correct ajax :')
-					console.log(correct);
-
-
-					// total.text(answers.length);
-					// score.text(correct.length);
+					var check_array = answers.equals(comparison);
+					if (check_array) {
+						// collect correct answers
+						answers_db.forEach(function(data) {
+							var data_split = data.split(',');
+							var unique_id = data_split[0];
+							var status = data_split[1];
+							if (status == '1') {
+								correct.push(unique_id);
+								$('#' + unique_id).toggleClass('answerShow');
+								score.text(correct.length);
+							}
+						});
+					} else {
+						// flash a message that the post has changed and
+						// all the saved data will be deleted
+					}
 				} else { 
 					// no results
 				}
 			});
+	}).fail(function() {
+		alert('New test, click Save after taking it.')
+		score.text(correct.length);
 	});
 
 	answer.click(function() {
@@ -270,23 +279,55 @@ $(function() {
 
 	save.click(function() {
 		// create form inputs
-		answers.forEach(function(data, index) {
-			var unique_id = 'id_' + index.toString(),
-					val = '1',
-					value;
-			var check = correct.indexOf(unique_id);
-			if (check == -1) {
-				val = '0';
-			}
-			value = unique_id + ',' + val + ',' + data[unique_id];
-			console.log(value);
-			$('<input>', {
-				type: 'hidden',
-				name: 'test_results',
-				value: value
-			}).appendTo('form');
-			$('form').submit();
-		});
+		console.log(answers);
+		console.log(answer_db_ids);
+		if (answer_db_ids.length === 0) {
+			// no database id's, submit form
+			answers.forEach(function(data, index) {
+				var unique_id = 'id_' + index.toString(),
+						val = '1',
+						value;
+				var check = correct.indexOf(unique_id);
+				if (check == -1) {
+					val = '0';
+				}
+				var split_data = data.split(',');
+				console.log(split_data);
+				split_data[1] = val;
+				console.log(split_data);
+				var combined_data = split_data.join(',');
+
+				// create input fields
+				$('<input>', {
+					type: 'hidden',
+					name: 'test_results',
+					value: combined_data
+				}).appendTo('form');
+				$('form').submit();
+			});
+		} else {
+			// existing database id's, submit different form
+			answers.forEach(function(data, index) {
+				var unique_id = 'id_' + index.toString(),
+						val = '1',
+						value;
+				var check = correct.indexOf(unique_id);
+				if (check == -1) {
+					val = '0';
+				}
+				value = answer_db_ids + '##' 
+					+ unique_id + ',' + val + ',' + data[unique_id];
+
+				// create input fields
+				$('<input>', {
+					type: 'hidden',
+					name: 'test_results',
+					value: value
+				}).appendTo('form');
+				$('form').attr('action', '/updatetest/{{ post.id }}/{{ user_logged.id }}');
+				$('form').submit();
+			});
+		}
 	});
 });
 </script>

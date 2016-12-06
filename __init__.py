@@ -669,7 +669,13 @@ def showPostTestJson(post_id):
 	if answers:
 		return jsonify(Answers = [i.serialize for i in answers])
 	else:
-		return None
+		err = { 
+			'status': 404,
+			'message': 'Error: Not Found'
+		}
+		resp = jsonify(err)
+		resp.status_code = 404
+		return resp
 
 @app.route('/savetest/<int:post_id>/<int:user_id>', methods=['POST'])
 @login_required
@@ -677,6 +683,7 @@ def saveTest(post_id, user_id):
 	answers = request.form.getlist('test_results')
 	if answers:
 		for a in answers:
+			print a
 			test = Test(user_id = user_id,
 				post_id = post_id,
 				answer = a)
@@ -685,6 +692,13 @@ def saveTest(post_id, user_id):
 
 		flash('Saved Test Results')
 		return redirect(url_for('showPost', post_id = post_id))
+
+@app.route('/updatetest/<int:post_id>/<int:user_id>', methods=['POST'])
+@login_required
+def updateTest(post_id, user_id):
+	updated_answers = request.form.getlist('test_results')
+	print(updated_answers)
+	return render_template('error.html')
 
 @app.route('/showpostcomment/<int:post_id>/<int:comment_id>', methods=['GET'])
 @login_required
