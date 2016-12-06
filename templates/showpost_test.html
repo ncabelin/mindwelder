@@ -170,20 +170,84 @@ $(function() {
 			total = $('#total'),
 			score = $('#score');
 
-	// change scoreboard
-	total.text(answer.length);
-	score.text(correct.length);
+	// Warn if overriding existing method
+	if(Array.prototype.equals)
+	    console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+	// attach the .equals method to Array's prototype to call it on any array
+	Array.prototype.equals = function (array) {
+	    // if the other array is a falsy value, return
+	    if (!array)
+	        return false;
 
+	    // compare lengths - can save a lot of time 
+	    if (this.length != array.length)
+	        return false;
+
+	    for (var i = 0, l=this.length; i < l; i++) {
+	        // Check if we have nested arrays
+	        if (this[i] instanceof Array && array[i] instanceof Array) {
+	            // recurse into the nested arrays
+	            if (!this[i].equals(array[i]))
+	                return false;       
+	        }           
+	        else if (this[i] != array[i]) { 
+	            // Warning - two different object instances will never be equal: {x:20} != {x:20}
+	            return false;   
+	        }           
+	    }       
+	    return true;
+	}
+	// Hide method from for-in loops
+	Object.defineProperty(Array.prototype, "equals", {enumerable: false});
+
+	
 	answer.each(function(index) {
-		// add unique id's for each answer class item
-		var unique_id = 'id_' + index;
-		var text = $(this).text()
-		$(this).attr('id', unique_id);
+		// add an id to each answer
+		$(this).attr('id', ('id_' + index.toString()));
 
-		// store array of answers in 
-		var obj = {};
-		obj[unique_id] = text
-		answers.push(obj);
+		// create array of blank answers with val = 0 as default
+		var text = $(this).text();
+		var val = 'id_' + index.toString() + ',0,' + text;
+		answers.push(val)
+	});
+
+	total.text(answers.length);
+
+	$.ajax(
+		{
+			url: '/showpost_test/{{ post.id }}/json'
+		}).done(function(data) {
+			$.each(data, function(key, results) {
+				if (results) {
+					var answers_db = [];
+					results.forEach(function(x) {
+						answers_db.push(x['answer']);
+					});
+
+					// check if array is the same
+
+					// collect correct answers 
+					answers_db.forEach(function(data) {
+						var data_split = data.split(',');
+						var unique_id = data_split[0];
+						var status = data_split[1];
+						if (status == '1') {
+							correct.push(unique_id);
+							$('#' + unique_id).toggleClass('answerShow');
+							score.text(correct.length);
+						}
+					});
+
+					console.log('Correct ajax :')
+					console.log(correct);
+
+
+					// total.text(answers.length);
+					// score.text(correct.length);
+				} else { 
+					// no results
+				}
+			});
 	});
 
 	answer.click(function() {
@@ -192,7 +256,7 @@ $(function() {
 
 		// look for id in array 'correct'
 		var unique_id = $(this).attr('id');
-		// var id = unique_id.split('_')[1];
+
 		var text = $(this).text();
 		var index = correct.indexOf(unique_id);
 		if (index == -1) {
@@ -201,6 +265,7 @@ $(function() {
 			correct.splice(index, 1);
 		}
 		score.text(correct.length);
+		console.log(correct);
 	});
 
 	save.click(function() {

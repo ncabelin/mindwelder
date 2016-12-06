@@ -101,6 +101,15 @@ class Test(Base):
 	post = relationship(Post)
 	answer = Column(String(500), nullable=False)
 
+	@property
+	def serialize(self):
+		return {
+			'id': self.id,
+			'user_id': self.user_id,
+			'post_id': self.post_id,
+			'answer': self.answer
+		}
+
 engine = create_engine('sqlite:///mindwelder.db')
 
 Base.metadata.create_all(engine)

@@ -195,7 +195,7 @@ def find_test(post_id, user_id):
 	try:
 		tests = session.query(Test).filter_by(
 			user_id = user_id).filter_by(post_id = post_id).all()
-		if test:
+		if tests:
 			return tests
 	except Exception as e:
 		print e
@@ -651,16 +651,25 @@ def showPostTest(post_id):
 	# but displays a counter for answers marked as correct
 	post = find_post(post_id)
 	keywords = find_keywords(post_id)
-	test_taken = find_test(post_id, user_id)
+	user_logged = find_logged_user()
 	if post:
 		return render_template('showpost_test.html',
 			post = post,
 			keywords = keywords,
-			tests = test_taken,
-			user_logged = find_logged_user())
+			user_logged = user_logged)
 	else:
 		flash('Post not found')
 		return render_template('error.html')
+
+@app.route('/showpost_test/<int:post_id>/json', methods=['GET'])
+@login_required
+def showPostTestJson(post_id):
+	user = find_logged_user()
+	answers = find_test(post_id, user.id)
+	if answers:
+		return jsonify(Answers = [i.serialize for i in answers])
+	else:
+		return None
 
 @app.route('/savetest/<int:post_id>/<int:user_id>', methods=['POST'])
 @login_required
