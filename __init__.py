@@ -697,8 +697,17 @@ def saveTest(post_id, user_id):
 @login_required
 def updateTest(post_id, user_id):
 	updated_answers = request.form.getlist('test_results')
-	print(updated_answers)
-	return render_template('error.html')
+	if updated_answers:
+		for u in updated_answers:
+			split_u = u.split('##')
+			id = split_u[0]
+			update = split_u[1]
+			test = session.query(Test).filter_by(id = id).one()
+			test.answer = update
+			session.add(test)
+		session.commit()
+		flash('Answers updated in database')
+	return redirect(url_for('showPostTest', post_id = post_id))
 
 @app.route('/showpostcomment/<int:post_id>/<int:comment_id>', methods=['GET'])
 @login_required
