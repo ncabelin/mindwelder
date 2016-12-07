@@ -35,6 +35,7 @@ def secret():
 ```
 
 3. Create and register your own json files for 'client_secret_mw.json' for Google+, and 'fbclient_secret.json' :
+
 ### Facebook
 ```
 {
