@@ -43,7 +43,7 @@
           <a href="http://imgur.com" target="_blank"><img src="{{ post.picture }}" class="img-responsive"></a>
           <small><i>imgur.com</i></small>
         {% endif %}
-        <h5>{{ post.post_content | markdown('readonly') | firstline | safe }}...</h5>
+        <div>{{ post.post_content | markdown('readonly') | firstline | safe }}...</div>
         <div>
           <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts description">read </a> - 
           <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="posts description">test</a>

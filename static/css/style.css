@@ -63,15 +63,6 @@ a {
   text-decoration: none;
 }
 
-.author {
-  color: #ff5300;
-}
-
-.author:hover {
-  color: #bb4f1a;
-  text-decoration: underline;
-}
-
 .btn {
   border-radius: 10px;
 }
@@ -301,6 +292,15 @@ u {
 
 a:hover {
   text-decoration: none;
+}
+
+.author {
+  color: #ff5300;
+}
+
+.author:hover {
+  color: #bb4f1a;
+  text-decoration: underline;
 }
 
 @media screen and (max-width:750px) {
