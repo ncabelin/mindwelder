@@ -1,6 +1,6 @@
 # TO DO:
 # fix html view keywords
-# fix forgot password, use gmail to send activate
+# add forgot password, use gmail to send activate
 # add flask recaptcha during registration
 # add post setting to private, public
 # add capability to copy, make setting private instantly
