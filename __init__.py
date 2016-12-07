@@ -1,7 +1,7 @@
 # TO DO:
+# fix html view keywords
 # fix forgot password, use gmail to send activate
 # add flask recaptcha during registration
-# create table to save user_id, post_id, answers, Answers table
 # add post setting to private, public
 # add capability to copy, make setting private instantly
 # add title icon

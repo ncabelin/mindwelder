@@ -233,7 +233,6 @@ $(function() {
 
 					// check if the default array would equal a default array
 					// ( 0 status ) saved from the database
-
 					var check_array = answers.equals(comparison);
 					if (check_array) {
 						// collect correct answers
@@ -250,7 +249,8 @@ $(function() {
 					} else {
 						// flash a message that the post has changed and
 						// all the saved data will be deleted
-						alert('Erro: Post answers were changed by the author, all previous data saved will be deleted')
+						alert('Error: Post answers were changed by the author, all previous data saved will be deleted')
+
 					}
 				} else { 
 					// no results
