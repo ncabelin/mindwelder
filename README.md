@@ -8,6 +8,8 @@ Highlight sections of your post, underline it with the included Rich Text Editor
 
 Grab any post that has test Q & A in it and test yourself with it. Furthermore every test can be saved on the database, so that when you go back to it, you can pick up where you left at. Essentially you are testing yourself, and marking every answer correct and incorrect (which will toggle between hiding or showing the answer).
 
+The app is live at https://www.mindwelder.com
+
 ## Motivation
 
 Have you ever wanted to grab a post and quickly try to memorize it or quiz yourself on it? You can do that with this application. Paste or write anything then 'underline' it to make it an answer. Every answer when viewed on 'test mode' will show up hidden but marked with an underline, when you click on it, that section will be displayed, and marked as a correct answer. Click it again to hide it, if you want to test yourself again. It's that simple. You can save your progress too and pick up where you left off afterwards.
