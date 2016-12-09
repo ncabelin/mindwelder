@@ -110,6 +110,6 @@ class Test(Base):
 			'answer': self.answer
 		}
 
-engine = create_engine('sqlite:///mindwelder.db')
+engine = create_engine('postgresql://meeska:Marcopupu2014@localhost:5432/mindwelderdb')
 
 Base.metadata.create_all(engine)

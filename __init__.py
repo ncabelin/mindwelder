@@ -35,7 +35,7 @@ from sqlalchemy import create_engine, desc, or_
 from sqlalchemy.orm import sessionmaker
 from database import Base, User, Post, Like, Comment, Keyword, Test
 
-engine = create_engine('sqlite:///mindwelder.db')
+engine = create_engine('postgresql://meeska:Marcopupu2014@localhost:5432/mindwelderdb')
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
