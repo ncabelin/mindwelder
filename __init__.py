@@ -258,7 +258,7 @@ def showFront():
 	return render_template('front.html',
 		user_logged = user,
 		posts = posts,
-		keywords = session.query(Keyword).group_by(Keyword.word).all(),
+		keywords = session.query(Keyword.word).group_by(Keyword.word).all(),
 		page_number = page)
 
 @app.route('/login', methods = ['GET', 'POST'])
