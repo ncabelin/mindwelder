@@ -38,7 +38,7 @@ a {
 .navbar-default .navbar-nav>li>a {
   font-weight: lighter;
   letter-spacing: 1px;
-  color: #d6d3d3;
+  color: #e9ebee;
 }
 
 .navbar-default .navbar-nav>li>a:hover {
@@ -116,7 +116,7 @@ input.span2 {
 }
 
 .btn-front {
-  color: #bdbaba;
+  color: #e9ebee;
 }
 
 .btn-front:hover {
@@ -244,6 +244,7 @@ hr {
   background-color: white;
   padding: 10px;
   border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 #editor {

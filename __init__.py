@@ -126,7 +126,7 @@ def find_posts_by_key(word):
 	try:
 		# TO DO :
 		# refactor to use SQL in a join
-		post_ids = session.query(Keyword).filter_by(
+		post_ids = session.query(Keyword.post_id).filter_by(
 			word = word).group_by(Keyword.post_id).all()
 		for post in post_ids:
 			print post.post_id
