@@ -5,10 +5,8 @@
 # add post setting to private, public
 # add capability to copy, make setting private instantly
 # add title icon
-# sftp?
-# configure server, let's encrypt in digital ocean 5$
 
-import random, string, datetime
+import random, string, datetime, os
 
 # 3rd party modules
 from flask import (Flask,
@@ -237,8 +235,11 @@ app.jinja_env.filters['imgurcheck'] = imgurcheck
 app.jinja_env.filters['get_user_pic'] = get_user_pic
 app.jinja_env.filters['find_description'] = find_description
 
+dir_name = os.path.dirname(os.path.abspath(__file__))
+gfile = os.path.join(dir_name, 'client_secret_mw.json')
+ffile = os.path.join(dir_name, 'fbclient_secret.json')
 google_client_id = json.loads(
-		open('client_secret_mw.json', 'r').read()
+		open(gfile, 'r').read()
 	)['web']['client_id']
 
 @app.route('/', methods=['GET'])
@@ -359,7 +360,7 @@ def gconnect():
 	code = request.data
 
 	try:
-		oauth_flow = flow_from_clientsecrets('client_secret_mw.json', scope='')
+		oauth_flow = flow_from_clientsecrets(gfile, scope='')
 		oauth_flow.redirect_uri = 'postmessage'
 		credentials = oauth_flow.step2_exchange(code).to_json()
 	except FlowExchangeError:
@@ -416,9 +417,9 @@ def fbconnect():
 
 	access_token = request.data
 
-	app_id = json.loads(open('fbclient_secret.json',
+	app_id = json.loads(open(ffile,
 		'r').read())['web']['app_id']
-	app_secret = json.loads(open('fbclient_secret.json',
+	app_secret = json.loads(open(ffile,
 		'r').read())['web']['app_secret']
 
 	url = ('https://graph.facebook.com/oauth/access_token?grant_type='
