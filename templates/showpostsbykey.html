@@ -3,7 +3,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
-			<h1>Posts by Keyword '{{ word }}'</h1>
+			<h3>Posts by Keyword '{{ word }}'</h3>
 		</div>
 	</div>
 	<div class="row">
@@ -11,7 +11,7 @@
     {% if posts %}
       {% for post in posts %}
         <div class="item">
-          <h2><a href="{{ url_for('showPost', post_id = post.id) }}">{{ post.title }}</a></h2>
+          <h4><a href="{{ url_for('showPost', post_id = post.id) }}">{{ post.title }}</a></h4>
           <h6>{{ post.id | find_likes_sum }} likes, added - {{ post.date_added | standard_date }}</h6>
           {% if post.picture %}
             <div class="row">

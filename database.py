@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, Text, DateTime, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -30,7 +30,7 @@ class Post(Base):
 	user = relationship(User)
 	title = Column(String(250), nullable=False)
 	picture = Column(String(250))
-	post_content = Column(String(250), nullable=False)
+	post_content = Column(Text(), nullable=False)
 	date_added = Column(DateTime, nullable=False)
 	comments = relationship('Comment', cascade="delete")
 	keywords = relationship('Keyword', cascade="delete")

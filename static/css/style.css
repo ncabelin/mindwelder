@@ -77,8 +77,19 @@ a {
   color: #999999;
 }
 
-.btn-group .btn: active {
+.btn-group .btn:hover {
+  background-color: #ccc;
   color: white;
+}
+
+.btn-group .btn:active {
+  background-color: white;
+  color: white;
+}
+
+.btn-info {
+  background-color: #999999;
+  color: white !important;
 }
 
 div.dropdown-menu.input-append {
@@ -97,9 +108,6 @@ input.span2 {
   background-color: rgba(0,0,0,0);
   color: #2e6da4;
   border: 2px solid #2e6da4;
-}
-
-.btn-primary:active {
 }
 
 .btn-success {
@@ -209,7 +217,7 @@ hr {
 
 .form-box {
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 0;
   padding: 10px 25px 25px 25px;
   background-color: white;
   margin: 20px 20px;
@@ -248,7 +256,7 @@ hr {
 .post_content {
   background-color: white;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 0;
   margin-bottom: 20px;
 }
 
@@ -326,6 +334,15 @@ a:hover {
   }
 
   .form-box {
-  margin: 20px 0;
-}
+    margin: 20px 0;
+  }
+
+  div .item {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  div .col-md-8 {
+    padding:0;
+  }
 }

@@ -3,13 +3,13 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
-			<h1>Posts by Keyword '{{ word }}'</h1>
+			<h3>Search results of '{{ word }}'</h3>
 		</div>
 	</div>
 	<div class="row">
     <div class="col-md-6">
     {% if title_posts %}
-    	<h2>Results by Title / Content</h2>
+    	<h4>Results by Title / Content</h4>
       {% for post in title_posts %}
         <div class="item">
           <h2><a href="{{ url_for('showPost', post_id = post.id) }}">{{ post.title }}</a></h2>
