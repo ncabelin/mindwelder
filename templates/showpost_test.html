@@ -108,32 +108,14 @@
         	{% endfor %}
         </div><br>
 
-      <div class="row" id="likes">
-		    <div class="col-md-8 col-md-offset-2">
-		      {% if user_logged: %}
-		        
-		        <form method="POST" action="{{ url_for('likePost', post_id = post.id) }}" style="display: inline;">
-		          <button type="submit" class="btn btn-success circle">{{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up"></i></button>
-		        </form>
-		      {% else: %}
-		        {{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up fa-lg"></i> Likes
-		      {% endif %}
-
-		      {% with messages = get_flashed_messages() %}
-		      	{% if messages %}
-		      		{% for m in messages %}
-		      			<br><br><div class="alert alert-danger">{{ m }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
-		      		{% endfor %}
-		      	{% endif %}
-		      {% endwith %}
-
-		      {% if message: %}
-		        
-		        <br><br>
-		        <div class="alert alert-danger">{{ message }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
-		      {% endif %}
-
-		    </div>
+      <div>
+	      {% with messages = get_flashed_messages() %}
+	      	{% if messages %}
+	      		{% for m in messages %}
+	      			<br><br><div class="alert alert-danger">{{ m }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+	      		{% endfor %}
+	      	{% endif %}
+	      {% endwith %}
 		  </div>
 		</div>
   </div>
