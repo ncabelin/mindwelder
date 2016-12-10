@@ -72,8 +72,13 @@ a {
 }
 
 .btn-group .btn {
-  border: 1px solid gray;
+  border: 1px solid #ccc;
   margin-bottom: 10px;
+  color: #999999;
+}
+
+.btn-group .btn: active {
+  color: white;
 }
 
 div.dropdown-menu.input-append {
@@ -319,4 +324,8 @@ a:hover {
     height: 400px;
     padding: 20px;
   }
+
+  .form-box {
+  margin: 20px 0;
+}
 }
