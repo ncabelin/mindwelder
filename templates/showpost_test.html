@@ -257,8 +257,7 @@ $(function() {
 							url: "{{ url_for('deleteTest', post_id = post.id, user_id = user_logged.id) }}",
 							success: function(result) {
 								setTimeout(function() {
-									$('#result').html(result);
-									$('#modalBtn').trigger('click');
+									location.reload();
 								}, 3000);
 							}
 						});

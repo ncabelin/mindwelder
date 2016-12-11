@@ -720,7 +720,6 @@ def updateTest(post_id, user_id):
 @app.route('/deletetest/<int:post_id>/<int:user_id>', methods=['POST'])
 @login_required
 def deleteTest(post_id, user_id):
-	print('penny for your thoughts')
 	progress_owner = request.get_json()
 	logged_user = find_logged_user()
 	# check ownership of test
@@ -735,7 +734,6 @@ def deleteTest(post_id, user_id):
 			print(e)
 			return respond('something went wrong', 400);
 	else:
-		print('something went wrong again')
 		return respond('Not authorized to delete progress', 400)
 
 @app.route('/showpostcomment/<int:post_id>/<int:comment_id>', methods=['GET'])
