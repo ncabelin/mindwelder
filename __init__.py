@@ -1,9 +1,8 @@
 # TO DO:
-# fix html view keywords
 # add forgot password, use gmail to send activate
 # add flask recaptcha during registration
 # add post setting to private, public
-# add capability to copy, make setting private instantly
+# add list of tests taken in profile settings
 # add title icon
 
 import random, string, datetime, os
@@ -217,7 +216,10 @@ def standard_date(date):
 	return date.strftime('%b %d, %Y')
 
 def imgurcheck(link):
-	if (link[:19] == 'http://i.imgur.com/') and (len(link) < 35):
+	if (link[:19] == 'http://i.imgur.com/') and (len(link) < 100):
+		link = 'https://i.imgur.com/' + link[19:]
+		return link
+	elif (link[:20] == 'https://i.imgur.com/') and (len(link) < 100):
 		return link
 	else:
 		return ''
@@ -681,34 +683,39 @@ def showPostTestJson(post_id):
 @app.route('/savetest/<int:post_id>/<int:user_id>', methods=['POST'])
 @login_required
 def saveTest(post_id, user_id):
-	answers = request.form.getlist('test_results')
+	user = find_logged_user()
+	answers = request.get_json();
 	if answers:
 		for a in answers:
 			print a
-			test = Test(user_id = user_id,
+			test = Test(user_id = user.id,
 				post_id = post_id,
 				answer = a)
 			session.add(test)
 		session.commit()
-
-		flash('Saved Test Results')
-		return redirect(url_for('showPost', post_id = post_id))
+		return respond('Saved Test Results', 200)
 
 @app.route('/updatetest/<int:post_id>/<int:user_id>', methods=['POST'])
 @login_required
 def updateTest(post_id, user_id):
-	updated_answers = request.form.getlist('test_results')
-	if updated_answers:
-		for u in updated_answers:
-			split_u = u.split('##')
-			id = split_u[0]
-			update = split_u[1]
-			test = session.query(Test).filter_by(id = id).one()
-			test.answer = update
-			session.add(test)
-		session.commit()
-		flash('Answers updated in database')
-	return redirect(url_for('showPostTest', post_id = post_id))
+	updated_answers = request.get_json();
+	user = find_logged_user()
+	if user.id == user_id:
+		if updated_answers:
+			for u in updated_answers:
+				split_u = u.split('##')
+				id = split_u[0]
+				update = split_u[1]
+				try:
+					test = session.query(Test).filter_by(id = id).one()
+					test.answer = update
+					session.add(test)
+				except Exception as e:
+					return respond('Error accessing test', 400)
+			session.commit()
+		return respond('Test Results Updated', 200)
+	else:
+		return respond('Not authorized to update progress', 400)
 
 @app.route('/showpostcomment/<int:post_id>/<int:comment_id>', methods=['GET'])
 @login_required

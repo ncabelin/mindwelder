@@ -77,6 +77,20 @@
       </div>
     </div>
   </nav>
+<!-- Button trigger modal -->
+<button type="button" id="modalBtn" class="btn btn-primary btn-lg hidden" data-toggle="modal" data-target="#myModal">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h4 class="text-center"><span id="result"></span></h4>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-2">
@@ -234,15 +248,16 @@ $(function() {
 					} else {
 						// flash a message that the post has changed and
 						// all the saved data will be deleted
-						alert('Error: Post answers were changed by the author, all previous data saved will be deleted')
-
+						$('#result').html('Sorry, the Post was altered significantly by the author, all your progress will be deleted');
+						$('#modalBtn').trigger('click');
 					}
 				} else { 
 					// no results
 				}
 			});
 	}).fail(function() {
-		alert('New test, click Save after taking it.')
+		$('#result').html('You have started a new Test, click Save Test to save your progress.');
+		$('#modalBtn').trigger('click');
 		score.text(correct.length);
 	});
 
@@ -261,13 +276,17 @@ $(function() {
 			correct.splice(index, 1);
 		}
 		score.text(correct.length);
-		console.log(correct);
 	});
 
 	save.click(function() {
-		// create form inputs
+		// send POST data
+		var values = [];
+		// default url is for adding a new test
+		var url = "{{ url_for('saveTest', post_id = post.id, user_id = user_logged.id) }}";
+
 		if (answer_db_ids.length === 0) {
-			// no database id's, submit form
+			// no database id's found, submit POST data
+
 			answers.forEach(function(data, index) {
 				var unique_id = 'id_' + index.toString(),
 						val = '1';
@@ -279,13 +298,7 @@ $(function() {
 				split_data[1] = val;
 				var combined_data = split_data.join(',');
 
-				// create input fields
-				$('<input>', {
-					type: 'hidden',
-					name: 'test_results',
-					value: combined_data
-				}).appendTo('form');
-				$('form').submit();
+				values.push(combined_data);
 			});
 		} else {
 			// existing database id's, submit different form
@@ -303,16 +316,24 @@ $(function() {
 				value = answer_db_ids[index] + '##' 
 					+ combined_data;
 
-				// create input fields
-				$('<input>', {
-					type: 'hidden',
-					name: 'test_results',
-					value: value
-				}).appendTo('form');
-				$('form').attr('action', '/updatetest/{{ post.id }}/{{ user_logged.id }}');
-				$('form').submit();
+				values.push(value);
 			});
+			url = "{{ url_for('updateTest', post_id = post.id, user_id = user_logged.id) }}";
 		}
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: JSON.stringify(values),
+			contentType: 'application/json; charset=utf-8',
+			success: function(result) {
+				$('#result').html(result);
+				$('#modalBtn').trigger('click');
+			},
+			error: function(result) {
+				$('#result').html(result);
+				$('#modalBtn').trigger('click');
+			}
+		});
 	});
 });
 </script>
