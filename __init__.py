@@ -698,7 +698,7 @@ def saveTest(post_id, user_id):
 @app.route('/updatetest/<int:post_id>/<int:user_id>', methods=['POST'])
 @login_required
 def updateTest(post_id, user_id):
-	updated_answers = request.get_json();
+	updated_answers = request.get_json()
 	user = find_logged_user()
 	if user.id == user_id:
 		if updated_answers:
@@ -716,6 +716,27 @@ def updateTest(post_id, user_id):
 		return respond('Test Results Updated', 200)
 	else:
 		return respond('Not authorized to update progress', 400)
+
+@app.route('/deletetest/<int:post_id>/<int:user_id>', methods=['POST'])
+@login_required
+def deleteTest(post_id, user_id):
+	print('penny for your thoughts')
+	progress_owner = request.get_json()
+	logged_user = find_logged_user()
+	# check ownership of test
+	if user_id == logged_user.id:
+		try:
+			test = session.query(Test).filter_by(post_id = post_id).filter_by(user_id = user_id).all()
+			for t in test:
+				session.delete(t)
+			session.commit()
+			return respond('Deleted all previous progress', 200)
+		except Exception as e:
+			print(e)
+			return respond('something went wrong', 400);
+	else:
+		print('something went wrong again')
+		return respond('Not authorized to delete progress', 400)
 
 @app.route('/showpostcomment/<int:post_id>/<int:comment_id>', methods=['GET'])
 @login_required

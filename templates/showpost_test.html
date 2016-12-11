@@ -138,6 +138,7 @@
 	<div class="container">
 		<h3>Score : <span id="score"></span> / <span id="total"></span></h3>
 		<a class="btn btn-success" id="save">Save Test</a>
+		<a class="btn btn-danger" id="reset">Reset Test</a>
 	</div>
 	<form method="POST" action="{{ url_for('saveTest', post_id = post.id, user_id = user_logged.id) }}" id="test">
 		<button type="submit" class="hidden" id="submitBtn">Submit</button>
@@ -168,7 +169,8 @@ $(function() {
 			answer = $('span.answer'), // nodeList of answers
 			save = $('#save'), // save button
 			total = $('#total'),
-			score = $('#score');
+			score = $('#score'),
+			reset = $('#reset');
 
 	// Warn if overriding existing method
 	if(Array.prototype.equals)
@@ -248,8 +250,18 @@ $(function() {
 					} else {
 						// flash a message that the post has changed and
 						// all the saved data will be deleted
-						$('#result').html('Sorry, the Post was altered significantly by the author, all your progress will be deleted');
+						$('#result').html('Sorry, the Post was altered significantly by the author, all your previous progress will be deleted');
 						$('#modalBtn').trigger('click');
+						$.ajax({
+							type: 'POST',
+							url: "{{ url_for('deleteTest', post_id = post.id, user_id = user_logged.id) }}",
+							success: function(result) {
+								setTimeout(function() {
+									$('#result').html(result);
+									$('#modalBtn').trigger('click');
+								}, 3000);
+							}
+						});
 					}
 				} else { 
 					// no results
@@ -276,6 +288,26 @@ $(function() {
 			correct.splice(index, 1);
 		}
 		score.text(correct.length);
+	});
+
+	reset.click(function() {
+		$.ajax({
+			type: 'POST',
+			url: "{{ url_for('deleteTest', post_id = post.id, user_id = user_logged.id) }}",
+			data: JSON.stringify(['{{ post.id }}', '{{ user_logged.id }}']),
+			contentType: 'application/json; charset=utf-8',
+			success: function(result) {
+				$('#result').html(result);
+				$('#modalBtn').trigger('click');
+				setTimeout(function() {
+					location.reload();
+				}, 3000);
+			},
+			error: function(result) {
+				$('#result').html('Error deleting progress:' + result);
+				$('#modalBtn').trigger('click');
+			}
+		});
 	});
 
 	save.click(function() {
