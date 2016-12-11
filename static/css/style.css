@@ -242,7 +242,7 @@ hr {
 .answer {
   color: white;
   background-color: white;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #ff5300;
 }
 
 .answer:hover {
@@ -250,7 +250,8 @@ hr {
 }
 
 .answerShow {
-  color: black;
+  color: #47a947;
+  border-bottom: 0;
 }
 
 .post_content {
@@ -302,7 +303,7 @@ footer {
 
 u {
   text-decoration: none;
-  border-bottom: 1px solid #2e6da4;
+  color: #47a947;
 }
 
 a:hover {
