@@ -28,11 +28,6 @@
           <input type="text" name="picture" id="picture" class="form-control" maxlength="200" value="{{ post.picture }}" placeholder="Picture URL : (optional) (only Imgur links accepted)">
         </div>
         <div class="form-group">
-          <div class="btn-toolbar" data-role="editor-toolbar">
-            <div class="btn-group">
-              <a class="btn" href="{% if edit %}/editpost/{{ post.id }}{% else %}/addpost{% endif %}">Rich Text Editor</a>
-            </div>
-          </div>
           <textarea id="editor" rows="10" class="form-control" name="post_content" style="font-size: 16px; font-family: 'Lato', sans-serif;">{{ post.post_content }}</textarea>
         </div>
         <div class="form-group">

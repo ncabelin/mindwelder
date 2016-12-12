@@ -20,6 +20,13 @@
               <div class="item">
                 <h2><a href="{{ url_for('showPost', post_id = post.id) }}">{{ post.title }}</a></h2>
                 <h6>{{ post.id | find_likes_sum }} likes, added - {{ post.date_added | standard_date }}</h6>
+                <a href="{{ url_for('showPost', post_id = post.id) }}" class="btn btn-primary btn-xs">read</a>
+                {% if post.user_id == user_logged.id %}
+                    <!-- Check if viewed user is the same as logged in user -->
+                    <a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-primary btn-xs">edit</a>
+                    <a class="btn btn-danger btn-xs" href="/askdelete/{{ post.id }}?mode=html">delete</a>
+                    <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-xs">test</a>
+                {% endif %}
                 {% if post.picture %}
                   <div class="row">
                     <div class="col-md-6">
@@ -28,12 +35,7 @@
                     </div>
                   </div>
                 {% endif %}
-                <p>{{ post.post_content | markdown('readonly') | firstline | safe }}... </p><a href="{{ url_for('showPost', post_id = post.id) }}" class="btn btn-primary btn-xs">read</a>
-                  {% if post.user_id == user_logged.id %}
-                    <!-- Check if viewed user is the same as logged in user -->
-                    <a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-primary btn-xs">edit</a>
-                    <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-xs">test</a>
-                  {% endif %}
+                <p>{{ post.post_content | markdown('readonly') | firstline | safe }}... </p>
               </div>
             {% endfor %}
           {% else %}

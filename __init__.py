@@ -773,7 +773,7 @@ def editPost(post_id):
 			try:
 				post.title = request.form['title']
 				post.post_content = request.form['post_content']
-
+				post.picture = request.form['picture']
 				if post.title and post.post_content:
 					post.date_added = datetime.datetime.now()
 					session.add(post)
