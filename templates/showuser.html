@@ -30,8 +30,8 @@
                 {% if post.picture %}
                   <div class="row">
                     <div class="col-md-6">
-                      <a href="{{ url_for('showPost', post_id = post.id) }}"><img src="{{ post.picture }}" class="img-responsive"></a>
-                      <small>Images by Imgur.com</small>
+                      <a href="{{ url_for('showPost', post_id = post.id) }}"><img src="{{ post.picture | imgurcheck }}" class="img-responsive post_image"></a>
+                      <small><i>Images by Imgur.com</i></small><br><br>
                     </div>
                   </div>
                 {% endif %}

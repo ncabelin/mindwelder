@@ -217,8 +217,9 @@ def standard_date(date):
 
 def imgurcheck(link):
 	if (link[:19] == 'http://i.imgur.com/') and (len(link) < 100):
-		link = 'https://i.imgur.com/' + link[19:]
-		return link
+		newLink = 'https://i.imgur.com/' + link[19:]
+		print(newLink)
+		return newLink
 	elif (link[:20] == 'https://i.imgur.com/') and (len(link) < 100):
 		return link
 	else:

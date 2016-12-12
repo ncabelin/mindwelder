@@ -19,7 +19,7 @@
         {% endif %}
         <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-sm">Take Test</a>
 
-        {% if post.picture: %}</h6>
+        {% if post.picture %}</h6>
           <!-- Determine if post has a picture link -->
           <a href="http://imgur.com" target="_blank"><img src="{{ post.picture | imgurcheck }}" class="img-responsive post_image"></a>
           <p><i>Image by Imgur.com</i></p>
