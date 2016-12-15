@@ -689,10 +689,26 @@ def saveTest(post_id, user_id):
 	if answers:
 		for a in answers:
 			print a
-			test = Test(user_id = user.id,
-				post_id = post_id,
-				answer = a)
-			session.add(test)
+			db_id = a.split('##')[0]
+			if db_id == '0':
+				# new answer, create new and retrieve id by flushing first
+				# then modify answer to include id
+				test = Test(user_id = user.id,
+					post_id = post_id,
+					answer = a)
+				session.add(test)
+				session.flush()
+				before_answer = test.answer.split('##')
+				before_answer[0] = str(test.id)
+				after_answer = '##'.join(before_answer)
+				test.answer = after_answer
+			else:
+				try:
+					test = session.query(Test).filter_by(id = int(db_id)).one()
+					test.answer = a
+					session.add(test)
+				except Exception as e:
+					return respond('Error on database', 400)
 		session.commit()
 		return respond('Saved Test Results', 200)
 
@@ -705,11 +721,10 @@ def updateTest(post_id, user_id):
 		if updated_answers:
 			for u in updated_answers:
 				split_u = u.split('##')
-				id = split_u[0]
-				update = split_u[1]
+				db_id = split_u[0]
 				try:
-					test = session.query(Test).filter_by(id = id).one()
-					test.answer = update
+					test = session.query(Test).filter_by(id = db_id).one()
+					test.answer = u
 					session.add(test)
 				except Exception as e:
 					return respond('Error accessing test', 400)
