@@ -9,6 +9,29 @@ var test = function(post_id, user_id) {
 			score = $('#score'),
 			reset = $('#reset');
 
+	var deleteTest = function() {
+		$.ajax({
+			type: 'POST',
+			url: '/deletetest/' + post_id + '/' + user_id,
+			data: JSON.stringify([post_id, user_id]),
+			contentType: 'application/json; charset=utf-8',
+			success: function(result) {
+				$('#result').html(result);
+				$('#modalBtn').trigger('click');
+				setTimeout(function() {
+					location.reload();
+				}, 3000);
+			},
+			error: function(result) {
+				$('#result').html('Error deleting progress:' + result);
+				$('#modalBtn').trigger('click');
+				setTimeout(function() {
+					location.reload();
+				}, 3000);
+			}
+		});
+	};
+
 	answer.each(function(index) {
 		var id = 'id_' + index.toString();
 		// add an id to each answer
@@ -46,25 +69,27 @@ var test = function(post_id, user_id) {
 						db_answers[id] = val_arr;
 						// check if current post has the same value as
 						// the json served
-						if (answers[id][2] !== val_arr[2]) {
+						if (answers[id][2] !== val_arr[3]) {
 							similar = false;
 						}
-
 					});
 				} else {
 					similar = false;
 				}
-				console.log(answers);
+				console.log(similar);
 				// change attributes and display previous answers marked correct
-				$.each(db_answers, function(k, v) {
-					if (v[2] == '1') {
-						$('#' + k).toggleClass('answerShow');
-						answers[k][1] = '1';
-						correct.push(k);
-						score.text(correct.length);
-					}
-				});
-
+				if (similar) {
+					$.each(db_answers, function(k, v) {
+						if (v[2] == '1') {
+							$('#' + k).toggleClass('answerShow');
+							answers[k][1] = '1';
+							correct.push(k);
+							score.text(correct.length);
+						}
+					});
+				} else {
+					// delete all prevous database answers
+				}
 			}
 	}).fail(function() {
 		$('#result').html('You have started a new Test, click Save Test to save your progress.');
@@ -92,26 +117,7 @@ var test = function(post_id, user_id) {
 	});
 
 	reset.click(function() {
-		$.ajax({
-			type: 'POST',
-			url: "{{ url_for('deleteTest', post_id = post.id, user_id = user_logged.id) }}",
-			data: JSON.stringify(['{{ post.id }}', '{{ user_logged.id }}']),
-			contentType: 'application/json; charset=utf-8',
-			success: function(result) {
-				$('#result').html(result);
-				$('#modalBtn').trigger('click');
-				setTimeout(function() {
-					location.reload();
-				}, 3000);
-			},
-			error: function(result) {
-				$('#result').html('Error deleting progress:' + result);
-				$('#modalBtn').trigger('click');
-				setTimeout(function() {
-					location.reload();
-				}, 3000);
-			}
-		});
+		deleteTest();
 	});
 
 	save.click(function() {
