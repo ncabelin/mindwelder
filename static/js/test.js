@@ -1,4 +1,5 @@
 var test = function(post_id, user_id) {
+	'use strict';
 	var answers = {}, // array of all answers
 			db_answers = {},
 			correct = [], // array of unique_id's listed as correct
@@ -76,7 +77,6 @@ var test = function(post_id, user_id) {
 				} else {
 					similar = false;
 				}
-				console.log(similar);
 				// change attributes and display previous answers marked correct
 				if (similar) {
 					$.each(db_answers, function(k, v) {
@@ -140,8 +140,6 @@ var test = function(post_id, user_id) {
 			});
 			url = '/updatetest/' + post_id + '/' + user_id;
 		}
-		console.log('This will be saved');
-		console.log(values);
 		$.ajax({
 			url: url,
 			type: 'POST',

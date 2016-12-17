@@ -127,15 +127,11 @@ def find_posts_by_key(word):
 		# refactor to use SQL in a join
 		post_ids = session.query(Keyword.post_id).filter_by(
 			word = word).group_by(Keyword.post_id).all()
-		for post in post_ids:
-			print post.post_id
 		posts = []
 		for p in post_ids:
 			post = session.query(Post).filter_by(
 				id = p.post_id).one()
 			posts.append(post)
-		for p in posts:
-			print post.user_id
 		return posts
 	except Exception as e:
 		print e
@@ -218,7 +214,6 @@ def standard_date(date):
 def imgurcheck(link):
 	if (link[:19] == 'http://i.imgur.com/') and (len(link) < 100):
 		newLink = 'https://i.imgur.com/' + link[19:]
-		print(newLink)
 		return newLink
 	elif (link[:20] == 'https://i.imgur.com/') and (len(link) < 100):
 		return link
@@ -266,7 +261,7 @@ def showFront():
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
-	state = ''.join(random.choice(string.ascii_uppercase + 
+	state = ''.join(random.choice(string.ascii_uppercase +
 		string.digits) for x in xrange(32))
 	login_session['state'] = state
 	return render_template('login.html', state = state)
@@ -323,7 +318,7 @@ def register():
 			return redirect('/register')
 
 	else:
-		# GET 
+		# GET
 		username = request.args.get('u') or ''
 		email = request.args.get('e') or ''
 		return render_template('register.html',
@@ -370,7 +365,7 @@ def gconnect():
 		return respond('Failed to upgrade the authorization code', 401)
 
 	access_token = json.loads(credentials)['access_token']
-	url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' 
+	url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
 		% access_token)
 	h = httplib2.Http()
 	result = json.loads(h.request(url, 'GET')[1])
@@ -426,7 +421,7 @@ def fbconnect():
 		'r').read())['web']['app_secret']
 
 	url = ('https://graph.facebook.com/oauth/access_token?grant_type='
-		'fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' 
+		'fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s'
 				% (app_id, app_secret, access_token))
 
 	h = httplib2.Http()
@@ -434,7 +429,7 @@ def fbconnect():
 
 	# strip expire tag from access token
 	token = result.split("&")[0]
-	
+
 	url = ('https://graph.facebook.com/v2.4/me?%s'
 		'&fields=name,id,email' % token)
 	h = httplib2.Http()
@@ -673,7 +668,7 @@ def showPostTestJson(post_id):
 	if answers:
 		return jsonify(Answers = [i.serialize for i in answers])
 	else:
-		err = { 
+		err = {
 			'status': 404,
 			'message': 'Error: Not Found'
 		}
@@ -771,9 +766,9 @@ def showPostComment(post_id, comment_id):
 		else:
 			flash('Not authorized')
 			return render_template('error.html')
-	else:		
+	else:
 		flash('Post not found')
-		return render_template('error.html')	
+		return render_template('error.html')
 
 @app.route('/editpost/<int:post_id>', methods=['GET', 'POST'])
 @login_required
@@ -784,7 +779,7 @@ def editPost(post_id):
 	# check if logged in user is the author
 	if user.id == post.user_id:
 
-		# POST method edit 
+		# POST method edit
 		if request.method == 'POST':
 			try:
 				post.title = request.form['title']
@@ -799,7 +794,7 @@ def editPost(post_id):
 				flash('Title and Content cannot be empty')
 				return redirect(url_for('editPost', post_id = post.id))
 
-			# get all previous keywords, get new keywords, if keywords 
+			# get all previous keywords, get new keywords, if keywords
 
 			new_keywords = request.form['keywords'].split(',')
 			try:
@@ -896,7 +891,7 @@ def deletePost(post_id):
 @app.route('/showuser/<int:user_id>', methods = ['GET'])
 def showUser(user_id):
 	posts = find_user_posts(user_id)
-	return render_template('showuser.html', 
+	return render_template('showuser.html',
 		posts = posts,
 		user_logged = find_logged_user(),
 		user = getUserByID(user_id))
