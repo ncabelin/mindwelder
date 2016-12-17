@@ -29,6 +29,7 @@ class Post(Base):
 	user_id = Column(Integer, ForeignKey('user.id'))
 	user = relationship(User)
 	title = Column(String(250), nullable=False)
+	description = Column(String(250))
 	picture = Column(String(250))
 	post_content = Column(Text(), nullable=False)
 	date_added = Column(DateTime, nullable=False)
@@ -43,6 +44,8 @@ class Post(Base):
 			'id': self.id,
 			'user_id': self.user_id,
 			'title': self.title,
+			'description': self.description,
+			'picture': self.picture,
 			'post_content': self.post_content,
 			'date_added': self.date_added
 		}
