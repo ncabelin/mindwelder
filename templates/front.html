@@ -48,14 +48,16 @@
         <div class="description"><small><i class="fa fa-calendar" aria-hidden="true"></i> {{ post.date_added | standard_date }}</small></div>
         <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts"><h3 class="post_title">{{ post.title }}</h3></a>
         {% if (post.picture): %}
-          <a href="http://imgur.com" target="_blank"><img src="{{ post.picture | imgurcheck}}" class="img-responsive post_image"></a>
+          <a href="{{ url_for('showPost', post_id = post.id)}}" target="_blank"><img src="{{ post.picture | imgurcheck}}" class="img-responsive post_image"></a>
           <small><i>imgur.com</i></small>
         {% endif %}
-        <div>{{ post.post_content | markdown('readonly') | firstline | safe }}...</div>
+        <div>{{ post.description }}</div>
         <hr>
         <div>
-          <a href="{{ url_for('showPost', post_id = post.id)}}" class="posts description">read </a> - 
-          <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="posts description">test</a>
+          <a href="{{ url_for('showPost', post_id = post.id)}}" class="btn btn-primary btn-sm">read</a>
+          {% if user_logged %}
+            <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-primary btn-sm">test</a>
+          {% endif %}
         </div>
       </div>
       {% endfor %}
