@@ -35,7 +35,7 @@
                     </div>
                   </div>
                 {% endif %}
-                <p>{{ post.post_content | markdown('readonly') | firstline | safe }}... </p>
+                <h4>{{ post.description }}</h4>
               </div>
             {% endfor %}
           {% else %}
