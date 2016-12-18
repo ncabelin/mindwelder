@@ -116,6 +116,7 @@
       <br>
       <div class="post_content">
         <h2>{{ post.title }} <small>by <a href="{{ url_for('showUser', user_id = post.user_id) }}" class="author">{{ post.user_id | find_username }}</a></small></h2>
+        <h4>{{ post.description }}</h4>
         <h6>{{ post.id | find_likes_sum }} likes, <i class="fa fa-calendar" aria-hidden="true"></i> - {{ post.date_added | standard_date }}
 
         {% if user_logged.id == post.user_id %} &nbsp;

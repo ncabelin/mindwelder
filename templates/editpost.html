@@ -110,6 +110,9 @@
           <input type="text" name="title" id="title" class="form-control" maxlength="120" value="{{ post.title }}" style="font-size: 1.2em;" placeholder="Title :">
         </div>
         <div class="form-group">
+          <input type="text" name="description" id="description" class="form-control" maxlength="250" value="{{ post.description }}" placeholder="Description :">
+        </div>
+        <div class="form-group">
           <input type="text" name="picture" id="picture" class="form-control" maxlength="200" value="{{ post.picture }}" placeholder="Picture URL : (optional) (only Imgur links accepted)">
         </div>
         <div class="form-group">
@@ -140,7 +143,7 @@
                 <button class="btn btn-xs" type="button">Add</button>
               </div>
               <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-scissors" aria-hidden="true"></i></a>
-            </div>          
+            </div>
             <div class="btn-group">
               <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo" aria-hidden="true"></i></a>
               <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat" aria-hidden="true"></i></a>
@@ -152,7 +155,7 @@
           <input type="text" name="keywords" id="keywords" class="form-control" value="{% if keywords %}{% for k in keywords %}{{ k.word }},{% endfor %}{% endif %}" maxlength="120" placeholder="Keywords / Tags : ( separate by commas )">
         </div>
         <input type="hidden" name="origin" value="rte" class="hidden">
-        <div id="submit" class="btn btn-primary">Submit</div>
+        <div id="submit" class="btn btn-primary">Save</div>
         {% if edit %}
           <a class="btn btn-danger" href="/askdelete/{{ post.id }}?mode=html">Delete</a>
         {% else %}
@@ -204,4 +207,3 @@ $(function() {
 });
 </script>
 </html>
-

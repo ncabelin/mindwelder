@@ -32,7 +32,7 @@ from sqlalchemy import create_engine, desc, or_
 from sqlalchemy.orm import sessionmaker
 from database import Base, User, Post, Like, Comment, Keyword, Test
 
-engine = create_engine('postgresql://meeska:Marcopupu2014@localhost:5432/mindwelderdb')
+engine = create_engine('postgresql://meeska:Marcopupu2014@localhost:5432/mindwelder')
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
@@ -582,10 +582,12 @@ def addPost():
 			title = request.form.get('title', None)
 			content = request.form.get('post_content', None)
 			picture = request.form['picture']
+			description = request.form['description']
 			if title and content:
 				post = Post(title = title,
 					user_id = user.id,
 					picture = picture,
+					description = description,
 					post_content = content,
 					date_added = datetime.datetime.now(),
 					)
@@ -783,6 +785,7 @@ def editPost(post_id):
 		if request.method == 'POST':
 			try:
 				post.title = request.form['title']
+				post.description = request.form['description']
 				post.post_content = request.form['post_content']
 				post.picture = request.form['picture']
 				if post.title and post.post_content:
@@ -849,7 +852,7 @@ def query():
 	if word:
 		try:
 			title_posts = session.query(Post).filter(or_(Post.title.like('%{}%'.format(word)),
-																							Post.post_content.like('%{}%'.format(word)))).all()
+				Post.post_content.like('%{}%'.format(word)))).all()
 			return render_template('showpostsquery.html',
 				word = word,
 				title_posts = title_posts,

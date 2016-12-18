@@ -113,6 +113,6 @@ class Test(Base):
 			'answer': self.answer
 		}
 
-engine = create_engine('postgresql://meeska:Marcopupu2014@localhost:5432/mindwelderdb')
+engine = create_engine('postgresql://meeska:Marcopupu2014@localhost:5432/mindwelder')
 
 Base.metadata.create_all(engine)
