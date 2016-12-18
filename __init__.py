@@ -621,6 +621,7 @@ def addPost():
 		if request.args.get('mode'):
 			url = 'editpost_html.html'
 		post = Post(title = '',
+			description = '',
 			post_content = '',
 			picture = '')
 		return render_template(url,
