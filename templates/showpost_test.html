@@ -154,13 +154,13 @@
  </div>
 <footer class="footer">
 	<div class="container">
-		<h3>Score : <span id="score"></span> / <span id="total"></span></h3>
-		<a class="btn btn-success" id="save">Save Test</a>
-		<a class="btn btn-danger" id="reset">Reset Test</a>
+    <div class="test-control">
+  		<h3>Score : <span id="score"></span> / <span id="total"></span></h3>
+  		<a class="btn btn-success" id="save">Save Test</a>
+  		<a class="btn btn-danger" id="reset">Reset Test</a>
+    </div>
+    <div class="test-message"></div>
 	</div>
-	<form method="POST" action="{{ url_for('saveTest', post_id = post.id, user_id = user_logged.id) }}" id="test">
-		<button type="submit" class="hidden" id="submitBtn">Submit</button>
-	</form>
 </footer>
 </body>
 <!-- jQuery -->

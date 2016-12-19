@@ -8,7 +8,9 @@ var test = function(post_id, user_id) {
 			save = $('#save'), // save button
 			total = $('#total'),
 			score = $('#score'),
-			reset = $('#reset');
+			reset = $('#reset'),
+			control = $('.test-control'),
+			message = $('.test-message');
 
 	var deleteTest = function() {
 		$.ajax({
@@ -45,8 +47,14 @@ var test = function(post_id, user_id) {
 	});
 
 	// initialize scoreboard
-	var totalAnswers = Object.keys(answers).length;
 	score.text(correct.length);
+	var totalAnswers = Object.keys(answers).length;
+	if (totalAnswers === 0) {
+		control.hide();
+		message.html('<h1>No Tests found</h1>');
+		console.log('tangina');
+		return;
+	}
 	total.text(totalAnswers);
 
 	$.ajax({

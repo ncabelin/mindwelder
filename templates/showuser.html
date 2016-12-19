@@ -19,6 +19,7 @@
             {% for post in posts %}
               <div class="item">
                 <h2><a href="{{ url_for('showPost', post_id = post.id) }}">{{ post.title }}</a></h2>
+                <h4>{{ post.description }}</h4>
                 <h6>{{ post.id | find_likes_sum }} likes, added - {{ post.date_added | standard_date }}</h6>
                 <a href="{{ url_for('showPost', post_id = post.id) }}" class="btn btn-primary btn-xs">read</a>
                 {% if post.user_id == user_logged.id %}
@@ -35,7 +36,6 @@
                     </div>
                   </div>
                 {% endif %}
-                <h4>{{ post.description }}</h4>
               </div>
             {% endfor %}
           {% else %}
