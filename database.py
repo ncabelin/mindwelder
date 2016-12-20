@@ -19,6 +19,7 @@ class User(Base):
 	picture = Column(String(250))
 	password = Column(String(250))
 	confirmed = Column(Boolean(), default=False, nullable=False)
+	registered_on = Column(DateTime, nullable=False)
 	posts = relationship('Post', cascade="delete")
 	tests = relationship('Test', cascade="delete")
 

@@ -53,6 +53,10 @@ def secret():
 ### Google+ registration, (can be downloaded)
 download the json file from the registration page
 
+## Future feature implementation
+1. Add 'captcha'
+2. CRON job? check if user has confirmed within specific amount of time
+
 ## Contributors
 
 Neptune Michael Cabelin

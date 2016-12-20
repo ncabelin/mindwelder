@@ -395,7 +395,6 @@ def confirm(token):
 def unconfirmed():
 	return render_template('unconfirmed.html')
 
-
 @app.route('/mconnect', methods = ['POST'])
 def mconnect():
 	email = request.form['email']
