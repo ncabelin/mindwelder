@@ -15,8 +15,11 @@ from flask import (Flask,
 	redirect,
 	flash,
 	jsonify)
+from flask_mail import Message, Mail
+
 from flask import session as login_session
 from flask import make_response
+from itsdangerous import URLSafeSerializer
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
@@ -25,8 +28,16 @@ import requests
 from functools import wraps
 import bleach
 from bcrypt import hashpw, checkpw, gensalt
+from secretkeys import secret
 
 app = Flask(__name__)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USERNAME'] = secret('username')
+app.config['MAIL_PASSWORD'] = secret('password')
+mail = Mail(app)
 
 from sqlalchemy import create_engine, desc, or_
 from sqlalchemy.orm import sessionmaker
@@ -39,7 +50,6 @@ session = DBSession()
 # internal modules
 from validators import valid_username, valid_email, valid_password
 from parser import markdown
-from secretkeys import secret
 
 def respond(msg, err):
 	res = make_response(json.dumps(msg), err)
@@ -72,14 +82,52 @@ def getUserByID(user_id):
 
 def createUser(login_session, account):
 	# creates a user via session and returns the user id
-	newUser = User(username = login_session['username'],
-		email = login_session['email'],
-		account = account,
-		picture = login_session['picture'])
-	session.add(newUser)
-	session.commit()
-	user = session.query(User).filter_by(email = login_session['email']).one()
-	return user.id
+	user = getUserByEmail(login_session['email'])
+	if not user:
+		try:
+			newUser = User(username = login_session['username'],
+				email = login_session['email'],
+				account = account,
+				confirmed = True,
+				picture = login_session['picture'])
+			session.add(newUser)
+			session.commit()
+			user = session.query(User).filter_by(email = login_session['email']).one()
+			return user.id
+		except Exception as e:
+			print(e)
+			flash(e)
+			return None;
+	else:
+		return None
+
+# token registration
+def generate_confirmation_token(email):
+	serializer = URLSafeSerializer(secret('key'))
+	return serializer.dumps(email)
+
+def confirm_token(token):
+	serializer = URLSafeSerializer(secret('key'))
+	try:
+		email = serializer.loads(token)
+	except:
+		return False
+	return email
+
+def send_confirmation_token(token, recipient):
+	msg = Message(
+		'Welcome to Mindwelder Blogs',
+		sender = secret('email'),
+		recipients = [recipient]
+	)
+	msg.html = """Welcome to <b>Mindwelder Blogs</b>,
+		Thanks for signing up, Please
+		follow this link to activate your account :
+		 <a href='https://www.mindwelder.com/confirm/{}'>
+		 https://www.mindwelder.com/confirm/{}</a>
+		""".format(token, token)
+	mail.send(msg)
+	return 'sent'
 
 def find_logged_user():
 	# function that checks if a user is logged in first
@@ -273,6 +321,7 @@ def register():
 		email = request.form['email']
 		password = request.form['password']
 		verify = request.form['verify']
+		print 'wtf'
 
 		# check if 2 passwords match
 		if password != verify:
@@ -297,18 +346,20 @@ def register():
 			newUser = User(
 				username = username,
 				description = request.form['description'],
+				confirmed = False,
 				email = email,
 				password = hashpw(password.encode('utf-8'), gensalt()),
 				picture = '/static/images/generic.png',
 				account = 'mindwelder',
-				sq_one = request.form['sq_one'],
-				sa_one = hashpw(request.form['sa_one'].encode('utf-8'), gensalt())
 				)
 
 			try:
 				session.add(newUser)
 				session.commit()
-				flash('Succesfully registered, please log in')
+				token = generate_confirmation_token(email)
+				send_confirmation_token(token, email)
+				flash('Successfully registered, please go to your email account and' +
+				' to confirm, before logging in')
 				return redirect('/login')
 			except Exception as e:
 				print e
@@ -325,6 +376,26 @@ def register():
 			username = username,
 			email = email)
 
+@app.route('/confirm/<token>', methods = ['GET'])
+def confirm(token):
+	email = confirm_token(token)
+	if email:
+		user = getUserByEmail(email)
+		if user:
+			user.confirmed = True
+			session.add(user)
+			session.commit()
+			flash('Confirmation successful, Please log in')
+			return redirect('/login')
+	flash('Error confirming')
+	return render_template('error.html')
+
+@app.route('/unconfirmed', methods = ['GET'])
+@login_required
+def unconfirmed():
+	return render_template('unconfirmed.html')
+
+
 @app.route('/mconnect', methods = ['POST'])
 def mconnect():
 	email = request.form['email']
@@ -332,7 +403,8 @@ def mconnect():
 	try:
 		user = session.query(User).filter_by(email = email).one()
 		hashed = user.password.encode('utf-8')
-		if hashpw(password.encode('utf-8'), hashed) == hashed:
+		if (hashpw(password.encode('utf-8'),
+			hashed) == hashed) and (user.confirmed == True):
 			login_session['user_id'] = user.id
 			login_session['description'] = user.description or None
 			login_session['provider'] = user.account
@@ -342,7 +414,8 @@ def mconnect():
 			flash('User logged in as {}'.format(user.username))
 			return redirect('/')
 		else:
-			flash('Username / Password not valid')
+			flash('Username / Password not valid or' +
+			 ' User has not confirmed his email')
 			return redirect(url_for('login'))
 	except:
 		flash('Username / Password not valid')
@@ -403,6 +476,9 @@ def gconnect():
 	user_id = getUserID(login_session['email'])
 	if not user_id:
 		user_id = createUser(login_session, 'google')
+		print(user_id)
+		if not user_id:
+			return respond("Email already exists", 401)
 	login_session['user_id'] = user_id
 
 	return 'Logging in as ' + login_session['username'] + '...'
@@ -455,6 +531,8 @@ def fbconnect():
 	user_id = getUserID(login_session['email'])
 	if not user_id:
 		user_id = createUser(login_session, 'facebook')
+		if not user_id:
+			return respond("Email already exists", 401)
 	login_session['user_id'] = user_id
 
 	return ('You are now logged in as %s' % login_session['username'])
@@ -970,5 +1048,5 @@ def deleteComment(post_id, comment_id):
 
 if __name__ == '__main__':
 	app.debug = True
-	app.secret_key = secret()
+	app.secret_key = secret('key')
 	app.run(host='0.0.0.0', port = 15000)

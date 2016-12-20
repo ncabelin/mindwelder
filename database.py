@@ -18,8 +18,7 @@ class User(Base):
 	account = Column(String(250), nullable=False)
 	picture = Column(String(250))
 	password = Column(String(250))
-	sq_one = Column(String(250))
-	sa_one = Column(String(250))
+	confirmed = Column(Boolean(), default=False, nullable=False)
 	posts = relationship('Post', cascade="delete")
 	tests = relationship('Test', cascade="delete")
 
