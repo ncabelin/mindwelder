@@ -4,9 +4,9 @@
 
 This project is a multi-user blog platform that can be used as a standard blog but also as a 'quick set-up' learning application.
 
-Highlight sections of your post, underline it with the included Rich Text Editor or add a u html tag in it and it will automatically be parsed as a test answer. When you read it on the 'test mode', that section can now be used as a fill-in-the blank answer. There is a section that states the number of answers you've marked as correct and a total of the answers.
+Highlight sections of your post, underline it with the included Rich Text Editor or add a u html tag in it and it will automatically be parsed as a test answer. When you read it on 'test mode', that section can now be used as a fill-in-the blank answer. There is a section that states the number of answers you've marked as correct and a total of the answers.
 
-Grab any post that has test Q & A in it and test yourself with it. Furthermore every test can be saved on the database, so that when you go back to it, you can pick up where you left at. Essentially you are testing yourself, and marking every answer correct and incorrect (which will toggle between hiding or showing the answer).
+Grab any post and test yourself with it. Furthermore every test can be saved on the database, so that when you go back to it, you can pick up where you left at. Essentially you are testing yourself manually and marking every answer correct or incorrect (which will toggle between hiding or showing the answer).
 
 The app is live at https://www.mindwelder.com
 
@@ -16,7 +16,7 @@ Have you ever wanted to grab a post and quickly try to memorize it or quiz yours
 
 ## Code Features
 1. Oauth2.0 Auth and Authorization with Google+, Facebook along with own User registration
-2. Flask library 
+2. Flask library
 3. PostgreSQL database
 4. SQLAlchemy ORM
 5. jQuery AJAX
@@ -29,6 +29,8 @@ Have you ever wanted to grab a post and quickly try to memorize it or quiz yours
 	* sqlalchemy
 	* bleach
 	* bcrypt
+	* flask_mail
+	* itsdangerous
 
 2. Create your own secretkeys.py file and write in your secret key :
 ```
