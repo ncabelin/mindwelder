@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <form method="POST" class="form-box" action="/resetpassword">
+        <h3 class="text-center">Forgot Password</h3>
+        <div class="form-group">
+          <label for="password" class="sr-only">New Password :</label>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Password - must be at least 8 characters">
+        </div>
+        <div class="form-group">
+          <label for="verify" class="sr-only">Verify Password :</label>
+          <input type="password" name="verify" id="verify" class="form-control" placeholder="Verify Password">
+        </div>
+        <input type="hidden" name="token" value="{{ token }}">
+        <hr>
+        <button type="submit" class="btn btn-success">Submit</button>
+        <a href="/" class="btn btn-primary">Cancel</a>
+      </form>
+      <p class="text-center">Please enter your new password</p>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for m in messages %}
+            <br>
+            <div class="alert alert-success">{{ m }}<a href="" class="close" data-dismiss="alert">&times;</a></div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+</div>
+{% endblock %}

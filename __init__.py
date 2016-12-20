@@ -62,7 +62,8 @@ def getUserByEmail(email):
 	try:
 		user = session.query(User).filter_by(email = email).one()
 		return user
-	except:
+	except Exception as e:
+		print(e)
 		return None
 
 def getUserID(email):
@@ -102,12 +103,12 @@ def createUser(login_session, account):
 		return None
 
 # token registration
-def generate_confirmation_token(email):
-	serializer = URLSafeSerializer(secret('key'))
+def generate_confirmation_token(email, secret_key):
+	serializer = URLSafeSerializer(secret_key)
 	return serializer.dumps(email)
 
-def confirm_token(token):
-	serializer = URLSafeSerializer(secret('key'))
+def confirm_token(token, secret_key):
+	serializer = URLSafeSerializer(secret_key)
 	try:
 		email = serializer.loads(token)
 	except:
@@ -351,13 +352,13 @@ def register():
 				email = email,
 				password = hashpw(password.encode('utf-8'), gensalt()),
 				picture = '/static/images/generic.png',
-				account = 'mindwelder',
+				account = 'mindwelder'
 				)
 
 			try:
 				session.add(newUser)
 				session.commit()
-				token = generate_confirmation_token(email)
+				token = generate_confirmation_token(email, secret('key'))
 				send_confirmation_token(token, email)
 				flash('Successfully registered, please go to your email account and' +
 				' to confirm, before logging in')
@@ -379,7 +380,7 @@ def register():
 
 @app.route('/confirm/<token>', methods = ['GET'])
 def confirm(token):
-	email = confirm_token(token)
+	email = confirm_token(token, secret('key'))
 	if email:
 		user = getUserByEmail(email)
 		if user:
@@ -396,11 +397,55 @@ def confirm(token):
 def unconfirmed():
 	return render_template('unconfirmed.html')
 
-@app.route('/forgotpassword', methods = ['GET', 'POST'])
-def forgotPassword():
+@app.route('/forgotpassword/<token>', methods = ['GET', 'POST'])
+def forgotPassword(token):
+	secret_key = 'reset' + secret('key')
 	if request.method == 'POST':
 		# send email with link to reset password
-	return render_template('forgot.html')
+		email = request.form['email']
+		user = getUserByEmail(email)
+		print(email, user)
+		if user:
+			msg = Message('Reset Password Request',
+				sender = secret('email'),
+				recipients = [email])
+			g_token = generate_confirmation_token(email, secret_key)
+			msg.html = """
+			<h1>Mindwelder</h1>
+			<p>A Password reset request has been sent. Follow this link
+			to enter a new password.</p>
+			<a href='localhost:15000/forgotpassword/{}'>localhost:15000/forgotpassword/{}</a>
+			""".format(g_token, g_token)
+			mail.send(msg)
+			return render_template('forgotpassword_link_sent.html', email = email)
+		else:
+			return render_template('error.html')
+	if token == '0':
+		return render_template('forgot.html')
+	return render_template('reset.html', token = token)
+
+@app.route('/resetpassword', methods = ['POST'])
+def resetPassword():
+	if request.method == 'POST':
+		secret_key = 'reset' + secret('key')
+		token = request.form['token']
+		email = confirm_token(token, secret_key)
+		password = valid_password(request.form['password'])
+		verify = request.form['verify']
+		if email and password and (password == verify):
+			try:
+				user = getUserByEmail(email)
+				user.password = hashpw(password.encode('utf-8'), gensalt())
+				session.add(user)
+				session.commit()
+				flash('Password changed, please log in with your new password')
+				return redirect('/login')
+			except Exception as e:
+				print(e)
+				flash(e)
+				return render_template('error.html')
+		flash('Invalid Token')
+		return render_template('error.html')
 
 
 @app.route('/mconnect', methods = ['POST'])
