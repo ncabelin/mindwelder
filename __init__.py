@@ -347,6 +347,7 @@ def register():
 				username = username,
 				description = request.form['description'],
 				confirmed = False,
+				registered_on = datetime.datetime.now(),
 				email = email,
 				password = hashpw(password.encode('utf-8'), gensalt()),
 				picture = '/static/images/generic.png',
@@ -394,6 +395,13 @@ def confirm(token):
 @login_required
 def unconfirmed():
 	return render_template('unconfirmed.html')
+
+@app.route('/forgotpassword', methods = ['GET', 'POST'])
+def forgotPassword():
+	if request.method == 'POST':
+		# send email with link to reset password
+	return render_template('forgot.html')
+
 
 @app.route('/mconnect', methods = ['POST'])
 def mconnect():
