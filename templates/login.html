@@ -47,7 +47,12 @@ function sendTokenToServer() {
 					$('#modalBtn').trigger('click');
 					$('#result').html('Failed to connect to Facebook');
 				}
-			}
+			},
+      error: function(e) {
+        console.log(e);
+        $('#modalBtn').trigger('click');
+        $('#result').html("That account's associated email is already in use");
+      }
 		});
 	});
 }

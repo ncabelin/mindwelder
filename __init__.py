@@ -534,11 +534,11 @@ def gconnect():
 	# see if user exists by email
 	user = getUserByEmail(login_session['email'])
 	if not user:
-		user_id = createUser(login_session, 'google')
+		createUser(login_session, 'google')
 	elif user.account != 'google':
 		return respond('Email already exists', 401)
-	user_id = user.id
-	login_session['user_id'] = user_id
+	else:
+		login_session['user_id'] = user.id
 
 	return 'Logging in as ' + login_session['username'] + '...'
 
@@ -587,12 +587,13 @@ def fbconnect():
 	login_session['picture'] = data['data']['url']
 
 	# see if user exists by email
-	user_id = getUserID(login_session['email'])
-	if not user_id:
-		user_id = createUser(login_session, 'facebook')
-		if not user_id:
-			return respond("Email already exists", 401)
-	login_session['user_id'] = user_id
+	user = getUserByEmail(login_session['email'])
+	if not user:
+		createUser(login_session, 'facebook')
+	elif user.account != 'facebook':
+		return respond('Email already exists', 401)
+	else:
+		login_session['user_id'] = user.id
 
 	return ('You are now logged in as %s' % login_session['username'])
 
