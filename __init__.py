@@ -243,6 +243,11 @@ def find_test(post_id, user_id):
 		print e
 		return None
 
+def create_alert(msg, alert):
+	return ('<div class="alert alert-{}">{}<a href="" class="close" ' +
+	'data-dismiss="alert">&times;</a></div>').format(alert, msg)
+
+# decorator function
 def login_required(f):
 	@wraps(f)
 	def decorated_function(*args, **kwargs):
@@ -326,21 +331,21 @@ def register():
 
 		# check if 2 passwords match
 		if password != verify:
-			flash('Passwords do not match')
+			flash(create_alert("Password's don't match", "danger"))
 			return redirect('/register')
 
 		# check if password is not blank or below 8 characters
 		password = valid_password(password)
 
 		if not username:
-			flash('Username is not valid')
+			flash(create_alert("Username is not valid", "danger"))
 		if not password:
-			flash('Password is not valid')
+			flash(create_alert("Password is not valid", "danger"))
 		if not email:
-			flash('Email is not valid')
+			flash(create_alert("Email is not valid", "danger"))
 
 		if getUserByEmail(email):
-			flash('Another user has registered with that email, please use another one')
+			flash(create_alert("Another user has registered with that email, please use another one", "danger"))
 			return redirect('/register')
 
 		if username and valid_email(email) and password:
@@ -360,8 +365,8 @@ def register():
 				session.commit()
 				token = generate_confirmation_token(email, secret('key'))
 				send_confirmation_token(token, email)
-				flash('Successfully registered, please go to your email account and' +
-				' to confirm, before logging in')
+				flash(create_alert('Please go to your email account' +
+				' to confirm', 'success'))
 				return redirect('/login')
 			except Exception as e:
 				print e
@@ -387,7 +392,7 @@ def confirm(token):
 			user.confirmed = True
 			session.add(user)
 			session.commit()
-			flash('Confirmation successful, Please log in')
+			flash(create_alert('Confirmation successful, Please log in','success'))
 			return redirect('/login')
 	flash('Error confirming')
 	return render_template('error.html')
@@ -419,6 +424,7 @@ def forgotPassword(token):
 			mail.send(msg)
 			return render_template('forgotpassword_link_sent.html', email = email)
 		else:
+			flash('That email does not exist in our system')
 			return render_template('error.html')
 	if token == '0':
 		return render_template('forgot.html')
@@ -438,7 +444,7 @@ def resetPassword():
 				user.password = hashpw(password.encode('utf-8'), gensalt())
 				session.add(user)
 				session.commit()
-				flash('Password changed, please log in with your new password')
+				flash(create_alert('Password changed, please log in with your new password','success'))
 				return redirect('/login')
 			except Exception as e:
 				print(e)
@@ -463,14 +469,14 @@ def mconnect():
 			login_session['username'] = user.username
 			login_session['picture'] = user.picture
 			login_session['email'] = user.email
-			flash('User logged in as {}'.format(user.username))
+			flash(create_alert('User logged in as {}'.format(user.username),'success'))
 			return redirect('/')
 		else:
-			flash('Username / Password not valid or' +
-			 ' User has not confirmed his email')
+			flash(create_alert('Username / Password not valid or' +
+			 ' User has not confirmed his email','danger'))
 			return redirect(url_for('login'))
 	except:
-		flash('Username / Password not valid')
+		flash(create_alert('Username / Password not valid','danger'))
 		return redirect(url_for('login'))
 
 
@@ -614,7 +620,7 @@ def gdisconnect():
 				'user_id']
 			for s in session_list:
 				del login_session[s]
-			flash('Logged out using Google+')
+			flash(create_alert('Logged out using Google+','success'))
 			return redirect(url_for('login'))
 		else:
 			return respond('Failed to revoke token for given user.', 404)
@@ -634,7 +640,7 @@ def gdisconnect():
 			'access_token']
 		for s in session_list:
 			del login_session[s]
-		flash('Logged out using Facebook')
+		flash(create_alert('Logged out using Facebook','success'))
 		return redirect(url_for('login'))
 
 	elif login_session['provider'] == 'mindwelder':
@@ -645,7 +651,7 @@ def gdisconnect():
 			'picture']
 		for s in session_list:
 			del login_session[s]
-		flash('Logged out')
+		flash(create_alert('Logged out','success'))
 		return redirect(url_for('login'))
 
 	else:
@@ -659,7 +665,7 @@ def userSettings():
 		user = getUserByEmail(login_session['email'])
 	except Exception as e:
 		print(e)
-		flash('Error: {}'.format(e))
+		flash(e)
 		return render_template('error.html')
 	if request.method == 'POST':
 		user.username = request.form['username']
@@ -667,7 +673,7 @@ def userSettings():
 		user.picture = request.form['picture'] or '/static/images/generic.png'
 		session.add(user)
 		session.commit()
-		flash('Successfully edited user settings')
+		flash(create_alert('Successfully edited user settings','success'))
 		return redirect(url_for('showFront'))
 
 	# GET method
@@ -681,7 +687,7 @@ def deleteUser():
 		user = getUserByEmail(login_session['email'])
 	except Exception as e:
 		print(e)
-		flash('Error: {}'.format(e))
+		flash(e)
 		return render_template('error.html')
 	if request.method == 'POST':
 		session.delete(user)
@@ -733,7 +739,7 @@ def addPost():
 							session.commit()
 				except Exception as e:
 					print e
-					flash('Error in saving keywords')
+					flash(create_alert('Error in saving keywords','danger'))
 				return redirect(url_for('showPost',
 					post_id = post.id))
 			else:
@@ -741,7 +747,7 @@ def addPost():
 				if request.form['origin'] == 'html':
 					# html edit status
 					url = 'editpost_html.html'
-				flash('Title and Content must not be empty')
+				flash(create_alert('Title and Content must not be empty','danger'))
 				return render_template(url,
 					user_logged = user,
 					post = None
@@ -925,7 +931,7 @@ def editPost(post_id):
 					session.commit()
 			except Exception as e:
 				print e
-				flash('Title and Content cannot be empty')
+				flash(create_alert('Title and Content cannot be empty','danger'))
 				return redirect(url_for('editPost', post_id = post.id))
 
 			# get all previous keywords, get new keywords, if keywords
@@ -952,7 +958,7 @@ def editPost(post_id):
 						session.commit()
 			except Exception as e:
 				print e
-				flash('Error saving keywords')
+				flash(create_alert('Error saving keywords','danger'))
 			return redirect(url_for('showPost', post_id = post_id))
 
 		# GET method
@@ -1036,7 +1042,7 @@ def likePost(post_id):
 	user = find_logged_user()
 	like = find_like(post_id)
 	if like:
-		flash('Cannot like a post more than once')
+		flash(create_alert('Cannot like a post more than once','danger'))
 		return redirect('/showpost/%s#likes' % post_id)
 	else:
 		like = Like(post_id = post_id, user_id = user.id)
