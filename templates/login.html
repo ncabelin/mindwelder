@@ -146,7 +146,11 @@ function signInCallback(authResult) {
 				} else {
 					$('#result').html('Failed to make a server-side call. Check your configuration and console.');
 				}
-			}
+			},
+      error: function() {
+        $('#modalBtn').trigger('click');
+        $('#result').html("That account's associated email is already in use");
+      }
 		});
 	}
 }

@@ -90,6 +90,7 @@ def createUser(login_session, account):
 				email = login_session['email'],
 				account = account,
 				confirmed = True,
+				registered_on = datetime.datetime.now(),
 				picture = login_session['picture'])
 			session.add(newUser)
 			session.commit()
@@ -531,12 +532,12 @@ def gconnect():
 	login_session['email'] = data['email']
 
 	# see if user exists by email
-	user_id = getUserID(login_session['email'])
-	if not user_id:
+	user = getUserByEmail(login_session['email'])
+	if not user:
 		user_id = createUser(login_session, 'google')
-		print(user_id)
-		if not user_id:
-			return respond("Email already exists", 401)
+	elif user.account != 'google':
+		return respond('Email already exists', 401)
+	user_id = user.id
 	login_session['user_id'] = user_id
 
 	return 'Logging in as ' + login_session['username'] + '...'
