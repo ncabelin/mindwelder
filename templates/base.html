@@ -106,6 +106,10 @@ ga('send', 'pageview');
 
 $(function() {
     $('.item').matchHeight();
+    $('#submit').click(function() {
+      $('#modalRegisterBtn').trigger('click');
+      $('#loading').removeClass('hidden');
+    });
 });
 </script>
 </html>

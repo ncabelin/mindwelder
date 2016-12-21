@@ -111,6 +111,7 @@ function sendTokenToServer() {
 					    <div class="modal-content">
 					      <div class="modal-body">
 					        <h4 class="text-center"><span id="result"></span></h4>
+                  <div id="loading" class="text-center center-block"><img src="/static/images/6.gif" /></div>
 					      </div>
 					    </div>
 					  </div>
@@ -152,8 +153,10 @@ function signInCallback(authResult) {
 					$('#result').html('Failed to make a server-side call. Check your configuration and console.');
 				}
 			},
-      error: function() {
+      error: function(e) {
+        console.log(e);
         $('#modalBtn').trigger('click');
+        $('#loading').addClass('hidden');
         $('#result').html("That account's associated email is already in use");
       }
 		});

@@ -35,9 +35,23 @@
           <input type="password" name="verify" id="verify" class="form-control" placeholder="Verify Password">
         </div>
         <hr>
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="submit" class="btn btn-success" id="submit">Submit</button>
         <a href="/" class="btn btn-primary">Cancel</a>
       </form>
+      <button type="button" id="modalRegisterBtn" class="hidden" data-toggle="modal" data-target="#modalRegister">
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="modalRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <h4 class="text-center">Please wait...</h4>
+              <div id="loading" class="hidden text-center center-block"><img src="/static/images/6.gif" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
       <p class="text-center">You will be asked to confirm your email before you can log in</p>
     </div>
   </div>

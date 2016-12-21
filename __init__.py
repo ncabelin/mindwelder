@@ -1,7 +1,5 @@
 # TO DO:
-# add forgot password, use gmail to send activate
 # add flask recaptcha during registration
-# add post setting to private, public
 # add list of tests taken in profile settings
 # add title icon
 
@@ -534,11 +532,12 @@ def gconnect():
 	# see if user exists by email
 	user = getUserByEmail(login_session['email'])
 	if not user:
-		createUser(login_session, 'google')
+		user_id = createUser(login_session, 'google')
 	elif user.account != 'google':
 		return respond('Email already exists', 401)
 	else:
-		login_session['user_id'] = user.id
+		user_id = user.id
+	login_session['user_id'] = user_id
 
 	return 'Logging in as ' + login_session['username'] + '...'
 
@@ -589,13 +588,14 @@ def fbconnect():
 	# see if user exists by email
 	user = getUserByEmail(login_session['email'])
 	if not user:
-		createUser(login_session, 'facebook')
+		user_id = createUser(login_session, 'facebook')
 	elif user.account != 'facebook':
 		return respond('Email already exists', 401)
 	else:
-		login_session['user_id'] = user.id
+		user_id = user.id
+	login_session['user_id'] = user_id
 
-	return ('You are now logged in as %s' % login_session['username'])
+	return ('Logging in as %s' % login_session['username'])
 
 @app.route('/gdisconnect', methods = ['GET', 'POST'])
 def gdisconnect():
