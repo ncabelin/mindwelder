@@ -13,7 +13,7 @@
         {% endif %}
       {% endwith %}
       <form method="POST" id="signupform" class="form-box" action="{{ url_for('register') }}">
-        <h1 class="text-center">Register</h1>
+        <h3 class="text-center">Signup</h3>
         <div class="form-group">
           <label for="name" class="sr-only">Username :</label>
           <input type="text" name="username" id="name" class="form-control" value="{{ username }}" placeholder="Username - first and last name">
@@ -52,7 +52,7 @@
           </div>
         </div>
       </div>
-      <p class="text-center">You will be asked to confirm your email before you can log in</p>
+      <p class="text-center"><strong>Note : </strong>You will be asked to confirm your email before you can log in</p>
     </div>
   </div>
 </div>

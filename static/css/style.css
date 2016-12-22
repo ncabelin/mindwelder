@@ -264,6 +264,7 @@ hr {
   height: 50px;
   width: 50px;
   border-radius: 50%;
+  padding: 0;
 }
 
 .question {
@@ -348,6 +349,19 @@ a:hover {
 .author:hover {
   color: #bb4f1a;
   text-decoration: underline;
+}
+
+.keywords:hover {
+  text-decoration: underline;
+}
+
+.query, input#word.form-control.query:focus {
+  border: none !important;
+  outline: none !important;
+}
+
+div.input-group.item.search {
+  border-radius: 30px;
 }
 
 @media screen and (max-width:750px) {

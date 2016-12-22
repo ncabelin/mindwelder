@@ -31,11 +31,11 @@
   <div class="row" id="posts">
     <div class="col-md-8">
     <form method="POST" action="{{ url_for('query') }}" id="keyword_query">
-      <div class="input-group item">
+      <div class="input-group item search">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="submit" id="query"><i class="fa fa-search" aria-hidden="true"></i></button>
+          <button class="btn btn-default query" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
         </span>
-        <input type="text" class="form-control" placeholder="Search..." name="word" id="word">
+        <input type="text" class="form-control query" placeholder="Search Posts..." name="word" id="word">
       </div>
     </form>
       {% for post in posts %}
@@ -62,7 +62,7 @@
       <div class="item">
         <h3 class="text-center post_item">Tags / Keywords</h3>
         {% for k in keywords %}
-          <a href="/showpostsbykey/{{ k.word }}" class="btn btn-primary btn-xs">{{ k.word }}</a>
+          <a href="/showpostsbykey/{{ k.word }}" class="keywords"> {{ k.word }}</a><span>&nbsp;&nbsp;</span>
         {% endfor %}
       </div>
     </div>

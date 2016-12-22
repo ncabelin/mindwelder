@@ -28,10 +28,10 @@
 
         <!-- Show filtered content -->
         <div class="blog_post">{{ post.post_content | markdown('readonly') | safe }}<hr></div>
-        <div class="keywords">Tags / Keywords :
+        <div>Tags / Keywords :
         	{% for k in keywords %}
         		{% if k %}
-        			<a href="/showpostsbykey/{{ k.word }}" class="btn btn-primary btn-xs">{{ k.word }}</a>
+        			<a href="/showpostsbykey/{{ k.word }}" class="keywords">{{ k.word }}</a>
         		{% endif %}
         	{% endfor %}
         </div><br>

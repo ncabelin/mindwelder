@@ -135,7 +135,7 @@
         <div class="keywords">Tags / Keywords :
         	{% for k in keywords %}
         		{% if k %}
-        			<a href="/showpostsbykey/{{ k.word }}" class="btn btn-primary btn-xs">{{ k.word }}</a>
+        			<a href="/showpostsbykey/{{ k.word }}" class="keyword">{{ k.word }}</a>&nbsp;&nbsp;
         		{% endif %}
         	{% endfor %}
         </div><br>
@@ -144,7 +144,7 @@
 	      {% with messages = get_flashed_messages() %}
 	      	{% if messages %}
 	      		{% for m in messages %}
-	      			<br><br><div class="alert alert-danger">{{ m }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+	      			{{ m | safe }}
 	      		{% endfor %}
 	      	{% endif %}
 	      {% endwith %}
