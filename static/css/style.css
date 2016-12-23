@@ -27,7 +27,7 @@ a {
 }
 
 .boxed {
-  border-radius: 0;
+  border-radius: 5px;
 }
 
 .navbar-header, .navbar-default .navbar-collapse, .navbar-default .navbar-form {
