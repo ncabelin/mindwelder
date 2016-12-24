@@ -16,7 +16,9 @@ Have you ever wanted to grab a post and quickly try to memorize it or quiz yours
 
 ## Mind map of Mindwelder.com
 ![Mind map](https://cloud.githubusercontent.com/assets/15892944/21464469/e5b3cf9e-c932-11e6-8447-a3841fe6d88b.png)
-NOTE : The green nodes indicate Publicly viewed pages, the gray nodes indicate Private (User-logged in) pages.
+
+
+* NOTE : The green nodes indicate Publicly viewed pages, the gray nodes indicate Private (User-logged in) pages.
 
 ## Code Features
 1. Oauth2.0 Auth and Authorization with Google+, Facebook along with app User registration with e-mail confirmation / forgot password feature
