@@ -14,6 +14,10 @@ The app is live at https://www.mindwelder.com
 
 Have you ever wanted to grab a post and quickly try to memorize it or quiz yourself on it? You can do that with this application. Paste or write anything then 'underline' it to make it an answer. Every answer when viewed on 'test mode' will show up hidden but marked with an underline, when you click on it, that section will be displayed, and marked as a correct answer. Click it again to hide it, if you want to test yourself again. It's that simple. You can save your progress too and pick up where you left off afterwards.
 
+## Mind map of Mindwelder.com
+![Mind map](https://cloud.githubusercontent.com/assets/15892944/21464469/e5b3cf9e-c932-11e6-8447-a3841fe6d88b.png)
+
+
 ## Code Features
 1. Oauth2.0 Auth and Authorization with Google+, Facebook along with own User registration
 2. Flask library
