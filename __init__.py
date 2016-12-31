@@ -1052,6 +1052,19 @@ def likePost(post_id):
 		session.commit()
 		return redirect('/showpost/%s#likes' % post_id)
 
+@app.route('/likepost/<int:post_id>/json', methods=['POST'])
+@login_required
+def likePostJson(post_id):
+	user = find_logged_user()
+	like = find_like(post_id)
+	if like:
+		return respond('Cannot like post more than once', 404)
+	else:
+		like = Like(post_id = post_id, user_id = user.id)
+		session.add(like)
+		session.commit()
+		return respond('Success', 200)
+
 @app.route('/addcomment/<int:post_id>', methods=['POST'])
 @login_required
 def addComment(post_id):
