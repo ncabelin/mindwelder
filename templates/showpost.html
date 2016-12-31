@@ -38,9 +38,9 @@
 
       <div id="likes">
 	      {% if user_logged: %}
-	        <form method="POST" action="{{ url_for('likePost', post_id = post.id) }}" style="display: inline;">
-	          <button type="submit" class="btn btn-success circle">{{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up"></i></button>
+	        <form method="POST" action="{{ url_for('likePost', post_id = post.id) }}" style="display: inline;" id="liker">
 	        </form>
+	        <button type="submit" class="btn btn-success circle" id="likeBtn"><span id="likeCounter">{{ post.id | find_likes_sum }}</span> <i class="fa fa-thumbs-o-up"></i></button>
 	      {% else: %}
 	        {{ post.id | find_likes_sum }} <i class="fa fa-thumbs-o-up fa-lg"></i> Likes
 	      {% endif %}
@@ -57,6 +57,7 @@
 	        <br><br>
 	        <div class="alert alert-danger">{{ message }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
 	      {% endif %}
+	      <div id="errorMsg"></div>
 		  </div>
 
 
@@ -119,4 +120,25 @@
     <div class="col-md-2">
     </div>
   </div>
+{% block scripts %}
+ <script>
+ $(function() {
+ 	$('#likeBtn').click(function(x) {
+	 	var liker = $('#liker');
+	 	$.ajax(
+		 	{
+		 		url: '{{ url_for('likePostJson', post_id = post.id) }}',
+		 		method: 'POST'
+		}).done(function(result) {
+			// liked post, increment number in like counter
+			var current_count = parseInt($('#likeCounter').text());
+			$('#likeCounter').html(current_count + 1);
+		}).fail(function(error) {
+			// post was already liked, display error msg
+			$('#errorMsg').html('<br><br><div class="alert alert-danger">' + error.responseJSON + '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>')
+		});
+	 });
+ });
+ </script>
+ {% endblock %}
 {% endblock %}
