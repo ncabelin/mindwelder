@@ -52,7 +52,6 @@ var test = function(post_id, user_id) {
 	if (totalAnswers === 0) {
 		control.hide();
 		message.html('<h1>No Tests found</h1>');
-		console.log('tangina');
 		return;
 	}
 	total.text(totalAnswers);
@@ -65,7 +64,7 @@ var test = function(post_id, user_id) {
 				var totalDbAnswers = results.length;
 				db_exists = true;
 				var similar = true;
-
+				console.log(totalDbAnswers);
 				// check if db and present tests length are =
 				if (totalDbAnswers == totalAnswers) {
 					// check each
@@ -97,6 +96,7 @@ var test = function(post_id, user_id) {
 					});
 				} else {
 					// delete all prevous database answers
+					deleteTest();
 				}
 			}
 	}).fail(function() {
