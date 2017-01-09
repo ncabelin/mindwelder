@@ -21,8 +21,8 @@ Have you ever wanted to grab a post and quickly try to memorize it or quiz yours
 * NOTE : The green nodes indicate Publicly viewed pages, the gray nodes indicate Private (User-logged in) pages.
 
 ## Code Features
-1. Oauth2.0 Auth and Authorization with Google+, Facebook along with app User registration with e-mail confirmation / forgot password feature
-2. Flask micro-framework
+1. jQuery
+2. jQuery
 3. PostgreSQL database
 4. SQLAlchemy ORM
 5. jQuery for AJAX calls
