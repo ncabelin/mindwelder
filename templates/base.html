@@ -93,7 +93,7 @@
 <!-- jQuery Match height -->
 <script src="/static/js/jquery.matchHeight.js"></script>
 
-<!-- Latest compiled and minified JavaScript -->
+<!-- Latest compiled and minified Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename = 'js/parser.js') }}"></script>
 <script>
@@ -104,13 +104,5 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 
 ga('create', 'UA-85108445-1', 'auto');
 ga('send', 'pageview');
-
-$(function() {
-    $('.item').matchHeight();
-    $('#submit').click(function() {
-      $('#modalRegisterBtn').trigger('click');
-      $('#loading').removeClass('hidden');
-    });
-});
 </script>
 </html>

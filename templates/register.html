@@ -56,4 +56,12 @@
     </div>
   </div>
 </div>
+<script>
+$(function() {
+    $('#submit').click(function() {
+      $('#modalRegisterBtn').trigger('click');
+      $('#loading').removeClass('hidden');
+    });
+});
+</script>
 {% endblock %}

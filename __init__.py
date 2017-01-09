@@ -326,7 +326,6 @@ def register():
 		email = request.form['email']
 		password = request.form['password']
 		verify = request.form['verify']
-		print 'wtf'
 
 		# check if 2 passwords match
 		if password != verify:
