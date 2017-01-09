@@ -20,6 +20,12 @@ a {
   font-size: 16px;
   line-height: 24px;
   margin-top: 10px;
+  color: #666565;
+}
+
+.blog_post u {
+  color: #2e6da4;
+  text-decoration: none;
 }
 
 .navigation {
@@ -274,7 +280,7 @@ hr {
 .answer {
   color: white;
   background-color: white;
-  border-bottom: 1px solid #ff5300;
+  border-bottom: 1px solid #2e6da4;
 }
 
 .answer:hover {
@@ -282,7 +288,7 @@ hr {
 }
 
 .answerShow {
-  color: #47a947;
+  color: #2e6da4;
   border-bottom: 0;
 }
 
@@ -331,11 +337,6 @@ div .item {
 footer {
   background-color: #2e6da4;
   color: white;
-}
-
-u {
-  text-decoration: none;
-  color: #47a947;
 }
 
 a:hover {
