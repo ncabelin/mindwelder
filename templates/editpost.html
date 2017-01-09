@@ -26,7 +26,7 @@
         </div>
       {% endif %}
       <form method="POST" class="form-box" id="editForm" action="{% if edit %}{{ url_for('editPost', post_id = post.id) }}{% else %}/addpost{% endif %}">
-        <h4 class="text-center">Rich Text Editor {% if edit %}(edit):{% else %}(add):{% endif %}</h4>
+        <h4 class="text-center"><b>Rich Text Editor</b> {% if edit %}(edit):{% else %}(add):{% endif %}</h4>
         <div class="form-group">
           <input type="text" name="title" id="title" class="form-control" maxlength="120" value="{{ post.title }}" style="font-size: 1.3em;" placeholder="Title :">
         </div>
@@ -86,6 +86,8 @@
     </div>
   </div>
   </div>
+<script src="/static/js/bootstrap-wysiwyg.js"></script>
+<script src="/static/js/jquery.hotkeys.js"></script>
 <script>
 $(function() {
     $('#editor').wysiwyg();
