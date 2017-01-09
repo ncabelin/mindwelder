@@ -8,6 +8,10 @@ h1,h2, h3 {
   font-family: 'Raleway', sans-serif;
 }
 
+h4 {
+  line-height: 1.4;
+}
+
 p {
   font-weight: 300;
 }
