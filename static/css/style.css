@@ -94,6 +94,11 @@ a {
   color: white;
 }
 
+.dropdown-menu li a:hover {
+  background-color: #4e7fa9;
+  color: white;
+}
+
 .btn-group .btn {
   border: 1px solid #ccc;
   margin-bottom: 10px;
@@ -166,6 +171,7 @@ input.span2 {
 
 .btn-front {
   color: #e9ebee;
+  border-color: white;
 }
 
 .btn-front:hover {
