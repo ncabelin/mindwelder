@@ -156,8 +156,10 @@
 	<div class="container">
     <div class="test-control">
   		<h3>Score : <span id="score"></span> / <span id="total"></span></h3>
-  		<a class="btn btn-success" id="save">Save Test</a>
-  		<a class="btn btn-danger" id="reset">Reset Test</a>
+      {% if user_logged %}
+    		<a class="btn btn-success" id="save">Save Test</a>
+    		<a class="btn btn-danger" id="reset">Reset Test</a>
+      {% endif %}
     </div>
     <div class="test-message"></div>
 	</div>
@@ -182,7 +184,7 @@ ga('send', 'pageview');
 <script src="/static/js/test.js"></script>
 <script>
 $(function() {
-  test({{ post.id }}, {{ user_logged.id }})
+  test({{ post.id }}, {{ user_logged_id }})
 });
 </script>
 </html>

@@ -56,54 +56,60 @@ var test = function(post_id, user_id) {
 	}
 	total.text(totalAnswers);
 
-	$.ajax({
-			url: '/showpost_test/' + post_id + '/json'
-		}).done(function(data) {
-			var results = data.Answers;
-			if (results) {
-				var totalDbAnswers = results.length;
-				db_exists = true;
-				var similar = true;
-				console.log(totalDbAnswers);
-				// check if db and present tests length are =
-				if (totalDbAnswers == totalAnswers) {
-					// check each
-					results.forEach(function(x) {
-						var a = x.answer.split('##').slice(1);
-						var db = x.answer.split('##')[0];
-						var id = a[0].split(',')[0];
-						var val_arr = a[0].split(',').slice(1);
-						val_arr.unshift(db);
-						db_answers[id] = val_arr;
-						// check if current post has the same value as
-						// the json served
-						if (answers[id][2] !== val_arr[3]) {
-							similar = false;
-						}
-					});
-				} else {
-					similar = false;
+	if (user_id != 0){
+		$.ajax({
+				url: '/showpost_test/' + post_id + '/json'
+			}).done(function(data) {
+				var results = data.Answers;
+				if (results) {
+					var totalDbAnswers = results.length;
+					db_exists = true;
+					var similar = true;
+					console.log(totalDbAnswers);
+					// check if db and present tests length are =
+					if (totalDbAnswers == totalAnswers) {
+						// check each
+						results.forEach(function(x) {
+							var a = x.answer.split('##').slice(1);
+							var db = x.answer.split('##')[0];
+							var id = a[0].split(',')[0];
+							var val_arr = a[0].split(',').slice(1);
+							val_arr.unshift(db);
+							db_answers[id] = val_arr;
+							// check if current post has the same value as
+							// the json served
+							if (answers[id][2] !== val_arr[3]) {
+								similar = false;
+							}
+						});
+					} else {
+						similar = false;
+					}
+					// change attributes and display previous answers marked correct
+					if (similar) {
+						$.each(db_answers, function(k, v) {
+							if (v[2] == '1') {
+								$('#' + k).toggleClass('answerShow');
+								answers[k][1] = '1';
+								correct.push(k);
+								score.text(correct.length);
+							}
+						});
+					} else {
+						// delete all prevous database answers
+						deleteTest();
+					}
 				}
-				// change attributes and display previous answers marked correct
-				if (similar) {
-					$.each(db_answers, function(k, v) {
-						if (v[2] == '1') {
-							$('#' + k).toggleClass('answerShow');
-							answers[k][1] = '1';
-							correct.push(k);
-							score.text(correct.length);
-						}
-					});
-				} else {
-					// delete all prevous database answers
-					deleteTest();
-				}
+		}).fail(function() {
+			if (user_id != 0) {
+				$('#result').html('You have started a new Test, click Save Test to save your progress.');
+				$('#modalBtn').trigger('click');
 			}
-	}).fail(function() {
-		$('#result').html('You have started a new Test, click Save Test to save your progress.');
-		$('#modalBtn').trigger('click');
-		score.text(correct.length);
-	});
+			score.text(correct.length);
+		});
+	} else {
+		$('.test-message').html('Must be logged in to save test progress');
+	}
 
 	answer.click(function() {
 		// toggle CSS visibility

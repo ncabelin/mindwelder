@@ -784,37 +784,42 @@ def showPost(post_id):
 		return render_template('error.html')
 
 @app.route('/showpost_test/<int:post_id>', methods=['GET'])
-@login_required
 def showPostTest(post_id):
 	# this post page render doesn't display comments
 	# but displays a counter for answers marked as correct
 	post = find_post(post_id)
 	keywords = find_keywords(post_id)
-	user_logged = find_logged_user()
+	user_logged = find_logged_user() or None
+	if not user_logged:
+		user_id = 0
+	else:
+		user_id = user_logged.id
 	if post:
 		return render_template('showpost_test.html',
 			post = post,
 			keywords = keywords,
-			user_logged = user_logged)
+			user_logged = user_logged,
+			user_logged_id = user_id)
 	else:
 		flash('Post not found')
 		return render_template('error.html')
 
 @app.route('/showpost_test/<int:post_id>/json', methods=['GET'])
-@login_required
 def showPostTestJson(post_id):
 	user = find_logged_user()
-	answers = find_test(post_id, user.id)
-	if answers:
-		return jsonify(Answers = [i.serialize for i in answers])
-	else:
-		err = {
-			'status': 404,
-			'message': 'Error: Not Found'
-		}
-		resp = jsonify(err)
-		resp.status_code = 404
-		return resp
+	if user:
+		answers = find_test(post_id, user.id)
+		if answers:
+			return jsonify(Answers = [i.serialize for i in answers])
+		else:
+			err = {
+				'status': 404,
+				'message': 'Error: Not Found'
+			}
+			resp = jsonify(err)
+			resp.status_code = 404
+			return resp
+	return respond('Not logged in', 401)
 
 @app.route('/savetest/<int:post_id>/<int:user_id>', methods=['POST'])
 @login_required

@@ -51,9 +51,7 @@
         <hr>
         <div>
           <a href="{{ url_for('showPost', post_id = post.id)}}" class="btn btn-primary btn-sm">read</a>
-          {% if user_logged %}
-            <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-primary btn-sm">test</a>
-          {% endif %}
+            <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-primary btn-sm">take test</a>
         </div>
       </div>
       {% endfor %}
