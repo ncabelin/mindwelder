@@ -785,10 +785,9 @@ def showPost(post_id):
 
 @app.route('/showpost_test/<int:post_id>', methods=['GET'])
 def showPostTest(post_id):
-	# this post page render doesn't display comments
+	# this post page render doesn't display comments, and keywords
 	# but displays a counter for answers marked as correct
 	post = find_post(post_id)
-	keywords = find_keywords(post_id)
 	user_logged = find_logged_user() or None
 	if not user_logged:
 		user_id = 0
@@ -797,7 +796,6 @@ def showPostTest(post_id):
 	if post:
 		return render_template('showpost_test.html',
 			post = post,
-			keywords = keywords,
 			user_logged = user_logged,
 			user_logged_id = user_id)
 	else:

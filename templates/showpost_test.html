@@ -132,13 +132,6 @@
 
         <!-- Show filtered content -->
         <div class="blog_post">{{ post.post_content | markdown('test') | safe }}<hr></div>
-        <div class="keywords">Tags / Keywords :
-        	{% for k in keywords %}
-        		{% if k %}
-        			<a href="/showpostsbykey/{{ k.word }}" class="keyword">{{ k.word }}</a>&nbsp;&nbsp;
-        		{% endif %}
-        	{% endfor %}
-        </div><br>
 
       <div>
 	      {% with messages = get_flashed_messages() %}
