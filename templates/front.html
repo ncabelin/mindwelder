@@ -6,8 +6,17 @@
       <h1 class="title">Mindwelder</h1>
       <p>Create Blogs with Learning, Quizzing features</p><br><br>
       {% if user_logged %}
-        <a href="{{ url_for('showUser', user_id = user_logged.id) }}" class="btn btn-primary btn-lg btn-front white">My Posts</a>
-        <a href="/addpost" class="btn btn-success btn-lg btn-front white">Add Post</a>
+        <a href="{{ url_for('showUser', user_id = user_logged.id) }}" class="btn btn-primary btn-lg btn-front white">MY POSTS</a>
+        <span class="dropdown">
+          <button class="btn btn-primary btn-lg btn-front white dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            ADD POST
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="/addpost">Add Post <small>(Rich Text)</small></a></li>
+            <li><a href="/addpost?mode=html">Add Post <small>(HTML)</small></a></li>
+          </ul>
+        </span>
       {% else %}
         <a href="/help" class="btn btn-primary btn-lg white btn-front">How it Works</a>
         <a href="/register" class="btn btn-primary btn-lg white btn-front">Signup</a>

@@ -9,7 +9,16 @@
             <h3>All Posts by <span class="author">{{ user.username }}</span></h3>
             {% if user.id == user_logged.id %}
               <!-- Check if viewed user is the same as logged in user -->
-              <a href="/addpost" class="btn btn-success">Add new post</a>
+              <span class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  ADD POST
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li><a href="/addpost">Add Post <small>(Rich Text)</small></a></li>
+                  <li><a href="/addpost?mode=html">Add Post <small>(HTML)</small></a></li>
+                </ul>
+              </span>
             {% endif %}
           </div>
         </div>
@@ -21,12 +30,23 @@
                 <h2><a href="{{ url_for('showPost', post_id = post.id) }}">{{ post.title }}</a></h2>
                 <h4>{{ post.description }}</h4>
                 <h6>{{ post.id | find_likes_sum }} likes, added - {{ post.date_added | standard_date }}</h6>
-                <a href="{{ url_for('showPost', post_id = post.id) }}" class="btn btn-primary btn-xs">read</a>
+                <a href="{{ url_for('showPost', post_id = post.id) }}" class="btn btn-primary">READ</a>
                 {% if post.user_id == user_logged.id %}
                     <!-- Check if viewed user is the same as logged in user -->
-                    <a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-primary btn-xs">edit</a>
-                    <a class="btn btn-danger btn-xs" href="/askdelete/{{ post.id }}?mode=html">delete</a>
-                    <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-xs">test</a>
+                    <span class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        EDIT
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="{{ url_for('editPost', post_id = post.id) }}">Rich Text Editor</a></li>
+                        <li><a href="/editpost/{{ post.id }}?mode=html">HTML Editor</a></li>
+                        <li><a href="/askdelete/{{ post.id }}?mode=html">Delete</a></li>
+                      </ul>
+                    </span>
+                    
+                    
+                    <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success">TEST</a>
                 {% endif %}
                 {% if post.picture %}
                   <div class="row">

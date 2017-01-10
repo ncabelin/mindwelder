@@ -13,12 +13,19 @@
 
         {% if user_logged.id == post.user_id %} &nbsp;
           <!-- If the user is logged in and the owner of the post being viewed then the edit button will be displayed -->
-          <span><a href="{{ url_for('editPost', post_id = post.id) }}" class="btn btn-primary btn-sm">Rich Text Editor</a>
-          <a href="/editpost/{{ post.id }}?mode=html" class="btn btn-primary btn-sm">HTML Editor</a>
-          <a class="btn btn-danger btn-sm" href="/askdelete/{{ post.id }}?mode=html">Delete</a>
-          </span>
+          <div class="dropdown pull-right">
+					  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					    EDIT
+					    <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+					    <li><a href="{{ url_for('editPost', post_id = post.id) }}">Rich Text Editor</a></li>
+					    <li><a href="/editpost/{{ post.id }}?mode=html">HTML Editor</a></li>
+					    <li><a href="/askdelete/{{ post.id }}?mode=html">Delete</a></li>
+					  </ul>
+					</div>
         {% endif %}
-        <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-sm">Take Test</a>
+        <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-sm">TEST</a>
 
         {% if post.picture %}</h6>
           <!-- Determine if post has a picture link -->
