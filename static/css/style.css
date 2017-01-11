@@ -5,11 +5,21 @@ body {
 }
 
 h1,h2, h3 {
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Merriweather', serif;
+}
+
+h1.title {
+  letter-spacing: 2px;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+  color: white;
+  background-color: #2282a7;
 }
 
 h4 {
   line-height: 1.4;
+  font-size: 22px;
 }
 
 p {
@@ -21,7 +31,7 @@ a {
 }
 
 .blog_post {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 24px;
   margin-top: 10px;
   color: #666565;
@@ -83,6 +93,7 @@ a {
 .form-control {
   border-radius: 0;
   box-shadow: none;
+  padding: 24px;
 }
 
 #editor:focus, .form-control:focus {
@@ -97,6 +108,55 @@ a {
 
 .dropdown-menu li a:hover {
   background-color: #4e7fa9;
+  color: white;
+}
+
+.btn-info:hover {
+
+}
+
+.btn-danger:hover {
+
+}
+
+div.dropdown-menu.input-append {
+  padding: 5px;
+}
+
+input.span2 {
+  margin: 5px;
+}
+
+.dropdown-menu li a {
+  cursor: pointer;
+}
+
+/* Buttons */
+
+.btn-primary {
+  background-color: rgba(0,0,0,0);
+  color: #2e6da4;
+  border: 1px solid rgba(0,0,0,0);
+}
+
+.btn-success {
+  background-color: rgba(0,0,0,0);
+  color: #277b27;
+  border: 1px solid rgba(0,0,0,0);
+}
+
+.btn-danger {
+  background-color: rgba(0,0,0,0);
+  color: #94221f;
+  border: 1px solid rgba(0,0,0,0);
+}
+
+.btn-front {
+  color: #e9ebee;
+  border-color: white;
+}
+
+.btn-front:hover {
   color: white;
 }
 
@@ -126,59 +186,6 @@ a {
   color: white;
 }
 
-.btn-info:hover {
-
-}
-
-.btn-danger:hover {
-
-}
-
-div.dropdown-menu.input-append {
-  padding: 5px;
-}
-
-input.span2 {
-  margin: 5px;
-}
-
-.dropdown-menu li a {
-  cursor: pointer;
-}
-
-.btn-primary {
-  background-color: rgba(0,0,0,0);
-  color: #2e6da4;
-  border: 1px solid #2e6da4;
-}
-
-.btn-success {
-  background-color: rgba(0,0,0,0);
-  color: #277b27;
-  border: 1px solid #277b27;
-}
-
-.btn-danger {
-  background-color: rgba(0,0,0,0);
-  color: #94221f;
-  border: 1px solid #94221f;
-}
-
-/*.btn-primary:hover, .btn-success:hover, .btn-danger:hover {
-  border: 1px solid #2e6da4;
-  background-color: rgba(0,0,0,0);
-  color: black;
-}*/
-
-.btn-front {
-  color: #e9ebee;
-  border-color: white;
-}
-
-.btn-front:hover {
-  color: white;
-}
-
 .alert {
   border-radius: 0;
 }
@@ -199,15 +206,23 @@ input.span2 {
   font-size: 14px;
 }
 
-.foreground {
+.cover {
   background: linear-gradient(
   rgba(0, 0, 0, 0.7),
   rgba(0, 0, 0, 0.7)),
   url(/static/images/welder.jpg) fixed center center no-repeat;
   background-size: cover;
   height: 300px;
+  width: 100%;
   color: white;
   padding: 30px;
+  display: table;
+}
+
+.cover-text {
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle
 }
 
 .foreground h1 {
@@ -386,9 +401,18 @@ div.input-group.item.search {
     margin: 5px;
   }
 
-  .foreground {
-    height: 400px;
+  .cover {
+    height: 200px;
     padding: 20px;
+  }
+
+  .navbar-default .navbar-nav .open .dropdown-menu>li>a {
+    color: #a7ccdb;
+  }
+
+  .navbar-default .navbar-nav .open .dropdown-menu>li>a:hover {
+    color: white;
+    background-color: transparent;
   }
 
   .form-box {

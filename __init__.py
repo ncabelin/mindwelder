@@ -1004,15 +1004,6 @@ def query():
 			return render_template('error.html',
 				user_logged = find_logged_user())
 
-@app.route('/askdelete/<int:post_id>', methods=['GET'])
-def askDelete(post_id):
-	mode = request.args.get('mode')
-	title = request.args.get('title')
-	return render_template('askdelete.html',
-		user_logged = find_logged_user(),
-		mode = mode or None,
-		post_id = post_id)
-
 @app.route('/deletepost/<int:post_id>', methods=['POST'])
 @login_required
 def deletePost(post_id):

@@ -25,7 +25,7 @@
 					  </ul>
 					</div>
         {% endif %}
-        <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-sm">TEST</a>
+        <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success pull-right" style="margin-right: 10px;">TEST</a>
 
         {% if post.picture %}</h6>
           <!-- Determine if post has a picture link -->
@@ -34,6 +34,7 @@
         {% endif %}
 
         <!-- Show filtered content -->
+        <hr>
         <div class="blog_post">{{ post.post_content | markdown('readonly') | safe }}<hr></div>
         <div>Tags / Keywords :
         	{% for k in keywords %}
