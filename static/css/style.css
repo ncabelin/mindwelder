@@ -57,6 +57,7 @@ a {
 
 .post_image {
   max-height: 300px;
+  margin-top: 15px;
 }
 
 .user_pic {
