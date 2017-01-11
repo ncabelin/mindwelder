@@ -3,7 +3,7 @@
 <div class="container-fluid">
   <div class="row foreground">
     <div class="col-md-12 text-center">
-      <h1 class="title">Mindwelder</h1>
+      <h1 class="title">Mindwelder Blogs</h1>
       <p>Create Blogs with Learning, Quizzing features</p><br><br>
       {% if user_logged %}
         <a href="{{ url_for('showUser', user_id = user_logged.id) }}" class="btn btn-primary btn-lg btn-front white">MY POSTS</a>
@@ -59,8 +59,8 @@
         <div>{{ post.description }}</div>
         <hr>
         <div>
-          <a href="{{ url_for('showPost', post_id = post.id)}}" class="btn btn-primary btn-sm">read</a>
-            <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-primary btn-sm">take test</a>
+          <a href="{{ url_for('showPost', post_id = post.id)}}" class="btn btn-primary btn-sm">READ</a>
+            <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-primary btn-sm">TEST</a>
         </div>
       </div>
       {% endfor %}

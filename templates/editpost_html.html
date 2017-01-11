@@ -39,7 +39,7 @@
         <input type="hidden" name="origin" value="html" class="hidden">
         <button type="submit" class="btn btn-primary">Save</button>
         {% if edit %}
-          <a class="btn btn-danger" href="/askdelete/{{ post.id }}?mode=html">Delete</a>
+          <a class="btn btn-danger" id="askdelete" data-toggle="modal" data-target="#myModal">Delete</a>
         {% else %}
           <a class="btn btn-danger" href="/">Cancel</a>
         {% endif %}
@@ -47,4 +47,40 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                  <h3>Are you sure you want to delete this post?</h3>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-postid="{{ post.id }}" id="deletepost">Delete</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+<script>
+$(function() {
+  $('#deletepost').click(function() {
+    var post_id = $('#deletepost').data('postid');
+    $.ajax({
+      url: '/deletepost/' + post_id,
+      method: 'POST',
+      dataType: 'json'
+    }).done(function(result) {
+      window.location.href = '/showuser/{{ user_logged.id }}?msg=Deleted';
+      console.log('done');
+    }).fail(function(e) {
+      alert('Error deleting, please try again');
+    });
+  });
+});
+</script>
 {% endblock %}

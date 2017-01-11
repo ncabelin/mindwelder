@@ -21,7 +21,7 @@
 					  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 					    <li><a href="{{ url_for('editPost', post_id = post.id) }}">Rich Text Editor</a></li>
 					    <li><a href="/editpost/{{ post.id }}?mode=html">HTML Editor</a></li>
-					    <li><a href="/askdelete/{{ post.id }}?mode=html">Delete</a></li>
+					    <li><a href="" id="delete">Delete</a></li>
 					  </ul>
 					</div>
         {% endif %}
@@ -145,6 +145,21 @@
 			$('#errorMsg').html('<br><br><div class="alert alert-danger">' + error.responseJSON + '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>')
 		});
 	 });
+
+ 	$('#delete').click(function(e) {
+ 		e.preventDefault();
+ 		var conf_delete = confirm('Do you really want to delete this Post?');
+    if (conf_delete) {
+      $.ajax({
+        url: '/deletepost/{{ post.id }}',
+        method: 'POST'
+      }).done(function(result) {
+        window.location.href = '/showuser/{{ user_logged.id }}?msg=Successfully deleted post';
+      }).fail(function(e) {
+        alert('Error: unable to delete post')
+      });
+    }
+ 	})
  });
  </script>
  {% endblock %}

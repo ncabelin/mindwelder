@@ -6,6 +6,12 @@
       <br>
         <div class="row">
           <div class="col-md-12 text-center">
+            {% if msg %}
+            <div class="alert alert-danger">
+              {{ msg }}
+              <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+            {% endif %}
             <h3>All Posts by <span class="author">{{ user.username }}</span></h3>
             {% if user.id == user_logged.id %}
               <!-- Check if viewed user is the same as logged in user -->
@@ -41,7 +47,7 @@
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                         <li><a href="{{ url_for('editPost', post_id = post.id) }}">Rich Text Editor</a></li>
                         <li><a href="/editpost/{{ post.id }}?mode=html">HTML Editor</a></li>
-                        <li><a href="/askdelete/{{ post.id }}?mode=html">Delete</a></li>
+                        <li><a href="" data-postid="{{ post.id }}" class="delete">Delete</a></li>
                       </ul>
                     </span>
                     
@@ -68,4 +74,23 @@
     </div>
   </div>
 </div>
+<script>
+$(function() {
+  $('.delete').click(function(e) {
+    e.preventDefault();
+    var post_id = $(this).data('postid'),
+        conf_delete = confirm('Do you really want to delete this Post?');
+    if (conf_delete) {
+      $.ajax({
+        url: '/deletepost/' + post_id,
+        method: 'POST'
+      }).done(function(result) {
+        window.location.href = '/showuser/{{ user_logged.id }}?msg=Successfully deleted post';
+      }).fail(function(e) {
+        alert('Error: unable to delete post')
+      });
+    }
+  });
+});
+</script>
 {% endblock %}

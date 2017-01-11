@@ -1007,6 +1007,7 @@ def query():
 @app.route('/askdelete/<int:post_id>', methods=['GET'])
 def askDelete(post_id):
 	mode = request.args.get('mode')
+	title = request.args.get('title')
 	return render_template('askdelete.html',
 		user_logged = find_logged_user(),
 		mode = mode or None,
@@ -1024,21 +1025,21 @@ def deletePost(post_id):
 			if request.method == 'POST':
 				session.delete(post)
 				session.commit()
-				return redirect(url_for('showUser', user_id = user.id))
+				return respond('delete successful', 200)
 		else:
-			flash('Not authorized to delete this post')
-			return render_template('error.html')
+			return respond('not authorized to delete this post', 401)
 	else:
-		flash('Post not found')
-		return render_template('error.html')
+		return respond('post not found', 401)
 
 @app.route('/showuser/<int:user_id>', methods = ['GET'])
 def showUser(user_id):
+	msg = request.args.get('msg') or ''
 	posts = find_user_posts(user_id)
 	return render_template('showuser.html',
 		posts = posts,
 		user_logged = find_logged_user(),
-		user = getUserByID(user_id))
+		user = getUserByID(user_id),
+		msg = msg)
 
 @app.route('/likepost/<int:post_id>', methods=['POST'])
 @login_required
