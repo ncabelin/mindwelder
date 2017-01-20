@@ -1,5 +1,6 @@
+'use strict';
+
 var test = function(post_id, user_id) {
-	'use strict';
 	var answers = {}, // array of all answers
 			db_answers = {},
 			correct = [], // array of unique_id's listed as correct
@@ -39,9 +40,14 @@ var test = function(post_id, user_id) {
 		var id = 'id_' + index.toString();
 		// add an id to each answer
 		$(this).attr('id', id);
+		$(this).css('display', 'none');
 
 		// create array of blank answers with val = 0 as default
 		var text = $(this).text();
+		$(this).after('&nbsp;<input type="text" size="' + text.length 
+			+ '" id="input_' + id + '"><button id="check_' 
+			+ id + '" class="checkAnswer"><i class="fa fa-check"></i></button>');
+
 		var val = index.toString() + ',0,' + text;
 		answers[id] = ['0', '0', text];
 	});
@@ -65,8 +71,8 @@ var test = function(post_id, user_id) {
 					var totalDbAnswers = results.length;
 					db_exists = true;
 					var similar = true;
-					console.log(totalDbAnswers);
-					// check if db and present tests length are =
+
+					// check if db and present tests length are equal
 					if (totalDbAnswers == totalAnswers) {
 						// check each
 						results.forEach(function(x) {
@@ -89,7 +95,9 @@ var test = function(post_id, user_id) {
 					if (similar) {
 						$.each(db_answers, function(k, v) {
 							if (v[2] == '1') {
-								$('#' + k).toggleClass('answerShow');
+								$('#' + k).css('display', 'inline');
+								$('#check_' + k).css('display', 'none');
+								$('#input_' + k).css('display', 'none');
 								answers[k][1] = '1';
 								correct.push(k);
 								score.text(correct.length);
@@ -111,22 +119,48 @@ var test = function(post_id, user_id) {
 		$('.test-message').html('Must be logged in to save test progress');
 	}
 
-	answer.click(function() {
-		// toggle CSS visibility
-		$(this).toggleClass('answerShow');
-
-		// look for id in array 'correct'
-		var unique_id = $(this).attr('id');
-
-		var text = $(this).text();
-		var index = correct.indexOf(unique_id);
-		if (index == -1) {
-			correct.push(unique_id);
-			answers[unique_id][1] = '1';
+	$('.checkAnswer').click(function() {
+		var unique_id = $(this).attr('id').split('check_')[1];
+		var input_answer = document.getElementById('input_' + unique_id).value;
+		var text = document.getElementById(unique_id).innerHTML;
+		if (input_answer === text) {
+			console.log('correct');
+			document.getElementById('input_' + unique_id).style.color = '#2e6da4';
+			document.getElementById('check_' + unique_id).style.display = 'none';
+			document.getElementById('input_' + unique_id).style.display = 'none';
+			document.getElementById(unique_id).style.display = 'inline';
+			var index = correct.indexOf(unique_id);
+			if (index == -1) {
+				correct.push(unique_id);
+				answers[unique_id][1] = '1';
+			} else {
+				correct.splice(index, 1);
+				answers[unique_id][1] = '0';
+			}
+			console.log(correct);
+			score.text(correct.length);
+		} else if (input_answer === '') {
+			var display = document.getElementById(unique_id).style.display;
+			console.log(display);
+			if (display == 'inline') {
+				document.getElementById(unique_id).style.display = 'none';
+			} else {
+				document.getElementById(unique_id).style.display = 'inline';
+			}
 		} else {
-			correct.splice(index, 1);
-			answers[unique_id][1] = '0';
+			// wrong answer, mark red
+			document.getElementById('input_' + unique_id).style.color = 'red';
 		}
+	});
+
+	answer.click(function() {
+		var unique_id = $(this).attr('id');
+		document.getElementById('check_' + unique_id).style.display = 'inline';
+		document.getElementById('input_' + unique_id).style.display = 'inline';
+		document.getElementById(unique_id).style.display = 'none';
+		var index = correct.indexOf(unique_id);
+		correct.splice(index, 1);
+		answers[unique_id][1] = '0';
 		score.text(correct.length);
 	});
 
@@ -162,11 +196,6 @@ var test = function(post_id, user_id) {
 			success: function(result) {
 				$('#result').html(result);
 				$('#modalBtn').trigger('click');
-				// setTimeout(function() {
-				// 	location.reload();
-				// 	$('#result').html(result);
-				// 	$('#modalBtn').trigger('click');
-				// }, 3000);
 			},
 			error: function(result) {
 				$('#result').html(result);
