@@ -235,7 +235,7 @@ input.span2 {
 }
 
 .navbar-brand {padding: 5px 20px 5px 15px; height: 70px;}
-.navbar-toggle { margin-top: 20px; }
+.navbar-toggle, .front-description { margin-top: 20px; }
 .navbar-nav {padding: 0 15px;}
 .navbar-nav>li>a {height: 70px; line-height: 35px;}
 

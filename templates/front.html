@@ -42,7 +42,7 @@
           <a href="{{ url_for('showPost', post_id = post.id)}}" target="_blank"><img src="{{ post.picture | imgurcheck}}" class="img-responsive post_image"></a>
           <small><i>imgur.com</i></small>
         {% endif %}
-        <div>{{ post.description }}</div>
+        <div class="front-description">{{ post.description }}</div>
         <hr>
         <div>
           <a href="{{ url_for('showPost', post_id = post.id)}}" class="btn btn-primary btn-noborder">READ</a>
