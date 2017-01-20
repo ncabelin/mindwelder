@@ -27,7 +27,7 @@
 
   <!-- fontAwesome and Google fonts -->
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700|Raleway:700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700|Merriweather:700" rel="stylesheet">
 
 
   <!-- bootStrap css -->
@@ -59,6 +59,11 @@
     #clock h3 {
       margin-left: 10px;
       display: inline;
+      color: #f70505;
+    }
+
+    #score, #total {
+      color: #278859;
     }
 	</style>
 </head>
@@ -148,12 +153,12 @@
 <footer class="footer">
 	<div class="container">
     <div class="test-control">
+      <span id="clock" class="pull-right"></span>
   		<h3>Score : <span id="score"></span> / <span id="total"></span></h3>
       {% if user_logged %}
     		<a class="btn btn-success" id="save">Save Test</a>
     		<a class="btn btn-danger" id="reset">Reset Test</a>
       {% endif %}
-      <span id="clock"></span>
     </div>
     <div class="test-message"></div>
 	</div>
@@ -185,7 +190,7 @@ $(function() {
   var sec = 0,
       min = 0,
       hr = 0,
-      time = 0;
+      min_txt, hr_txt;
   setInterval(function() {
     sec++;
     if (sec == 61) {
@@ -196,7 +201,9 @@ $(function() {
       hr++;
       min = 0;
     }
-    $('#clock').html('<h3>' + hr + ' hr ' + min + ' min ' + sec + ' sec</h3>');
+    min_txt = min ? (min + ' min ') : '';
+    hr_txt = hr ? (hr + ' hr ') : '';
+    $('#clock').html('<h3>' + hr_txt + min_txt + sec + ' sec</h3>');
   }, 1000);
 });
 </script>

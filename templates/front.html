@@ -10,18 +10,6 @@
     {% endif %}
   </div>
 </div>
-<!-- <div class="container-fluid">
-  <div class="row foreground">
-    <div class="col-md-12 text-center">
-      <h1 class="title">Mindwelder Blogs</h1>
-      <p>Create Blogs with Learning, Quizzing features</p><br><br>
-      {% if not user_logged %}
-        <a href="/help" class="btn btn-primary btn-lg white btn-front">How it Works</a>
-        <a href="/register" class="btn btn-primary btn-lg white btn-front">Signup</a>
-      {% endif %}
-    </div>
-  </div>
-</div> -->
 <div class="container">
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
@@ -57,8 +45,8 @@
         <div>{{ post.description }}</div>
         <hr>
         <div>
-          <a href="{{ url_for('showPost', post_id = post.id)}}" class="btn btn-primary btn-sm">READ</a>
-            <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-primary btn-sm">TEST</a>
+          <a href="{{ url_for('showPost', post_id = post.id)}}" class="btn btn-primary btn-noborder">READ</a>
+            <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-primary btn-noborder">TEST</a>
         </div>
       </div>
       {% endfor %}

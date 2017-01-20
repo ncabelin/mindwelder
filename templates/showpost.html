@@ -14,7 +14,7 @@
         {% if user_logged.id == post.user_id %} &nbsp;
           <!-- If the user is logged in and the owner of the post being viewed then the edit button will be displayed -->
           <div class="dropdown pull-right">
-					  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					  <button class="btn btn-primary btn-noborder dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 					    EDIT
 					    <span class="caret"></span>
 					  </button>
@@ -25,7 +25,7 @@
 					  </ul>
 					</div>
         {% endif %}
-        <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success pull-right" style="margin-right: 10px;">TEST</a>
+        <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success btn-noborder pull-right" style="margin-right: 10px;">TEST</a>
 
         {% if post.picture %}</h6>
           <!-- Determine if post has a picture link -->
