@@ -3,8 +3,6 @@ import bleach
 def markdown(content, status):
     if status == 'test':
         params = { '\n': '<br>',
-                '<q>': '<span class="question">',
-                '</q>': '</span>',
                 '<u>': '<span class="answer">',
                 '</u>': '</span>' }
         for p in params:
