@@ -136,19 +136,19 @@ input.span2 {
 .btn-primary {
   background-color: rgba(0,0,0,0);
   color: #2e6da4;
-  border: 1px solid rgba(0,0,0,0);
+  border: 1px solid #2e6da4;
 }
 
 .btn-success {
   background-color: rgba(0,0,0,0);
   color: #277b27;
-  border: 1px solid rgba(0,0,0,0);
+  border: 1px solid #277b27;
 }
 
 .btn-danger {
   background-color: rgba(0,0,0,0);
   color: #94221f;
-  border: 1px solid rgba(0,0,0,0);
+  border: 1px solid #94221f;
 }
 
 .btn-front {
@@ -158,6 +158,10 @@ input.span2 {
 
 .btn-front:hover {
   color: white;
+}
+
+.btn-noborder {
+  border-color: rgba(0,0,0,0);
 }
 
 .btn-group .btn {
@@ -281,7 +285,7 @@ hr {
 .form-box {
   border: 1px solid #ccc;
   border-radius: 0;
-  padding: 10px 25px 25px 25px;
+  padding: 25px 25px 25px 25px;
   background-color: white;
   margin: 20px 20px;
 }
