@@ -32,7 +32,7 @@ a {
 
 .blog_post {
   font-size: 18px;
-  line-height: 24px;
+  line-height: 27px;
   margin-top: 10px;
   color: #666565;
 }
@@ -308,18 +308,11 @@ hr {
 }
 
 .answer {
-  color: white;
-  background-color: white;
-  border-bottom: 1px solid #2e6da4;
+  color: #2e6da4;
 }
 
 .answer:hover {
   cursor: pointer;
-}
-
-.answerShow {
-  color: #2e6da4;
-  border-bottom: 0;
 }
 
 .post_content {
