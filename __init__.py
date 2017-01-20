@@ -1,7 +1,4 @@
-# TO DO:
-# add flask recaptcha during registration
-# add list of tests taken in profile settings
-# add title icon
+# MINDWELDER BLOGS
 
 import random, string, datetime, os
 
