@@ -38,8 +38,9 @@ a {
 }
 
 .blog_post u {
-  color: #2e6da4;
+  color: #5e83a3;
   text-decoration: none;
+  font-weight: bolder;
 }
 
 .navigation {
@@ -308,7 +309,8 @@ hr {
 }
 
 .answer {
-  color: #2e6da4;
+  color: #5e83a3;
+  font-weight: bolder;
 }
 
 .answer:hover {
