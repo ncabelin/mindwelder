@@ -336,9 +336,18 @@ hr {
   background-color: #e9ebee;
 }
 
+.circle {
+  border-radius: 50%;
+}
+
 .btn-xs {
   margin-top: 3px;
   margin-bottom: 3px;
+}
+
+.checkAnswer {
+  margin-left: 3px;
+  border-radius: 20px;
 }
 
 #posts {
