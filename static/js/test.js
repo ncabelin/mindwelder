@@ -138,17 +138,8 @@ var test = function(post_id, user_id) {
 			}
 			score.text(correct.length);
 		} else if (input_answer === '') {
-			// if the answer field is blank
-			var display = document.getElementById(unique_id).style.display;
-			if (display == 'inline') {
-				document.getElementById(unique_id).style.display = 'none';
-				document.getElementById('input_' + unique_id).style.display = 'inline';
-				document.getElementById('check_' + unique_id).style.display = 'inline';
-			} else {
-				document.getElementById(unique_id).style.display = 'inline';
-				document.getElementById('input_' + unique_id).style.display = 'none';
-				document.getElementById('check_' + unique_id).style.display = 'none';
-			}
+			// if the answer field is blank, fill it in with the correct answer
+			document.getElementById('input_' + unique_id).value = document.getElementById(unique_id).innerHTML;
 		} else {
 			// wrong answer, mark red
 			document.getElementById('input_' + unique_id).style.color = 'red';
