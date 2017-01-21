@@ -46,7 +46,7 @@ var test = function(post_id, user_id) {
 		var text = $(this).text();
 		$(this).after('&nbsp;<input type="text" size="' + text.length 
 			+ '" id="input_' + id + '"><button id="check_' 
-			+ id + '" class="checkAnswer"><i class="fa fa-check"></i></button>');
+			+ id + '" class="checkAnswer"><i class="fa fa-check fa-1"></i></button>');
 
 		var val = index.toString() + ',0,' + text;
 		answers[id] = ['0', '0', text];
@@ -124,7 +124,6 @@ var test = function(post_id, user_id) {
 		var input_answer = document.getElementById('input_' + unique_id).value;
 		var text = document.getElementById(unique_id).innerHTML;
 		if (input_answer === text) {
-			console.log('correct');
 			document.getElementById('input_' + unique_id).style.color = '#2e6da4';
 			document.getElementById('check_' + unique_id).style.display = 'none';
 			document.getElementById('input_' + unique_id).style.display = 'none';
@@ -137,15 +136,18 @@ var test = function(post_id, user_id) {
 				correct.splice(index, 1);
 				answers[unique_id][1] = '0';
 			}
-			console.log(correct);
 			score.text(correct.length);
 		} else if (input_answer === '') {
+			// if the answer field is blank
 			var display = document.getElementById(unique_id).style.display;
-			console.log(display);
 			if (display == 'inline') {
 				document.getElementById(unique_id).style.display = 'none';
+				document.getElementById('input_' + unique_id).style.display = 'inline';
+				document.getElementById('check_' + unique_id).style.display = 'inline';
 			} else {
 				document.getElementById(unique_id).style.display = 'inline';
+				document.getElementById('input_' + unique_id).style.display = 'none';
+				document.getElementById('check_' + unique_id).style.display = 'none';
 			}
 		} else {
 			// wrong answer, mark red
@@ -155,13 +157,17 @@ var test = function(post_id, user_id) {
 
 	answer.click(function() {
 		var unique_id = $(this).attr('id');
+		var text = $(this).text();
 		document.getElementById('check_' + unique_id).style.display = 'inline';
 		document.getElementById('input_' + unique_id).style.display = 'inline';
+		document.getElementById('input_' + unique_id).value = text;
 		document.getElementById(unique_id).style.display = 'none';
 		var index = correct.indexOf(unique_id);
-		correct.splice(index, 1);
-		answers[unique_id][1] = '0';
-		score.text(correct.length);
+		if (index !== -1) {
+			correct.splice(index, 1);
+			answers[unique_id][1] = '0';
+			score.text(correct.length);
+		}
 	});
 
 	reset.click(function() {
