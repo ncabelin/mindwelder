@@ -122,9 +122,9 @@ var test = function(post_id, user_id) {
 	$('.checkAnswer').click(function() {
 		var unique_id = $(this).attr('id').split('check_')[1];
 		var input_answer = document.getElementById('input_' + unique_id).value;
-		var text = document.getElementById(unique_id).innerHTML;
-		// check if the answers match even, not case sensitive
-		if (input_answer.toLowerCase() === text.toLowerCase()) {
+		var content = document.getElementById(unique_id).textContent;
+		// check if the answers match, not case sensitive
+		if (input_answer.toLowerCase() === content.toLowerCase()) {
 			document.getElementById('input_' + unique_id).style.color = '#2e6da4';
 			document.getElementById('check_' + unique_id).style.display = 'none';
 			document.getElementById('input_' + unique_id).style.display = 'none';
@@ -140,7 +140,7 @@ var test = function(post_id, user_id) {
 			score.text(correct.length);
 		} else if (input_answer === '') {
 			// if the answer field is blank, fill it in with the correct answer
-			document.getElementById('input_' + unique_id).value = document.getElementById(unique_id).innerHTML;
+			document.getElementById('input_' + unique_id).value = document.getElementById(unique_id).textContent;
 		} else {
 			// wrong answer, mark red
 			document.getElementById('input_' + unique_id).style.color = 'red';
@@ -149,10 +149,10 @@ var test = function(post_id, user_id) {
 
 	answer.click(function() {
 		var unique_id = $(this).attr('id');
-		var text = $(this).text();
+		var content = $(this).text();
 		document.getElementById('check_' + unique_id).style.display = 'inline';
 		document.getElementById('input_' + unique_id).style.display = 'inline';
-		document.getElementById('input_' + unique_id).value = text;
+		document.getElementById('input_' + unique_id).value = content;
 		document.getElementById(unique_id).style.display = 'none';
 		var index = correct.indexOf(unique_id);
 		if (index !== -1) {
