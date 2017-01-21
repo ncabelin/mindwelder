@@ -123,7 +123,8 @@ var test = function(post_id, user_id) {
 		var unique_id = $(this).attr('id').split('check_')[1];
 		var input_answer = document.getElementById('input_' + unique_id).value;
 		var text = document.getElementById(unique_id).innerHTML;
-		if (input_answer === text) {
+		// check if the answers match even, not case sensitive
+		if (input_answer.toLowerCase() === text.toLowerCase()) {
 			document.getElementById('input_' + unique_id).style.color = '#2e6da4';
 			document.getElementById('check_' + unique_id).style.display = 'none';
 			document.getElementById('input_' + unique_id).style.display = 'none';
