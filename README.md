@@ -26,6 +26,7 @@ Have you ever wanted to grab a post and quickly try to memorize it or quiz yours
 3. PostgreSQL database
 4. SQLAlchemy ORM
 5. jQuery for AJAX calls
+6. Code Prettify by https://github.com/google/code-prettify
 
 ## Installation
 1. Install dependencies :
