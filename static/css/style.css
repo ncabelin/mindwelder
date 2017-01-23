@@ -37,10 +37,15 @@ a {
   color: #666565;
 }
 
-.blog_post u {
-  color: #5e83a3;
+.blog_post u, .answer {
+  color: #666565;
   text-decoration: none;
   font-weight: bolder;
+  border-bottom: 1px solid #858383;
+}
+
+.answer:hover {
+  cursor: pointer;
 }
 
 .navigation {
@@ -302,19 +307,6 @@ hr {
   width: 50px;
   border-radius: 50%;
   padding: 0;
-}
-
-.question {
-  color: #37449b;
-}
-
-.answer {
-  color: #5e83a3;
-  font-weight: bolder;
-}
-
-.answer:hover {
-  cursor: pointer;
 }
 
 .post_content {
