@@ -181,8 +181,11 @@ ga('create', 'UA-85108445-1', 'auto');
 ga('send', 'pageview');
 </script>
 <script src="/static/js/test.js"></script>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <script>
 $(function() {
+  $('pre').addClass('prettyprint');
+
   // start test
   test({{ post.id }}, {{ user_logged_id }})
 
