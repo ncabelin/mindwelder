@@ -112,6 +112,16 @@ a {
   color: white;
 }
 
+.instructions {
+  line-height: 35px;
+  padding: 30px;
+}
+
+.instructions li {
+  font-size: 18px;
+  list-style-type: none;
+}
+
 .dropdown-menu li a:hover {
   background-color: #4e7fa9;
   color: white;
@@ -417,6 +427,14 @@ div.input-group.item.search {
 
   .form-box {
     margin: 20px 0;
+  }
+
+  .instructions {
+    line-height: 20px;
+  }
+
+  .instructions li {
+    font-size: 14px;
   }
 
   div .item {
