@@ -352,6 +352,7 @@ hr {
 .checkAnswer {
   margin-left: 3px;
   border-radius: 20px;
+  border: 1px;
 }
 
 #posts {
