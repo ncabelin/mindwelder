@@ -42,26 +42,29 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
     </div>
     <div class="col-md-8">
       <br>
-      <div class="post_content">
+      <div class="post_content clearfix">
         <h2>{{ post.title }} <small>by <a href="{{ url_for('showUser', user_id = post.user_id) }}" class="author">{{ post.user_id | find_username }}</a></small></h2>
         <h4>{{ post.description }}</h4>
         <h6>{{ post.id | find_likes_sum }} likes, <i class="fa fa-calendar" aria-hidden="true"></i> - {{ post.date_added | standard_date }}
 
-        {% if user_logged.id == post.user_id %} &nbsp;
-          <!-- If the user is logged in and the owner of the post being viewed then the edit button will be displayed -->
-          <div class="dropdown pull-right">
-					  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-					    EDIT
-					    <span class="caret"></span>
-					  </button>
-					  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-					    <li><a href="{{ url_for('editPost', post_id = post.id) }}">Rich Text Editor</a></li>
-					    <li><a href="/editpost/{{ post.id }}?mode=html">HTML Editor</a></li>
-					    <li><a href="" id="delete">Delete</a></li>
-					  </ul>
-					</div>
-        {% endif %}
-        <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success pull-right" style="margin-right: 10px;">TEST</a>
+        <br>
+	      <div style="margin-top: 10px">
+	        <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success" style="margin-right: 10px;">TEST</a>
+	        {% if user_logged.id == post.user_id %} &nbsp;
+	          <!-- If the user is logged in and the owner of the post being viewed then the edit button will be displayed -->
+	          <div class="dropdown">
+						  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						    EDIT
+						    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						    <li><a href="{{ url_for('editPost', post_id = post.id) }}">Rich Text Editor</a></li>
+						    <li><a href="/editpost/{{ post.id }}?mode=html">HTML Editor</a></li>
+						    <li><a href="" id="delete">Delete</a></li>
+						  </ul>
+						</div>
+	        {% endif %}
+	      </div>
 
         {% if post.picture %}</h6>
           <!-- Determine if post has a picture link -->

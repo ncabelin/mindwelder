@@ -122,6 +122,10 @@ a {
   list-style-type: none;
 }
 
+.dropdown {
+  display: inline;
+}
+
 .dropdown-menu li a:hover {
   background-color: #4e7fa9;
   color: white;
