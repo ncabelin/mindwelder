@@ -359,9 +359,17 @@ hr {
 }
 
 .checkAnswer {
+  width: 35px;
+  height:35px;
   margin-left: 3px;
   border-radius: 20px;
-  border: 1px;
+  border: 1px solid #ccc;
+  background-color: rgba(0,0,0,0);
+}
+
+.checkAnswer:hover {
+  background-color: #ccc;
+  border-color: #ccc;
 }
 
 #posts {
