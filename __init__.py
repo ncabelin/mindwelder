@@ -274,6 +274,14 @@ def find_username(user_id):
 	user = getUserByID(user_id)
 	return user.username
 
+@app.context_processor
+def check_tests():
+	def find_test(content):
+		test = content.find('<u>')
+		if test != -1:
+			return True
+	return dict(find_test=find_test)
+
 app.jinja_env.filters['standard_date'] = standard_date
 app.jinja_env.filters['firstline'] = firstline
 app.jinja_env.filters['markdown'] = markdown
@@ -282,6 +290,7 @@ app.jinja_env.filters['find_likes_sum'] = find_likes_sum
 app.jinja_env.filters['imgurcheck'] = imgurcheck
 app.jinja_env.filters['get_user_pic'] = get_user_pic
 app.jinja_env.filters['find_description'] = find_description
+# app.jinja_env.filters['check_tests'] = check_tests
 
 dir_name = os.path.dirname(os.path.abspath(__file__))
 gfile = os.path.join(dir_name, 'client_secret_mw.json')

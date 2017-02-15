@@ -14,7 +14,9 @@
 
         <br>
 	      <div style="margin-top: 10px">
+	      	{% if find_test(post.post_content) %}
 	        <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success" style="margin-right: 10px;">TEST</a>
+	        {% endif %}
 	        {% if user_logged.id == post.user_id %} &nbsp;
 	          <!-- If the user is logged in and the owner of the post being viewed then the edit button will be displayed -->
 	          <div class="dropdown">

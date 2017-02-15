@@ -51,8 +51,9 @@
                       </ul>
                     </span>
                     
-                    
+                    {% if find_test(post.post_content) %}
                     <a href="{{ url_for('showPostTest', post_id = post.id)}}" class="btn btn-success">TEST</a>
+                    {% endif %}
                 {% endif %}
                 {% if post.picture %}
                   <div class="row">
