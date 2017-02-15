@@ -1,12 +1,13 @@
 import bleach
 
 def markdown(content, status):
+    params = {}
     if status == 'test':
-        params = { '\n': '<br>',
-                '<u>': '<span class="answer">',
+        params = { '<u>': '<span class="answer">',
                 '</u>': '</span>' }
-        for p in params:
-            content = content.replace(p, params[p])
+    params['\n'] = '<br>'
+    for p in params:
+        content = content.replace(p, params[p])
 
     attrs = {
         '*': ['class'],
