@@ -14,7 +14,7 @@ h1.title {
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
   color: white;
-  background-color: #2282a7;
+  background: transparent;
 }
 
 h4 {
@@ -273,12 +273,42 @@ input.span2 {
 .navbar-default .navbar-toggle .icon-bar {
   background-color: white;
   height: 3px;
-  width: 24px;
+  width: 22px;
 }
 
 .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
-  background-color: #2e6da4;
+  background: transparent;
   color: white;
+}
+
+.navbar-toggle .icon-bar {
+  transition: all 0.2s;
+}
+
+.navbar-toggle .top-bar {
+  transform: rotate(45deg);
+  transform-origin: 10% 10%;
+}
+
+.navbar-toggle .mid-bar {
+  opacity: 0;
+}
+
+.navbar-toggle .low-bar {
+  transform: rotate(-45deg);
+  transform-origin: 0% 70%;
+}
+
+button.navbar-toggle.collapsed .top-bar {
+  transform: rotate(0);
+}
+
+button.navbar-toggle.collapsed .mid-bar {
+  opacity: 1;
+}
+
+button.navbar-toggle.collapsed .low-bar {
+  transform: rotate(0);
 }
 
 .footer_img {
