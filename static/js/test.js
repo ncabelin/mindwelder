@@ -45,7 +45,7 @@ var test = function(post_id, user_id) {
 		// create array of blank answers with val = 0 as default
 		var text = $(this).text();
 		$(this).after('&nbsp;<input type="text" size="' + text.length 
-			+ '" id="input_' + id + '"><button id="check_' 
+			+ '" id="input_' + id + '" class="test_input"><button id="check_' 
 			+ id + '" class="checkAnswer"><i class="fa fa-ellipsis-h fa-1"></i></button>');
 
 		var val = index.toString() + ',0,' + text;
