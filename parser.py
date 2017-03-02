@@ -20,6 +20,7 @@ def markdown(content, status):
         tags = ['strong','b','i','em','h1',
         'h2','pre','code', 'br', 'u', 'li',
         'ul', 'ol', 'q', 'a', 'div', 'font',
-        'blockquote', 'br', 'span'], attributes=attrs)
+        'blockquote', 'br', 'span', 'table', 
+        'td', 'tr', 'th'], attributes=attrs)
 
     return bleached_content
