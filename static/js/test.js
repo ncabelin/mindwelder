@@ -46,7 +46,7 @@ var test = function(post_id, user_id) {
 		var text = $(this).text();
 		$(this).after('&nbsp;<input type="text" size="' + text.length 
 			+ '" id="input_' + id + '" class="test_input"><button id="check_' 
-			+ id + '" class="checkAnswer"><i class="fa fa-ellipsis-h fa-1"></i></button>');
+			+ id + '" class="checkAnswer"><i class="fa fa-question-circle fa-lg" aria-hidden="true"></i></button>');
 
 		var val = index.toString() + ',0,' + text;
 		answers[id] = ['0', '0', text];

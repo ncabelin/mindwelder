@@ -394,18 +394,13 @@ hr {
 
 .checkAnswer {
   display: inline-block;
-  width: 30px;
-  height:30px;
-  border-radius: 30px;
-  text-align: center;
-  margin-left: 3px;
-  border: 1px solid #ccc;
+  color: #acaaaa;
+  border: none;
   background-color: rgba(0,0,0,0);
 }
 
 .checkAnswer:hover {
-  background-color: #ccc;
-  border-color: #ccc;
+  color: #747272;
 }
 
 #posts {
