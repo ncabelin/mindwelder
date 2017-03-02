@@ -7,4 +7,7 @@ $(function() {
  	pre.forEach(function(x) {
  		x.innerHTML = x.innerHTML.replace(/<br>/g, '');
  	});
+
+ 	// format all tables
+ 	$('table').addClass('table-bordered').addClass('table');
 });
