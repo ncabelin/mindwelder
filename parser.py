@@ -21,6 +21,6 @@ def markdown(content, status):
         'h2','pre','code', 'br', 'u', 'li',
         'ul', 'ol', 'q', 'a', 'div', 'font',
         'blockquote', 'br', 'span', 'table', 
-        'td', 'tr', 'th'], attributes=attrs)
+        'td', 'tr', 'thead', 'tbody'], attributes=attrs)
 
     return bleached_content
